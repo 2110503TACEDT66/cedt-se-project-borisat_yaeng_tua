@@ -25,7 +25,7 @@ const reviews = require('./routes/reviews');
 
 const app=express();
 
-// app.use(cors())
+app.use(cors());
 
 const PORT = process.env.PORT || 5050;
 const server = app.listen(PORT,console.log(`Server running in ${process.env.NODE_ENV} mode on ${process.env.HOST}: ${PORT}`));
@@ -74,7 +74,7 @@ app.use(cookieParser());
 app.use(mongoSanitize());
 
 //Enable cors
-// app.use(cors);
+//app.use(cors);
 
 //Mount routers
 app.use('/api/v1/cars',cars);
