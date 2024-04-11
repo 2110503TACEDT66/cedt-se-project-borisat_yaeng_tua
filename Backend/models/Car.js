@@ -31,6 +31,11 @@ const CarSchema = new mongoose.Schema({
         type: String,
         required: [true, 'Please specify a license plate number']
     },
+    provider: {
+        type: mongoose.Schema.ObjectId,
+        ref: 'User',
+        required: true
+    },
     PictureCover: {
         type: String,
         required: false

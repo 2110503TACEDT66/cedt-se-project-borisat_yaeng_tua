@@ -11,6 +11,7 @@ import Image from "next/image";
 import CustomButton from "@/components/CustomButton";
 import Swal from 'sweetalert2'
 import Link from "next/link";
+import config from "@/config";
 
 function CardDetailPage({ params }: { params: { cid: string } }) {
   const [carDetail, setCarDetail] = useState<any>(null);
@@ -25,7 +26,7 @@ function CardDetailPage({ params }: { params: { cid: string } }) {
 
     try {
       const response = await fetch(
-        `${process.env.BACKEND_URL}/api/v1/cars/${params.cid}/bookings`,
+        `${config.backendUrl}/api/v1/cars/${params.cid}/bookings`,
         {
           method: "POST",
           headers: {
