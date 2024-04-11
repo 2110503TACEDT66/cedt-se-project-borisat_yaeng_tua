@@ -19,6 +19,10 @@ const BookingSchema = new mongoose.Schema({
         ref: 'Car',
         required: true
     },
+    provider:{
+        type: mongoose.Schema.ObjectId,
+        ref: 'User',
+    },
     createdAt: {
         type: Date,
         default: Date.now

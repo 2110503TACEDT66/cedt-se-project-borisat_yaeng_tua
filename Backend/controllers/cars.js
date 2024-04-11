@@ -105,7 +105,7 @@ exports.getCar = async (req, res, next) => {
 //@route    POST /api/v1/cars
 //@access   Private
 exports.createCar = async (req, res, next) => {
-    const car = await Car.create(req.body);
+    const car = await Car.create({...req.body,provider: req.user.id});
     res.status(201).json({
         success: true,
         data: car

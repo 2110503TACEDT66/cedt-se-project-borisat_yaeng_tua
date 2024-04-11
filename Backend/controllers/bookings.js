@@ -8,23 +8,67 @@ exports.getBookings = async(req,res,next)=>{
     let query;
     
     // General user can see only their bookings!
-    if(req.user.role !== 'admin'){
-        query = Booking.find({user: req.user.id}).populate({
-            path: 'car',
-            select: 'Brand Model Year Color FeePerDay LicensePlate'
-        });
-    } else { // Admin can see all Bookings
-        
-        if(req.params.carId){
+    if (req.user.role === 'user') {
+        if (req.params.carId) {
             console.log(req.params.carId);
-            query = Booking.find({car: req.params.carId}).populate({
+            query = Booking.find({ car: req.params.carId, user: req.user.id }).populate({
                 path: 'car',
                 select: 'Brand Model Year Color FeePerDay LicensePlate'
+        }).populate({
+            path: 'provider',
+            select: 'name tel email'
+        });
+        } else {
+            query = Booking.find({ user: req.user.id }).populate({
+                path: 'car',
+                select: 'Brand Model Year Color FeePerDay LicensePlate'
+            }).populate({
+                path: 'provider',
+                select: 'name tel email'
+            });
+        }
+    } else if (req.user.role === 'provider') { // If you are a provider, you can see only booking that booked your car
+        if (req.params.carId) {
+            console.log(req.params.carId);
+            query = Booking.find({ car: req.params.carId, provider: req.user.id }).populate({
+                path: 'car',
+                select: 'Brand Model Year Color FeePerDay LicensePlate',
+            }).populate({
+                path: 'user',
+                select: 'name tel email'
+            });
+        } else {
+            query = Booking.find({ provider: req.user.id }).populate({
+                path: 'car',
+                select: 'Brand Model Year Color FeePerDay LicensePlate',
+            }).populate({
+                path: 'user',
+                select: 'name tel email'
+            });
+        }    
+    } else { // If you are an admin, you can see all
+        if (req.params.carId) {
+            console.log(req.params.carId);
+            query = Booking.find({car:req.params.carId}).populate({
+                path: 'user',
+                select: 'name tel email'
+            }).populate({
+                path: 'car',
+                select: 'Brand Model Year Color FeePerDay LicensePlate',
+            }).populate({
+                path: 'provider',
+                select: 'name tel email'
             });
         } else {
             query = Booking.find().populate({
+                path: 'user',
+                select: 'name tel email'
+            }).populate({
                 path: 'car',
-                select: 'Brand Model Year Color FeePerDay LicensePlate'
+                select: 'Brand Model Year Color FeePerDay LicensePlate',
+            }).populate({
+                path: 'provider',
+                select: 'name tel email'
             });
         }
     }
@@ -49,6 +93,9 @@ exports.getBooking = async(req,res,next)=>{
         const booking = await Booking.findById(req.params.id).populate({
             path: 'car',
             select: 'Brand Model Year Color FeePerDay LicensePlate'
+        }).populate({
+            path: 'provider',
+            select: 'name tel email'
         });
         if(!booking){
             return res.status(404).json({success:false, message : `No booking with the id of ${req.params.id}`})
@@ -79,8 +126,11 @@ exports.addBooking = async (req, res, next) => {
             });
         }
 
-        //add user Id to req.body
+       //add userId & providerId from car to req.body
+       if (req.user.role !== 'admin') {
         req.body.user = req.user.id;
+        req.body.provider = car.provider;
+        }
         
         //Check for existed booking
         const existedBookings = await Booking.find({user: req.user.id});
@@ -115,6 +165,10 @@ exports.updateBooking = async (req, res, next) => {
     try {
         let booking = await Booking.findById(req.params.id);
 
+        if(!booking) {
+            return res.status(404).json({success: false, message: `No booking with the id of ${req.params.id}`});
+        }
+
         //Make sure user is the booking owner
         if (booking.user.toString() !== req.user.id && req.user.role !== 'admin') {
             return res.status(401).json({
@@ -148,6 +202,10 @@ exports.deleteBooking = async (req, res, next) => {
     try {
         const booking = await Booking.findById(req.params.id);
 
+        if(!booking) {
+            return res.status(404).json({success: false, message: `No booking with id ${req.params.id}`});
+        }
+        
         //Make sure user is the booking owner
         if (booking.user.toString() !== req.user.id && req.user.role !== 'admin') {
             return res.status(401).json({
