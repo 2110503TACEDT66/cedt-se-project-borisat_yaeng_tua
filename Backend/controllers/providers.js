@@ -165,6 +165,13 @@ exports.updateProvider = async (req, res, next) => {
             return res.status(400).json({success: false});
         }
 
+        if (req.user.role !== 'admin' && req.body.status !== undefined) {
+            return res.status(401).json({
+                success: false,
+                message: 'Users are not authorized to update the status field'
+            });
+        }
+
         if(req.user.role === 'user' && (provider.user.toString() !== req.user.id)) {
             return res.status(401).json({
               success:false,
