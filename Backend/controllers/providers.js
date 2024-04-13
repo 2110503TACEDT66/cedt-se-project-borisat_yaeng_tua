@@ -165,7 +165,7 @@ exports.updateProvider = async (req, res, next) => {
             return res.status(400).json({success: false});
         }
 
-        if(req.user.role === 'user' || (provider.user.toString() !== req.user.id)) {
+        if(req.user.role === 'user' && (provider.user.toString() !== req.user.id)) {
             return res.status(401).json({
               success:false,
               message:`User ${req.user.id} is not authorized to update this provider's information`
@@ -198,7 +198,7 @@ exports.deleteProvider = async (req, res, next) => {
             return res.status(400).json({success: false});
         }
 
-        if(req.user.role === 'user' || (provider.user.toString() !== req.user.id)) {
+        if(req.user.role === 'user' && (provider.user.toString() !== req.user.id)) {
             return res.status(401).json({
               success:false,
               message:`User ${req.user.id} is not authorized to delete this provider's information`
