@@ -1,11 +1,14 @@
 const express = require('express');
+const multer = require("multer");
 const { getCars, getCar, createCar, updateCar, deleteCar, getCarRentals } = require('../controllers/cars');
+const { uploads } = require('../controllers/upload');
 
 //Include other resource routers
 const bookingRouter = require('./bookings');
 const reviewRouter = require('./reviews');
 
 const router = express.Router();
+const upload = multer();
 
 const { protect, authorize } = require('../middleware/auth');
 
@@ -16,5 +19,6 @@ router.use('/:carId/reviews', reviewRouter);
 router.route('/carRental').get(getCarRentals);
 router.route('/').get(getCars).post(protect, authorize('provider', 'admin'), createCar);
 router.route('/:id').get(getCar).put(protect, authorize('provider', 'admin'), updateCar).delete(protect, authorize('provider', 'admin'), deleteCar);
+router.route('/upload').post(protect, authorize('provider', 'admin', 'user'), upload.single('image'), uploads)
 
 module.exports = router;
