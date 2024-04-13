@@ -3,6 +3,7 @@ import CarLists from "@/components/Home";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../libs/authOptions";
 import getUser from "@/libs/getUser";
+import AddCar from "@/components/AddCar";
 
 export default async function Home() {
   const session = await getServerSession(authOptions);
@@ -34,6 +35,7 @@ export default async function Home() {
         }
         
         <CarLists />
+        <AddCar />
       </div>
     </main>
   );
