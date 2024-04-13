@@ -1,7 +1,7 @@
 const Provider = require("../models/Provider");
 
-//@desc   Get all companies
-//@route  GET /api/v1/companies
+//@desc   Get all Providers
+//@route  GET /api/v1/providers
 //@access Public
 exports.getProviders = async (req, res, next) => {
     let query;
