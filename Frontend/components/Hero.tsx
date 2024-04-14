@@ -2,7 +2,10 @@
 import CustomButton from "./CustomButton";
 import Image from "next/image";
 
-export default function Hero(props: { loggedIn: boolean; username?: string }) {
+export default function Hero(props: {
+  loggedIn: boolean;
+  username?: string;
+}) {
   const handleScroll = () => {
     const nextSection = document.getElementById("discover");
 
@@ -19,9 +22,7 @@ export default function Hero(props: { loggedIn: boolean; username?: string }) {
             <h1 className="hero__title animate-fade-up">
               Hi, {props.username}
             </h1>
-            <h1 className="hero__title animate-fade-up">
-              Select Your Car
-            </h1>
+            <h1 className="hero__title animate-fade-up">Select Your Car</h1>
           </div>
         </>
       ) : (

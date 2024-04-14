@@ -8,6 +8,8 @@ import AddCar from "@/components/AddCar";
 export default async function Home() {
   const session = await getServerSession(authOptions);
   let isLoggedIn = false;
+  
+
 
   if (session) {
     const userProfile = await getUser(session?.user.token);
@@ -22,7 +24,7 @@ export default async function Home() {
       {session ? (
         <Hero loggedIn={isLoggedIn} username={username} />
       ) : (
-        <Hero loggedIn={isLoggedIn} />
+        <Hero loggedIn={isLoggedIn}  />
       )}
       <div className="mt-12 padding-x padding-y max-width" id="discover">
         {session ? 

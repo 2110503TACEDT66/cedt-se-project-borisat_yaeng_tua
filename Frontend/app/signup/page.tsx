@@ -3,8 +3,7 @@ import { Link } from "@mui/material";
 import { useState, ChangeEvent, FormEvent } from "react";
 import registerUser from "@/libs/registerUser";
 import CustomButton from "@/components/CustomButton";
-import Swal from 'sweetalert2'
-
+import Swal from "sweetalert2";
 
 interface FormData {
   name: string;
@@ -30,7 +29,7 @@ export default function SignUpPage() {
     const { name, value, type, checked } = e.target;
     const newValue = type === "checkbox" ? checked : value;
     const newRole =
-      name === "isAdmin" ? (newValue ? "admin" : "user") : formData.role;
+      name === "isProvider" ? (newValue ? "provider" : "user") : formData.role;
     setFormData((prevFormData) => ({
       ...prevFormData,
       [name]: newValue,
@@ -48,7 +47,7 @@ export default function SignUpPage() {
     Swal.fire({
       title: "Good job!",
       text: "Sign up successful",
-      icon: "success"
+      icon: "success",
     });
   };
   var isClick = false;
@@ -56,7 +55,7 @@ export default function SignUpPage() {
     if (!formSubmitted) {
       setAnimateClass("animate-jump animate-once");
       setTimeout(() => setAnimateClass(""), 500);
-      isClick=true
+      isClick = true;
     }
   };
 
@@ -154,20 +153,20 @@ export default function SignUpPage() {
           </div>
         </div>
 
-        <div className="md:flex md:items-center mb-6">
+        {/* <div className="md:flex md:items-center mb-6">
           <div className="md:w-1/3"></div>
           <label className="md:w-2/3 block text-gray-500 font-bold">
             <input
               className="mr-2 leading-tight"
               type="checkbox"
-              id="isAdmin"
-              name="isAdmin"
-              checked={formData.role === "admin"}
+              id="isProvider"
+              name="isProvider"
+              checked={formData.role === "provider"}
               onChange={handleChange}
             />
-            <span className="text-sm">Are you an admin?</span>
+            <span className="text-sm">Are you a provider?</span>
           </label>
-        </div>
+        </div> */}
 
         <div className="md:flex md:items-center">
           <div className="md:w-1/3"></div>
@@ -180,13 +179,13 @@ export default function SignUpPage() {
             >
               {formSubmitted ? "Success" : "Sign Up"}
             </button> */}
-           
-            <CustomButton title="Sign Up" containerStyles="bg-primary-blue" btnType="submit" handleClick={handleClick}/>
-            
-           
-           
-            
-            
+
+            <CustomButton
+              title="Sign Up"
+              containerStyles="bg-primary-blue"
+              btnType="submit"
+              handleClick={handleClick}
+            />
           </div>
         </div>
       </form>
