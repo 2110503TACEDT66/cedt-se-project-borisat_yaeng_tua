@@ -139,7 +139,7 @@ exports.getApprovedProviders = async (req, res, next) => {
 };
 
 //@desc     Add Provider
-//@route    POST /api/v1/provider/
+//@route    POST /api/v1/providers/
 //@access   Private
 exports.addProvider = async (req, res, next) => {
 

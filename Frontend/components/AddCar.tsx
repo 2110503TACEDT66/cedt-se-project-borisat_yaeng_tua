@@ -3,7 +3,8 @@
 import React, { useState } from "react";
 import { useSession } from "next-auth/react";
 
-export default function AddCar() {
+export default function AddCar({ handleResult }: { handleResult: (result: any) => void }) {
+
     const {data: session} = useSession();
 
     const [selectedFile, setSelectedFile] = useState(null);
@@ -29,6 +30,10 @@ export default function AddCar() {
             const result = await response.json();
             setResultMessage({type: "success", message: result });
             setTimeout(() => setResultMessage(Object), 5000);
+
+            //send result out of the component
+            handleResult(result);
+            
         } catch (error) {
             console.error("Error uploading image:", error);
             setResultMessage({type: "error", message: error});
@@ -36,10 +41,10 @@ export default function AddCar() {
     };
 
     return (
-        <div className="bg-black p-2 m-2 rounded-lg">
+        <div className="  bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500">
             {
                 resultMessage && (
-                    <div className="text-white">
+                    <div className="text-gray-500">
                         {
                             resultMessage.message.success === true
                             ? `Success: ${resultMessage.message.message}`
@@ -84,8 +89,8 @@ export default function AddCar() {
                     <button type="submit" className="bg-cyan-600 hover:bg-cyan-800 text-white p-2 rounded-xl mt-3 font-serif">Add New Company</button>
                 </form>
             } */}
-            <input type="file" accept="image/*" onChange={handleFileChange} className="text-white"/>
-            <button onClick={handleUpload} disabled={!selectedFile} className="text-white">Upload Image</button>
+            <input type="file" accept="image/*" onChange={handleFileChange} className="text-gray-400"/>
+            <button onClick={handleUpload} disabled={!selectedFile} className="text-gray-400">Upload Image</button>
                 
         </div>
     )

@@ -37,7 +37,6 @@ export default async function Home() {
         }
         
         <CarLists />
-        <AddCar />
       </div>
     </main>
   );

@@ -7,10 +7,19 @@ import CarManager from "@/components/ProviderCarManager";
 
 export default async function UserPage() {
   const session = await getServerSession(authOptions);
-
+  let isUser = false;
+  let isProvider = false;
+  
   if (!session || !session.user.token) return null;
 
   const userProfile = await getUser(session.user.token);
+  if(userProfile.data.role == "user"){
+    isUser = true;
+  }
+  if(userProfile.data.role == "provider"){
+    isProvider= true;
+  }
+  
   var createdAt = new Date(userProfile.data.createdAt);
   var monthYear = createdAt.toLocaleDateString(undefined, {
     month: "long",
@@ -19,7 +28,7 @@ export default async function UserPage() {
 
   return (
     <div className="w-1/2 mt-24 bg-slate-100 m-5 p-5 rounded-lg flex flex-col justify-center">
-      <div className="text-xl text-center font-bold capitalize m-5">
+      <div className="text-4xl text-center font-bold capitalize m-5">
         {userProfile.data.name}
       </div>
       <table className="text-lg table-auto border-separate border-spacing-2 mt-5">
@@ -38,17 +47,22 @@ export default async function UserPage() {
           </tr>
         </tbody>
       </table>
-      <Link href={"/provider"}>
-        <div className=" flex justify-center">
-          <CustomButton
-            title="Register as a provider"
-            containerStyles="w-[50%] bg-primary-blue text-white rounded-full mt-10 hover:bg-[#515294]"
-          />
-        </div>
-      </Link>
-      <div className="mt-12">
+        { isUser ? (
+            <Link href={"/provider"}>
+            <div className=" flex justify-center">
+              <CustomButton
+                title="Register as a provider"
+                containerStyles="w-[50%] bg-primary-blue text-white rounded-full mt-10 hover:bg-[#515294]"
+              />
+            </div>
+          </Link>
+        ):(null)}
+      { isProvider ? (
+        <div className="mt-12">
         <CarManager/>
       </div>
+      ) : (null)}
+      
     </div>
   );
 }
