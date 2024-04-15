@@ -12,7 +12,7 @@ exports.updateUser = async (req, res, next) => {
             return res.status(400).json({success: false});
         }
 
-        res.status(200).json({success: true, user: car});
+        res.status(200).json({success: true, user: user});
 
     } catch(err) {
         console.log(err);
