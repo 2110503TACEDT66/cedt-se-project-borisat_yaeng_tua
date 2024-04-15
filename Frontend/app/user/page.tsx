@@ -3,6 +3,7 @@ import { getServerSession } from "next-auth";
 import getUser from "@/libs/getUser";
 import CustomButton from "@/components/CustomButton";
 import Link from "next/link";
+import CarManager from "@/components/ProviderCarManager";
 
 export default async function UserPage() {
   const session = await getServerSession(authOptions);
@@ -45,6 +46,9 @@ export default async function UserPage() {
           />
         </div>
       </Link>
+      <div className="mt-12">
+        <CarManager/>
+      </div>
     </div>
   );
 }
