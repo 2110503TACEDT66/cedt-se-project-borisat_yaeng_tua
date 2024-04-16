@@ -8,13 +8,16 @@ interface FormData {
     picture: string;
     citizenCard: string;
     citizenCertificate: string;
+    token: string;
 }
 
-export default async function registerProvider({ name, address, contact, picture, citizenCard, citizenCertificate }: FormData) {
+export default async function registerProvider({ name, address, contact, picture, citizenCard, citizenCertificate, token}: FormData) {
     const response = await fetch(`${config.backendUrl}/api/v1/providers`, {
         method: "POST",
         headers: {
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
+            "authorization" : `Bearer ${token}`
+
         },
         body: JSON.stringify({
             name: name,
