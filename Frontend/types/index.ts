@@ -76,3 +76,16 @@ export interface imgProps{
     image3: string,
     image4: string
 }
+
+export interface ProviderData {
+  _id: string;
+  user: string;
+  citizenCard: string;
+  citizenCertificate: string;
+  picture: string;
+  name: string;
+  address: string;
+  contact: string;
+  status: string;
+  __v: number;
+}

@@ -160,7 +160,7 @@ exports.updateProvider = async (req, res, next) => {
 
         let provider = await Provider.findById(req.params.id)
         
-
+        console.log(provider);
         if (!provider) {
             return res.status(400).json({success: false});
         }
