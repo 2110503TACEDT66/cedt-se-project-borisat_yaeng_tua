@@ -265,8 +265,8 @@ export function BookingDetails({
                     </div>
 
                     <div className="mt-6 flex flex-col w-full gap-3">
-                      <Link href={`/booking/extend/${_id}`}>
-                        <button className="bg-transparent hover:bg-emerald-500 text-emerald-700 font-semibold hover:text-white py-2 px-4 border border-emerald-500 hover:border-transparent rounded">
+                      <Link href={`/booking/extend/${_id}`} className="flex items-center justify-center bg-transparent hover:bg-emerald-500 text-emerald-700 font-semibold hover:text-white py-2 px-4 border border-emerald-500 hover:border-transparent rounded">
+                        <button className="">
                           Edit Booking
                         </button>
                       </Link>
