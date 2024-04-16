@@ -1,11 +1,12 @@
 "use client";
 import { Link } from "@mui/material";
-import { useState, ChangeEvent, FormEvent } from "react";
+import { useState, ChangeEvent, FormEvent, useEffect } from "react";
 import registerUser from "@/libs/registerUser";
 import CustomButton from "@/components/CustomButton";
 import Swal from "sweetalert2";
 import registerProvider from "@/libs/registerProvider";
 import AddCar from "@/components/AddCar";
+import { useSession } from "next-auth/react";
 
 interface FormData {
   name: string;
@@ -14,9 +15,11 @@ interface FormData {
   picture: string;
   citizenCard: string;
   citizenCertificate: string;
+  token: string
 }
 
 export default function ProviderRegistrationPage() {
+    
   const [formData, setFormData] = useState<FormData>({
     name: "",
     address: "",
@@ -24,11 +27,31 @@ export default function ProviderRegistrationPage() {
     picture: "",
     citizenCard: "",
     citizenCertificate: "",
+    token: ""
   });
   console.log(formData)
+  // Inside the useEffect hook, you can access setFormData
+  const { data: session } = useSession();
+  
+  if (!session) return; // Return early if session is not available
+  
+  const token = session.user.token;
+
+  useEffect(() => {
+  
+
+  // Update the formData state with the token
+  setFormData((prevFormData) => ({
+    ...prevFormData,
+    token: token,
+  }));
+}, []);
+  
 
   const [formSubmitted, setFormSubmitted] = useState(false);
   const [animateClass, setAnimateClass] = useState("");
+
+   
 
   const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLInputElement>) => {
     const { name, value} = e.target;
@@ -55,9 +78,9 @@ export default function ProviderRegistrationPage() {
       setTimeout(() => setAnimateClass(""), 500);
     }
   };
-  let PictureURL;
-  let CitizenCardURL;
-  let CitizenCertificateURL;
+//   let PictureURL;
+//   let CitizenCardURL;
+//   let CitizenCertificateURL;
   const handlePicture = (result: any) => {
     // Handle the result here, such as displaying a message or updating state
     console.log("Result from Picture:", result);
