@@ -8,6 +8,7 @@ import Link from "next/link"
 import { ProviderData } from "@/types"
 import updateProvider from "@/libs/updateProvider"
 import updateUser from "@/libs/updateUser"
+import PictureParser from "@/components/PictureParser"
 
 
 export default function provider() {
@@ -63,7 +64,7 @@ export default function provider() {
                 request.map((providerRequest : ProviderData) => (
                     <div key={providerRequest._id} className="block w-[50%] h-[200px] bg-slate-100 my-3 p-5 rounded-lg flex flex-row">
                         <div className="w-1/4 h-fit">
-                            <Image src={providerRequest.picture} width={100} height={100} alt="Provider Picture" className="rounded-lg" />
+                            <Image src={PictureParser(providerRequest.picture)} width={100} height={100} alt="Provider Picture" className="rounded-lg" />
                         </div>
                         <div className="flex flex-col justify-between ml-3 font-medium">
                             <p>Name: {providerRequest.name}</p>
