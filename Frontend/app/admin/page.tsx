@@ -8,6 +8,7 @@ import Link from "next/link"
 import { ProviderData } from "@/types"
 import updateProvider from "@/libs/updateProvider"
 import updateUser from "@/libs/updateUser"
+import { XCircleIcon, CheckCircleIcon } from "@heroicons/react/24/solid"
 
 
 export default function provider() {
@@ -57,38 +58,57 @@ export default function provider() {
 
     }
 
-    return(
-        <div className="w-full mt-24 flex flex-col items-center">
-            {
-                request.map((providerRequest : ProviderData) => (
-                    <div key={providerRequest._id} className="block w-[50%] h-[200px] bg-slate-100 my-3 p-5 rounded-lg flex flex-row">
-                        <div className="w-1/4 h-fit">
-                            <Image src={providerRequest.picture} width={100} height={100} alt="Provider Picture" className="rounded-lg" />
-                        </div>
-                        <div className="flex flex-col justify-between ml-3 font-medium">
-                            <p>Name: {providerRequest.name}</p>
-                            <p>Address: {providerRequest.address}</p>
-                            <p>Contact: {providerRequest.contact}</p>
-                            <div className="flex flex-row">
-                                <Link href={`/admin/information/${providerRequest._id}`}>
-                                    <button className="bg-primary-blue rounded-full custom-btn hover:bg-white text-white  hover:text-primary-blue ring-offset-1 ring-transparent ring-2 hover:ring-primary-blue">
-                                        view full information
+    return (
+        <div className="w-11/12 mt-24 relative overflow-x-auto shadow-md rounded-lg">
+            <table className="w-full text-sm text-left rtl:text-right text-gray-500"> 
+                <caption className="p-6 text-lg text-white font-bold text-left rtl:text-right bg-[#4a4b80]">
+                    Pending Request
+                </caption>
+                <thead className="text-xs text-white uppercase bg-primary-blue">
+                    <tr>
+                        <th scope="col" className="px-6 py-3">
+                            Name
+                        </th>
+                        <th scope="col" className="px-6 py-3">
+                            Address
+                        </th>
+                        <th scope="col" className="px-6 py-3">
+                            Contact
+                        </th>
+                        <th scope="col" className="px-3 py-3 flex justify-end"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {
+                        request.map((providerRequest : ProviderData) => (
+                            <tr key={providerRequest._id} className="odd:bg-white even:bg-gray-50 border-b">
+                                <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
+                                    {providerRequest.name}
+                                </th>
+                                <td className="px-6 py-4 max-w-lg truncate">
+                                    {providerRequest.address}
+                                </td>
+                                <td className="px-6 py-4">
+                                    {providerRequest.contact}
+                                </td>
+                                <td className="flex justify-end items-center pr-6 py-4">
+                                    <Link href={`/admin/information/${providerRequest._id}`}>
+                                        <button className="bg-primary-blue hover:bg-white text-white  hover:text-primary-blue font-bold py-2 px-4 border-primary-blue rounded-full ring-2 ring-transparent hover:ring-primary-blue mr-3">
+                                            View More
+                                        </button>
+                                    </Link>
+                                    <button className="ml-3" onClick={() => handleApprove(providerRequest)}>
+                                        <CheckCircleIcon className="h-6 w-6 text-emerald-500 hover:text-emerald-600" />
                                     </button>
-                                </Link>
-                                <button className="bg-transparent hover:bg-emerald-500 text-emerald-700 font-semibold hover:text-white py-2 px-3 mx-2 border border-emerald-500 hover:border-transparent rounded"
-                                onClick={() => handleApprove(providerRequest)}>
-                                        approve
-                                </button>
-                                <button className="bg-transparent hover:bg-red-500 text-red-700 font-semibold hover:text-white py-2 px-4 border border-red-500 hover:border-transparent rounded"
-                                onClick={() => handleReject(providerRequest)}>
-                                        reject
-                                </button>
-                            </div>
-                                                 
-                        </div>
-                    </div>
-                ))
-            }
+                                    <button className="ml-3" onClick={() => handleReject(providerRequest)}>
+                                        <XCircleIcon className="h-6 w-6 text-red-500 hover:text-red-600" />
+                                    </button>
+                                </td>
+                            </tr>
+                        ))
+                    }
+                </tbody>
+            </table>
         </div>
     )
 }
