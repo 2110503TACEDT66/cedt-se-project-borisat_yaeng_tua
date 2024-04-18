@@ -9,6 +9,7 @@ import DirectionsCarIcon from '@mui/icons-material/DirectionsCar';
 
 export default async function Navbar() {
     const session = await getServerSession(authOptions)
+    const role = session?.user.role
 
     return (
         <header className="w-full absolute z-10">
@@ -26,8 +27,8 @@ export default async function Navbar() {
                         : null
                     }
                     {
-                        session ? 
-                        <IconButton href="/user" className="animate-fade-down animate-delay-500" style={{ color: "#6667AB" }}>
+                        session ?
+                        <IconButton href="/info" className="animate-fade-down animate-delay-500" style={{ color: "#6667AB" }}>
                             <AccountCircleIcon sx={{ fontSize: 30 }}/>
                         </IconButton>
                         : null

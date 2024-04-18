@@ -2,12 +2,25 @@
 import Image from "next/image"
 import { CarProps } from "@/types"
 import { TrashIcon, PencilSquareIcon } from '@heroicons/react/24/solid'
+import PictureParser from "./PictureParser"
+import deleteCar from "@/libs/deleteCar"
+import { useSession } from "next-auth/react";
+import { useState } from "react"
 
 export default function ProviderCarCard({ car }: { car: CarProps }) {
     const { Brand, Model, Year, Color, FeePerDay, LicensePlate, PictureCover } = car;
-
+    const session = useSession();
+    const [isClick, setIsClick] = useState(false)
+    
     const handleDelete = () => {
-        alert("Delete the car")
+        try {
+            if(session && session.data)
+                // deleteCar(car._id, session.data.user.token)
+            setIsClick(prevData => !prevData)
+        }
+        catch (err) {
+            console.log(err)
+        }
     }
 
     const handleEdit = () => {
@@ -15,6 +28,7 @@ export default function ProviderCarCard({ car }: { car: CarProps }) {
     }
 
     return (
+        isClick?null:
         <div className="w-full mt-5 flex flex-col p-6 justify-center items-start text-black-100 bg-white hover:shadow-lg rounded-3xl group">
             <div className="w-full flex flex-row justify-between">
                 <div className="w-full flex justify-between items-start gap-2">
@@ -31,10 +45,10 @@ export default function ProviderCarCard({ car }: { car: CarProps }) {
                     </div>
                 </div>
             </div>
-            <div className="relative w-full h-40 my-3 object-contain">
+            <div className="relative w-full h-60 my-3 object-contain">
                 <Image
-                src=""
-                alt=""
+                src={PictureParser(car.PictureCover)}
+                alt={car.Model}
                 fill
                 priority
                 className="object-contain"

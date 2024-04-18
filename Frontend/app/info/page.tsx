@@ -57,11 +57,11 @@ export default async function UserPage() {
             </div>
           </Link>
         ):(null)}
-      { isProvider ? (
-        <div className="mt-12">
-        <CarManager/>
-      </div>
-      ) : (null)}
+        { isProvider ? (
+          <div className="mt-12">
+          <CarManager/>
+        </div>
+        ) : (null)}
       
     </div>
   );
