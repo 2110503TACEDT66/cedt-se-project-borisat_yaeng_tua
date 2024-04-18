@@ -6,11 +6,20 @@ import CustomButton from "./CustomButton";
 import { IconButton } from "@mui/material";
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import DirectionsCarIcon from '@mui/icons-material/DirectionsCar';
+import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
+import getUser from "@/libs/getUser";
 
 export default async function Navbar() {
-    const session = await getServerSession(authOptions)
-    const role = session?.user.role
+    const session = await getServerSession(authOptions);
+    let isAdmin = false;
 
+    if (!session || !session.user.token) return null;
+    const userProfile = await getUser(session.user.token);
+
+    if (userProfile.data.role === 'admin') {
+        isAdmin = true;
+    }
+    
     return (
         <header className="w-full absolute z-10">
             <nav className="max-w-full flex justify-between items-center sm:px-16 px-6 py-4">
@@ -19,6 +28,13 @@ export default async function Navbar() {
                 </Link>
 
                 <div className="flex items-center gap-5 ">
+                    {
+                        isAdmin ? 
+                        <IconButton href="/admin" className="animate-fade-down animate-delay-500" style={{ color: "#6667AB" }}>
+                            <AdminPanelSettingsIcon sx={{ fontSize: 30 }}/>
+                        </IconButton>
+                        : null
+                    }
                     {
                         session ?
                         <IconButton href="/booking" className="animate-fade-down animate-delay-500" style={{ color: "#6667AB" }}>
