@@ -101,6 +101,26 @@ exports.getCar = async (req, res, next) => {
     }
 };
 
+//@desc     Get provider car
+//@route    GET /api/v1/cars/provider/:id
+//@access   Public
+exports.getProviderCars = async (req, res, next) => {
+    try {
+        const car = await Car.find({ provider:req.params.id});
+
+        if (!car) {
+            return res.status(400).json({success: false, message: err.message});
+        }
+
+        res.status(200).json({
+            success: true, 
+            data: car
+        });
+    } catch(err) {
+        res.status(400).json({success: false});
+    }
+};
+
 //@desc     Create new car
 //@route    POST /api/v1/cars
 //@access   Private
