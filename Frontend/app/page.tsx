@@ -2,17 +2,14 @@
 
 import Hero from "@/components/Hero";
 import CarLists from "@/components/Home";
-import { Session, getServerSession } from "next-auth";
-import { authOptions } from "../libs/authOptions";
 import getUser from "@/libs/getUser";
-import AddCar from "@/components/AddCar";
 import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 
 export default function Home() {
   const { data: session } = useSession();
   const [userProfile, setUserProfile] = useState<any>()
-
+  let isLoggedIn = false;
 
   useEffect(() => {
     const fetchUser =async () => {
@@ -23,8 +20,7 @@ export default function Home() {
     fetchUser()
   }, [])
   
-  let isLoggedIn = false;
-  if(session){
+  if (session) {
    var username = userProfile?.data.name;
     isLoggedIn = true;
   } else {
