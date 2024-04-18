@@ -1,3 +1,4 @@
 # ignore all node_modules
 node_modules/*
 controllers/cred.json
+.DS_Store
