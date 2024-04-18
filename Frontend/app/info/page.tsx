@@ -62,7 +62,7 @@ export default async function UserPage() {
           <CarManager/>
         </div>
         ) : (null)}
-      
+
     </div>
   );
 }
