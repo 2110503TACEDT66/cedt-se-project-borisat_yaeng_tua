@@ -30,6 +30,7 @@ export interface CarProps {
   Picture2: string;
   Picture3: string;
   Picture4: string;
+  provider: string;
 }
 
 export interface filterProps {

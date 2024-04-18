@@ -64,7 +64,7 @@ export default function CarManager() {
 
     return (
         <div className="m-5">
-            <div className="text-[22px] font-bold">Your Car</div>
+            <div className="text-2xl font-bold">Your Car</div>
             {cars?.map((car: any) => (
               <ProviderCarCard car={car}/>
             ))}

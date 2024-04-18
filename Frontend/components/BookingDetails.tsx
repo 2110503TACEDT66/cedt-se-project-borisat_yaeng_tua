@@ -13,6 +13,7 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 interface CarDetailsProps {
   isOpen: boolean;
@@ -23,6 +24,7 @@ interface CarDetailsProps {
 }
 
 export function BookingDetails({
+
   isOpen,
   closeModal,
   car,
@@ -30,6 +32,8 @@ export function BookingDetails({
   token,
 }: CarDetailsProps) {
   var count = 0;
+  const router = useRouter()
+
   const [showConfirmation, setShowConfirmation] = useState(false);
   const { _id, bookingDateFrom, bookingDateTo} = booking
 
@@ -38,7 +42,12 @@ export function BookingDetails({
       await deleteBooking(_id, token);
       closeModal();
       setShowConfirmation(false);
-      window.location.reload()
+      Swal.fire({
+        title: "Good job!",
+        text: "Delete the booking successfully",
+        icon: "success",
+      });
+      router.push("/booking")
       
     } catch (error) {
       console.error("Error deleting booking:", error);

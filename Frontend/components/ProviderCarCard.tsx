@@ -6,6 +6,7 @@ import PictureParser from "./PictureParser"
 import deleteCar from "@/libs/deleteCar"
 import { useSession } from "next-auth/react";
 import { useState } from "react"
+import { useRouter } from "next/navigation"
 import Swal from "sweetalert2"
 
 export default function ProviderCarCard({ car }: { car: CarProps }) {
@@ -13,6 +14,7 @@ export default function ProviderCarCard({ car }: { car: CarProps }) {
     const [isClick, setIsClick] = useState(false)
     const [isLoading, setIsLoading] = useState(false);
     const { data: session } = useSession();
+    const router = useRouter();
     
     const handleDelete = () => {
         Swal.fire({
@@ -50,12 +52,12 @@ export default function ProviderCarCard({ car }: { car: CarProps }) {
     }
 
     const handleEdit = () => {
-        alert("Edit the car")
+        router.push(`/car/${_id}`)
     }
 
     return (
         isClick?null:
-        <div className="w-full mt-5 flex flex-col p-6 justify-center items-start text-black-100 bg-white hover:shadow-lg rounded-3xl group">
+        <div className=" animate-fade-up w-full mt-5 flex flex-col p-6 justify-center items-start text-black-100 bg-white hover:shadow-lg rounded-3xl group">
             <div className="w-full flex flex-row justify-between">
                 <div className="w-full flex justify-between items-start gap-2">
                     <h2 className="text-[22px] leading-[26px] font-bold capitalize">

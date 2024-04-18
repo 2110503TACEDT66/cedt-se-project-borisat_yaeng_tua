@@ -104,7 +104,7 @@ export default function AddCar({ handleResult }: { handleResult: (result: any) =
                 file:text-sm file:font-semibold
                 file:bg-violet-50 file:text-black
                 hover:file:bg-violet-100" />
-            <button onClick={handleUpload} disabled={!selectedFile} className="text-white disabled:bg-green-200 bg-green-500 hover:bg-green-800 p-2 m-2 rounded-2xl">Upload Image</button>
+            <button onClick={handleUpload} disabled={!selectedFile} className="text-white disabled:bg-emerald-300 bg-emerald-500 hover:bg-emerald-600 p-2 m-2 rounded-2xl">Upload Image</button>
                 
         </div>
     )
