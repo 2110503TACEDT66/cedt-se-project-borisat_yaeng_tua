@@ -43,16 +43,23 @@ export default function AddCar({ handleResult }: { handleResult: (result: any) =
     };
 
     return (
-        <div className="  bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500">
+        <div className="  bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500 flex flex-col justify-center">
             {
                 resultMessage && (
-                    <div className="text-gray-500">
+                    <div className="flex flex-row justify-center">
+                        <div className="text-green-600 text-semibold text-xl p-2 rounded-lg w-fit">
                         {
                             resultMessage.message.success === true
-                            ? `Success: ${resultMessage.message.message}`
-                            : `Error ${resultMessage.message.message}`
+                            ? <div className="text-green-600 text-semibold text-xl rounded-lg w-fit">
+                                Success
+                                </div>
+                            : <div className="text-red-600 text-semibold text-xlrounded-lg w-fit">
+                                Error
+                                </div>
                         }
+                        </div>
                     </div>
+                    
                 )
             }
             {/* {
@@ -91,8 +98,13 @@ export default function AddCar({ handleResult }: { handleResult: (result: any) =
                     <button type="submit" className="bg-cyan-600 hover:bg-cyan-800 text-white p-2 rounded-xl mt-3 font-serif">Add New Company</button>
                 </form>
             } */}
-            <input type="file" accept="image/*" onChange={handleFileChange} className="text-gray-400"/>
-            <button onClick={handleUpload} disabled={!selectedFile} className="text-gray-400">Upload Image</button>
+            <input type="file" accept="image/*" onChange={handleFileChange} className="text-blackblock w-full text-sm text-slate-500
+                file:mr-4 file:py-2 file:px-4
+                file:rounded-full file:border-0
+                file:text-sm file:font-semibold
+                file:bg-violet-50 file:text-black
+                hover:file:bg-violet-100" />
+            <button onClick={handleUpload} disabled={!selectedFile} className="text-white disabled:bg-green-200 bg-green-500 hover:bg-green-800 p-2 m-2 rounded-2xl">Upload Image</button>
                 
         </div>
     )

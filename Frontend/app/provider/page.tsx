@@ -1,9 +1,6 @@
 "use client";
-import { Link } from "@mui/material";
 import { useState, ChangeEvent, FormEvent, useEffect } from "react";
-import registerUser from "@/libs/registerUser";
 import CustomButton from "@/components/CustomButton";
-import Swal from "sweetalert2";
 import registerProvider from "@/libs/registerProvider";
 import AddCar from "@/components/AddCar";
 import { useSession } from "next-auth/react";
@@ -50,10 +47,6 @@ export default function ProviderRegistrationPage() {
 
   const [formSubmitted, setFormSubmitted] = useState(false);
   const [animateClass, setAnimateClass] = useState("");
-  const [isPictureClick, setIsPictureClick]  = useState(false);
-  const [isCertificateClick, setCertificateClick]  = useState(false);
-  const [isCitizenClick, setCitizenClick]  = useState(false);
-  
 
    
 
@@ -68,7 +61,7 @@ export default function ProviderRegistrationPage() {
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (!formSubmitted && isPictureClick && isCertificateClick && isCitizenClick) {
+    if (!formSubmitted) {
       console.log(formData);
       setFormSubmitted(true);
       registerProvider(formData);
@@ -93,10 +86,8 @@ export default function ProviderRegistrationPage() {
         ...prevFormData,
         picture: result.url,
       }));
-    setIsPictureClick(true)
   };
   const handleCitizenCard = (result: any) => {
-    
     // Handle the result here, such as displaying a message or updating state
     console.log("Result from CitizenCard:", result);
     //CitizenCardURL = result.url
@@ -104,7 +95,6 @@ export default function ProviderRegistrationPage() {
         ...prevFormData,
         citizenCard: result.url,
       }));
-    setCitizenClick(true)
   };
   const handleCitizenCertificate = (result: any) => {
     // Handle the result here, such as displaying a message or updating state
@@ -114,7 +104,6 @@ export default function ProviderRegistrationPage() {
         ...prevFormData,
         citizenCertificate: result.url,
       }));
-      setCertificateClick(true)
   };
 
   return (
@@ -132,7 +121,8 @@ export default function ProviderRegistrationPage() {
           </div>
           <div className="md:w-2/3">
             <input
-              className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
+              className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500
+              hover:bg-white "
               type="text"
               placeholder="Your Name"
               name="name"
@@ -141,7 +131,6 @@ export default function ProviderRegistrationPage() {
             />
           </div>
         </div>
-
         <div className="md:flex md:items-center mb-6">
           <div className="md:w-1/4">
             <label className="block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4">
@@ -150,7 +139,7 @@ export default function ProviderRegistrationPage() {
           </div>
           <div className="md:w-2/3">
             <textarea
-              className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
+              className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500 hover:bg-white"
               placeholder="Your Address"
               name="address"
               onChange={handleChange}
@@ -158,6 +147,7 @@ export default function ProviderRegistrationPage() {
             />
           </div>
         </div>
+        
 
         <div className="md:flex md:items-center mb-6">
           <div className="md:w-1/4">
@@ -167,7 +157,8 @@ export default function ProviderRegistrationPage() {
           </div>
           <div className="md:w-2/3">
             <input
-              className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
+              className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500
+              hover:bg-white"
               type="tel"
               placeholder="Your Contact Number"
               name="contact"
@@ -179,11 +170,11 @@ export default function ProviderRegistrationPage() {
 
         <div className="md:flex md:items-center mb-6">
           <div className="md:w-1/4">
-            <label className="block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4">
+            <label className="block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4 ">
               Picture
             </label>
           </div>
-          <div className="md:w-2/3">
+          <div className="md:w-2/3 ">
             {/* <input
               className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
               type="file"
