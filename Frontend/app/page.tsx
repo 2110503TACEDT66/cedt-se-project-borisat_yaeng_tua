@@ -1,19 +1,31 @@
+'use client'
+
 import Hero from "@/components/Hero";
 import CarLists from "@/components/Home";
-import { getServerSession } from "next-auth";
+import { Session, getServerSession } from "next-auth";
 import { authOptions } from "../libs/authOptions";
 import getUser from "@/libs/getUser";
 import AddCar from "@/components/AddCar";
+import { useEffect, useState } from "react";
+import { useSession } from "next-auth/react";
 
-export default async function Home() {
-  const session = await getServerSession(authOptions);
-  let isLoggedIn = false;
+export default function Home() {
+  const { data: session } = useSession();
+  const [userProfile, setUserProfile] = useState<any>()
+
+
+  useEffect(() => {
+    const fetchUser =async () => {
+      if(session)
+      var profile = await getUser(session.user.token);
+      setUserProfile(profile)
+    }
+    fetchUser()
+  }, [])
   
-
-
-  if (session) {
-    const userProfile = await getUser(session?.user.token);
-    var username = userProfile.data.name;
+  let isLoggedIn = false;
+  if(session){
+   var username = userProfile?.data.name;
     isLoggedIn = true;
   } else {
     isLoggedIn = false;
