@@ -6,21 +6,47 @@ import PictureParser from "./PictureParser"
 import deleteCar from "@/libs/deleteCar"
 import { useSession } from "next-auth/react";
 import { useState } from "react"
+import Swal from "sweetalert2"
 
 export default function ProviderCarCard({ car }: { car: CarProps }) {
-    const { Brand, Model, Year, Color, FeePerDay, LicensePlate, PictureCover } = car;
-    const session = useSession();
+    const { Brand, Model, Year, Color, FeePerDay, LicensePlate, PictureCover, _id } = car;
     const [isClick, setIsClick] = useState(false)
+    const [isLoading, setIsLoading] = useState(false);
+    const { data: session } = useSession();
     
     const handleDelete = () => {
-        try {
-            if(session && session.data)
-                // deleteCar(car._id, session.data.user.token)
-            setIsClick(prevData => !prevData)
-        }
-        catch (err) {
-            console.log(err)
-        }
+        Swal.fire({
+            title: "Are you sure?",
+            text: "You won't be able to revert this!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, delete it!"
+          }).then(async (result) => {
+            if (result.isConfirmed) {
+                try {
+                    setIsLoading(true);
+                    const token = session?.user?.token;
+                    if (!token) {
+                        Swal.fire({
+                            icon: "error",
+                            title: "Oops...",
+                            text: "Failed to delete: User not authenticated",
+                        });
+                        return;
+                    }
+                    await deleteCar(_id, token);
+                        // deleteCar(car._id, session.data.user.token)
+                    setIsClick(prevData => !prevData)
+                }
+                catch (err) {
+                    console.log(err)
+                } finally {
+                    setIsLoading(false);
+                }
+            }
+        });
     }
 
     const handleEdit = () => {
