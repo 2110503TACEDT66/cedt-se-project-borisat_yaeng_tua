@@ -33,6 +33,8 @@ export default function AddCar({ handleResult }: { handleResult: (result: any) =
 
             //send result out of the component
             handleResult(result);
+            setSelectedFile(null); // Reset selectedFile after successful upload
+
             
         } catch (error) {
             console.error("Error uploading image:", error);
