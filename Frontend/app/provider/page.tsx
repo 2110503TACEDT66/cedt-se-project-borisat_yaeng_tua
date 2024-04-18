@@ -50,6 +50,10 @@ export default function ProviderRegistrationPage() {
 
   const [formSubmitted, setFormSubmitted] = useState(false);
   const [animateClass, setAnimateClass] = useState("");
+  const [isPictureClick, setIsPictureClick]  = useState(false);
+  const [isCertificateClick, setCertificateClick]  = useState(false);
+  const [isCitizenClick, setCitizenClick]  = useState(false);
+  
 
    
 
@@ -64,7 +68,7 @@ export default function ProviderRegistrationPage() {
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (!formSubmitted) {
+    if (!formSubmitted && isPictureClick && isCertificateClick && isCitizenClick) {
       console.log(formData);
       setFormSubmitted(true);
       registerProvider(formData);
@@ -89,8 +93,10 @@ export default function ProviderRegistrationPage() {
         ...prevFormData,
         picture: result.url,
       }));
+    setIsPictureClick(true)
   };
   const handleCitizenCard = (result: any) => {
+    
     // Handle the result here, such as displaying a message or updating state
     console.log("Result from CitizenCard:", result);
     //CitizenCardURL = result.url
@@ -98,6 +104,7 @@ export default function ProviderRegistrationPage() {
         ...prevFormData,
         citizenCard: result.url,
       }));
+    setCitizenClick(true)
   };
   const handleCitizenCertificate = (result: any) => {
     // Handle the result here, such as displaying a message or updating state
@@ -107,6 +114,7 @@ export default function ProviderRegistrationPage() {
         ...prevFormData,
         citizenCertificate: result.url,
       }));
+      setCertificateClick(true)
   };
 
   return (
