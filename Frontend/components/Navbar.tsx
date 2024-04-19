@@ -53,7 +53,7 @@ export default async function Navbar() {
                         session ? null 
                         : 
                         <Link href="/api/auth/signin">
-                            <button className="transition text-bold  duration-300 xl:text-primary-blue-100 xl:hover:text-zinc-200 text-primary-blue">Log In</button>
+                            <button className="transition text-bold  duration-300 xl:text-primary-blue-100 xl:hover:text-zinc-200 text-primary-blue animate-fade-down animate-delay-1000">Log In</button>
                         </Link> 
                     }
                   
