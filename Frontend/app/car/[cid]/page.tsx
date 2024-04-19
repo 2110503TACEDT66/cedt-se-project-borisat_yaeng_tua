@@ -214,7 +214,7 @@ export default function EditCarPage({ params }: { params: { cid: string } }) {
 
           <div className="md:flex gap-x-6 md:items-center mb-6">
             <div className="md:w-1/4">
-              <label htmlFor="model">PictureCover</label>
+              <label htmlFor="model">Cover</label>
             </div>
             <div className="md:w-3/4">
               <input
