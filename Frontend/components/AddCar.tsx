@@ -5,7 +5,7 @@ import { useSession } from "next-auth/react";
 
 export default function AddCar({ handleResult }: { handleResult: (result: any) => void }) {
 
-    const {data: session} = useSession();
+    const { data: session } = useSession();
 
     const [selectedFile, setSelectedFile] = useState(null);
     const [resultMessage, setResultMessage] = useState(null);
@@ -28,17 +28,17 @@ export default function AddCar({ handleResult }: { handleResult: (result: any) =
             });
 
             const result = await response.json();
-            setResultMessage({type: "success", message: result });
+            setResultMessage({ type: "success", message: result });
             setTimeout(() => setResultMessage(Object), 5000);
 
             //send result out of the component
             handleResult(result);
             setSelectedFile(null); // Reset selectedFile after successful upload
 
-            
+
         } catch (error) {
             console.error("Error uploading image:", error);
-            setResultMessage({type: "error", message: error});
+            setResultMessage({ type: "error", message: error });
         }
     };
 
@@ -47,19 +47,19 @@ export default function AddCar({ handleResult }: { handleResult: (result: any) =
             {
                 resultMessage && (
                     <div className="flex flex-row justify-center">
-                        <div className="text-green-600 text-semibold text-xl p-2 rounded-lg w-fit">
-                        {
-                            resultMessage.message.success === true
-                            ? <div className="text-green-600 text-semibold text-xl rounded-lg w-fit">
-                                Success
-                                </div>
-                            : <div className="text-red-600 text-semibold text-xlrounded-lg w-fit">
-                                Error
-                                </div>
-                        }
+                        <div className="text-emerald-600 text-semibold text-xl p-2 rounded-lg w-fit">
+                            {
+                                resultMessage.message.success === true
+                                    ? <div className="text-emerald-600 text-semibold text-xl rounded-lg w-fit">
+                                        Success
+                                    </div>
+                                    : <div className="text-red-600 text-semibold text-xlrounded-lg w-fit">
+                                        Error
+                                    </div>
+                            }
                         </div>
                     </div>
-                    
+
                 )
             }
             {/* {
@@ -104,8 +104,8 @@ export default function AddCar({ handleResult }: { handleResult: (result: any) =
                 file:text-sm file:font-semibold
                 file:bg-violet-50 file:text-black
                 hover:file:bg-violet-100" />
-            <button onClick={handleUpload} disabled={!selectedFile} className="text-white disabled:bg-emerald-300 bg-emerald-500 hover:bg-emerald-600 p-2 m-2 rounded-2xl">Upload Image</button>
-                
+            <button onClick={handleUpload} disabled={!selectedFile} className="text-white disabled:bg-gray-500 bg-emerald-500 hover:bg-emerald-600 p-2 m-2 rounded-2xl">Upload Image</button>
+
         </div>
     )
 }
