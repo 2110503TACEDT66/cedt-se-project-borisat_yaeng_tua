@@ -9,6 +9,7 @@ export default async function UserPage() {
   const session = await getServerSession(authOptions);
   let isUser = false;
   let isProvider = false;
+  let isAdmin = false;
   
   if (!session || !session.user.token) return null;
 
@@ -17,7 +18,10 @@ export default async function UserPage() {
     isUser = true;
   }
   if(userProfile.data.role == "provider"){
-    isProvider= true;
+    isProvider = true;
+  }
+  if(userProfile.data.role == "admin"){
+    isAdmin = true;
   }
   
   var createdAt = new Date(userProfile.data.createdAt);
@@ -29,7 +33,11 @@ export default async function UserPage() {
   return (
     <div className="animate-fade-up w-1/2 mt-24 bg-slate-100 m-5 p-5 rounded-lg flex flex-col justify-center">
       <div className="text-4xl text-center font-bold capitalize m-5">
-        {userProfile.data.name}
+        <p>
+          {userProfile.data.name} 
+          {isProvider ? <span className="text-primary-blue p-1 self-end text-[14px] leading-[17px] font-medium">Provider</span> : null}
+          {isAdmin ? <span className="text-gray-500 p-1 self-start text-[14px] leading-[17px] font-medium">Admin</span> : null}
+        </p>
       </div>
       <table className="text-lg table-auto border-separate border-spacing-2 mt-5">
         <tbody>
