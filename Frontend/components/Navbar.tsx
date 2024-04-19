@@ -24,7 +24,7 @@ export default async function Navbar() {
         <header className="w-full absolute z-10">
             <nav className="max-w-full flex justify-between items-center sm:px-16 px-6 py-4">
                 <Link href="/" className="flex justify-center items-center animate-fade-down">
-                    <Image src="/new-logo-gearup.png" alt="Car Hub Logo" width={200} height={29} className="object-contain "/>
+                    <Image src="/new-logo-gearup.png" alt="Car Hub Logo" width={130} height={29} className="object-contain "/>
                 </Link>
 
                 <div className="flex items-center gap-5 ">
