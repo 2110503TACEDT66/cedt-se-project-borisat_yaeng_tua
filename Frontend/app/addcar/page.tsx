@@ -169,12 +169,12 @@ export default function ProviderRegistrationPage() {
 
   return (
     
-    <div className=" flex justify-center flex-col mt-48 h-[100%] animate-fade-up bg-primary-blue-100 p-8 hover:shadow-md rounded-3xl text-medium">
+    <div className=" flex justify-center items-center flex-col mt-48 h-[100%] animate-fade-up bg-primary-blue-100 p-8 hover:shadow-md rounded-3xl text-medium">
         <div className=" flex justify-center pb-9">
         <h1 className="text-4xl font-extrabold ">Add Car</h1>
         </div>
-      <form className="w-full max-w-sm" onSubmit={handleSubmit}>
-        <div className="md:flex md:items-center mb-6">
+      <form className="w-full max-w-md" onSubmit={handleSubmit}>
+        <div className="md:flex  md:items-center mb-6">
           <div className="md:w-1/4">
             <label className="block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4">
               Brand
@@ -372,8 +372,7 @@ export default function ProviderRegistrationPage() {
           </div>
         </div>
 
-        <div className="md:flex md:items-center">
-          <div className="md:w-1/4 lg:w-1/4"></div>
+        <div className="flex justify-center">
           <div className=" flex justify-center">
             <CustomButton
               title="Add Car"
