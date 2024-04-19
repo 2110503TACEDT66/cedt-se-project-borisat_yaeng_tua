@@ -13,11 +13,11 @@ export default async function Navbar() {
     const session = await getServerSession(authOptions);
     let isAdmin = false;
 
-    if (!session || !session.user.token) return null;
-    const userProfile = await getUser(session.user.token);
-
-    if (userProfile.data.role === 'admin') {
-        isAdmin = true;
+    if (session) {
+        var userProfile = await getUser(session.user.token);
+        if (userProfile.data.role === 'admin') {
+            isAdmin = true;
+        }
     }
     
     return (
