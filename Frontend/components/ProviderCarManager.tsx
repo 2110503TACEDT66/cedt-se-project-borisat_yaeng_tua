@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { CarItems } from "@/types";
 import getCarProvider from "@/libs/getCarProvider";
 import { useSession } from "next-auth/react";
+import Link from "next/link";
 
 export default function CarManager() {
     const session = useSession();
@@ -68,9 +69,10 @@ export default function CarManager() {
             {cars?.map((car: any) => (
               <ProviderCarCard car={car}/>
             ))}
-            <div className="w-full mt-5 flex p-6 justify-center border-dashed border-2 border-emerald-500 hover:border-emerald-600 rounded-3xl group" onClick={handleAdd}>
+            <Link className="w-full mt-5 flex p-6 justify-center border-dashed border-2 border-emerald-500 hover:border-emerald-600 rounded-3xl group"
+            href={"/addcar"}>
                 <PlusCircleIcon className="w-6 h-6 text-emerald-500 group-hover:text-emerald-600"/> 
-            </div>
+            </Link>
         </div>
     )
 };
