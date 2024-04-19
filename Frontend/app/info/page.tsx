@@ -27,7 +27,7 @@ export default async function UserPage() {
   });
 
   return (
-    <div className="w-1/2 mt-24 bg-slate-100 m-5 p-5 rounded-lg flex flex-col justify-center">
+    <div className="animate-fade-up w-1/2 mt-24 bg-slate-100 m-5 p-5 rounded-lg flex flex-col justify-center">
       <div className="text-4xl text-center font-bold capitalize m-5">
         {userProfile.data.name}
       </div>
