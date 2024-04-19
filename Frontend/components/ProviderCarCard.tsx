@@ -8,6 +8,7 @@ import { useSession } from "next-auth/react";
 import { useState } from "react"
 import { useRouter } from "next/navigation"
 import Swal from "sweetalert2"
+import getBookingByCar from "@/libs/getBookingByCar"
 
 export default function ProviderCarCard({ car }: { car: CarProps }) {
     const { Brand, Model, Year, Color, FeePerDay, LicensePlate, PictureCover, _id } = car;
@@ -16,7 +17,9 @@ export default function ProviderCarCard({ car }: { car: CarProps }) {
     const { data: session } = useSession();
     const router = useRouter();
     
-    const handleDelete = () => {
+    
+    const handleDelete = async () => {
+
         Swal.fire({
             title: "Are you sure?",
             text: "You won't be able to revert this!",
@@ -27,20 +30,31 @@ export default function ProviderCarCard({ car }: { car: CarProps }) {
             confirmButtonText: "Yes, delete it!"
           }).then(async (result) => {
             if (result.isConfirmed) {
+                var token = session?.user?.token;
                 try {
-                    setIsLoading(true);
-                    const token = session?.user?.token;
-                    if (!token) {
+                    if(token)
+                        var booking = await getBookingByCar(token,car._id);
+                    if(booking.data.length === 0){
+                        setIsLoading(true);
+                        if (!token) {
+                            Swal.fire({
+                                icon: "error",
+                                title: "Oops...",
+                                text: "Failed to delete: User not authenticated",
+                            });
+                            return;
+                        }
+                        await deleteCar(_id, token);
+                            // deleteCar(car._id, session.data.user.token)
+                        setIsClick(prevData => !prevData)
+                    }else{
                         Swal.fire({
                             icon: "error",
-                            title: "Oops...",
-                            text: "Failed to delete: User not authenticated",
+                            title: "This car still has a booking",
+                            text: "Failed to delete: car still has a booking",
                         });
-                        return;
                     }
-                    await deleteCar(_id, token);
-                        // deleteCar(car._id, session.data.user.token)
-                    setIsClick(prevData => !prevData)
+                        
                 }
                 catch (err) {
                     console.log(err)
