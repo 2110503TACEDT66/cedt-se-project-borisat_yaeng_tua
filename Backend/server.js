@@ -7,6 +7,7 @@ const helmet = require('helmet');
 const {xss} = require('express-xss-sanitizer');
 const rateLimit = require('express-rate-limit');
 const cors = require('cors')
+const hpp = require('hpp');
 const swaggerJsDoc = require('swagger-jsdoc');
 const swaggerUI = require('swagger-ui-express');
 
@@ -25,8 +26,6 @@ const provider = require('./routes/providers')
 const users = require('./routes/user')
 
 const app=express();
-
-app.use(cors());
 
 const PORT = process.env.PORT || 5050;
 const server = app.listen(PORT,console.log(`Server running in ${process.env.NODE_ENV} mode on ${process.env.HOST}: ${PORT}`));
@@ -68,6 +67,9 @@ app.use(express.json());
 // Prevent XSS attacks
 app.use(xss());
 
+//Prevent http param pollutions
+app.use(hpp());
+
 // Cookie parser
 app.use(cookieParser());
 
@@ -75,7 +77,7 @@ app.use(cookieParser());
 app.use(mongoSanitize());
 
 //Enable cors
-//app.use(cors);
+app.use(cors());
 
 //Mount routers
 app.use('/api/v1/cars',cars);
