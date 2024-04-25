@@ -4,6 +4,11 @@ const stream = require("stream");
 
 exports.uploads = async (req, res) => {
     try {
+        // Check if the uploaded file is either PNG or JPEG
+        if (!req.file || !(req.file.mimetype === 'image/jpeg' || req.file.mimetype === 'image/png')) {
+            return res.status(400).json({ success: false, message: 'Only JPEG and PNG files are allowed!' });
+        }
+        
             const KEYFILEPATH = path.join(__dirname, "cred.json");
         const SCOPE = ["https://www.googleapis.com/auth/drive"]
         const auth = new google.auth.GoogleAuth({
