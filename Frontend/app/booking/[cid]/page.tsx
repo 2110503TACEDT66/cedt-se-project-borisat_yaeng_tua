@@ -12,6 +12,7 @@ import CustomButton from "@/components/CustomButton";
 import Swal from 'sweetalert2'
 import Link from "next/link";
 import config from "@/config";
+import axios from "axios";
 
 function CardDetailPage({ params }: { params: { cid: string } }) {
   const [carDetail, setCarDetail] = useState<any>(null);
@@ -22,46 +23,75 @@ function CardDetailPage({ params }: { params: { cid: string } }) {
   const { data: session } = useSession();
 
   const handleSubmit = async (e: React.FormEvent) => {
-    // e.preventDefault();
+    e.preventDefault();
 
-    try {
-      const response = await fetch(
-        `${config.backendUrl}/api/v1/cars/${params.cid}/bookings`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            authorization: `Bearer ${session?.user.token}`,
-          },
-          body: JSON.stringify({
-            user: session?.user._id,
-            car: carDetail,
-            bookingDateFrom: selectedDateFrom
-              ? selectedDateFrom.format("YYYY/MM/DD")
-              : "",
-            bookingDateTo: selectedDateTo
-              ? selectedDateTo.format("YYYY/MM/DD")
-              : "",
-          }),
+    const bookingData = ({
+              user: session?.user._id,
+              car: carDetail,
+              bookingDateFrom: selectedDateFrom
+                ? selectedDateFrom.format("YYYY/MM/DD")
+                : "",
+              bookingDateTo: selectedDateTo
+                ? selectedDateTo.format("YYYY/MM/DD")
+                : "",
+            })
+    
+    console.log(bookingData);
+
+    const checkout = () => {
+      axios.post(`${config.backendUrl}/api/v1/stripe/create-checkout-session`, {
+        bookingData,
+        userId : bookingData.user
+      }).then((res) => {
+        if(res.data.url){
+          window.location.href = res.data.url
         }
-      );
-      if (!response.ok) {
-        Swal.fire({
-            icon: "error",
-            title: "Oops...",
-            text: "Booking failed"
-          });
-        throw new Error("Failed to create booking");
-      }
-      Swal.fire({
-        title: "Good job!",
-        text: "Booking successful",
-        icon: "success"
-      });
-      
-    } catch (error) {
-      console.log(error);
+      }).catch((err) => {
+        console.log(err.message);
+      })
     }
+
+    checkout()
+
+
+    // try {
+    //   const response = await fetch(
+    //     `${config.backendUrl}/api/v1/cars/${params.cid}/bookings`,
+    //     {
+    //       method: "POST",
+    //       headers: {
+    //         "Content-Type": "application/json",
+    //         authorization: `Bearer ${session?.user.token}`,
+    //       },
+    //       body: JSON.stringify({
+    //         user: session?.user._id,
+    //         car: carDetail,
+    //         bookingDateFrom: selectedDateFrom
+    //           ? selectedDateFrom.format("YYYY/MM/DD")
+    //           : "",
+    //         bookingDateTo: selectedDateTo
+    //           ? selectedDateTo.format("YYYY/MM/DD")
+    //           : "",
+    //       }),
+    //     }
+    //   );
+    //   if (!response.ok) {
+    //     Swal.fire({
+    //         icon: "error",
+    //         title: "Oops...",
+    //         text: "Booking failed"
+    //       });
+    //     throw new Error("Failed to create booking");
+    //   }
+    //   Swal.fire({
+    //     title: "Good job!",
+    //     text: "Booking successful",
+    //     icon: "success"
+    //   });
+      
+    // } catch (error) {
+    //   console.log(error);
+    // }
   };
 
   useEffect(() => {
@@ -110,14 +140,12 @@ function CardDetailPage({ params }: { params: { cid: string } }) {
                 }}
               />
             </div>
-            <Link href="/">
             <CustomButton
-              title="Confirm Booking"
+              title="Check Out"
               textStyles=""
               containerStyles="w-full py-[16px] rounded-full bg-primary-blue text-white "
               handleClick={handleSubmit}
             />
-            </Link>
           </div>
         </div>
       </div>

@@ -22,8 +22,9 @@ const cars = require('./routes/cars');
 const auth = require('./routes/auth');
 const bookings = require('./routes/bookings');
 const reviews = require('./routes/reviews');
-const provider = require('./routes/providers')
-const users = require('./routes/user')
+const provider = require('./routes/providers');
+const users = require('./routes/user');
+const stripe = require('./routes/stripe');
 
 const app=express();
 
@@ -86,6 +87,7 @@ app.use('/api/v1/bookings',bookings);
 app.use('/api/v1/reviews', reviews);
 app.use('/api/v1/providers',provider);
 app.use('/api/v1/user',users)
+app.use('/api/v1/stripe', stripe)
 
 
 
