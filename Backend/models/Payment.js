@@ -1,6 +1,7 @@
 const mongoose = require('mongoose')
 
 const paymentSchema = new mongoose.Schema({
+    bookingId : {type: mongoose.Schema.ObjectId, requried: true},
     userId : {type: String, required:true},
     customerId : {type: String},
     car : {
@@ -14,7 +15,9 @@ const paymentSchema = new mongoose.Schema({
     information : {type: Object, required: true},
     status : {type : String, default : "refundable"},
     payment_intent : {type: String, required:true},
-    payment_status : {type: String, required:true}
+    invoiceId : {type: String, required:true},
+    payment_status : {type: String, required:true},
+    reciept: {type: String, required:true}
 },
 {timestamps: true});
 

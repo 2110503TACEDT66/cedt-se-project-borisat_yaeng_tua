@@ -10,7 +10,6 @@ const cors = require('cors')
 const hpp = require('hpp');
 const swaggerJsDoc = require('swagger-jsdoc');
 const swaggerUI = require('swagger-ui-express');
-
 //Load env vars
 dotenv.config({path:'./config/config.env' });
 
@@ -25,6 +24,7 @@ const reviews = require('./routes/reviews');
 const provider = require('./routes/providers');
 const users = require('./routes/user');
 const stripe = require('./routes/stripe');
+const bodyParser = require('body-parser');
 
 const app=express();
 
@@ -62,6 +62,14 @@ app.use(limiter);
 // Set security headers
 app.use(helmet());
 
+//stripe
+app.use(
+    bodyParser.json({
+        verify: function(req, res, buf) {
+            req.rawBody = buf;
+        }
+    })
+);
 // Body parser
 app.use(express.json());
 

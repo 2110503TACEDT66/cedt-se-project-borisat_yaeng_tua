@@ -1,6 +1,7 @@
 const express = require("express")
 const Stripe = require("stripe");
 const { Payment } = require("../models/Payment");
+const fetch = require('node-fetch');
 
 require("dotenv").config();
 
@@ -22,7 +23,8 @@ router.post('/create-checkout-session', async (req, res) => {
             provider : bookingData.car.data.provider
         },
         bookingDateFrom : bookingData.bookingDateFrom,
-        bookingDateTo : bookingData.bookingDateTo
+        bookingDateTo : bookingData.bookingDateTo,
+        Token: req.body.Token
     }
 
     const customer = await stripe.customers.create({
@@ -51,7 +53,7 @@ router.post('/create-checkout-session', async (req, res) => {
                 id : bookingData.car.data._id
               }
             },
-            unit_amount: bookingData.car.data.FeePerDay,
+            unit_amount: bookingData.car.data.FeePerDay * 100,
           },
           quantity: amountOfBooking,
         },
@@ -72,10 +74,10 @@ router.post('/create-checkout-session', async (req, res) => {
 
   //create payment-history
 
-  const createPaymentHistory = async(customer,data) =>{
+  const createPaymentHistory = async(customer,data,bookingData,invoice) =>{
     const cart = JSON.parse(customer.metadata.cart);
-    console.log(cart);
     const newPayment = new Payment({
+        bookingId : bookingData._id,
         userId : customer.metadata.userId,
         customerId: data.customer,
         car: {
@@ -83,12 +85,14 @@ router.post('/create-checkout-session', async (req, res) => {
             FeePerDay : cart.car.FeePerDay,
             LincensePlate : cart.car.LincensePlate,
             provider : cart.car.provider,
-            quantity : (data.amount_total / cart.car.FeePerDay)
+            quantity : ((data.amount_total/100) / cart.car.FeePerDay)
         },
-        total: data.amount_total,
+        total: (data.amount_total/100),
         information: data.customer_details,
         payment_intent: data.payment_intent,
-        payment_status: data.payment_status
+        invoiceId: data.invoice,
+        payment_status: data.payment_status,
+        reciept: invoice
 
     });
 
@@ -103,12 +107,39 @@ router.post('/create-checkout-session', async (req, res) => {
     }
   }
 
+  async function createBooking(booking_date_From, booking_date_To, userId, carId, token) {
+    console.log(booking_date_From,booking_date_To,userId,carId,token);
+    try {
+        const response = await fetch(`http://localhost:5050/api/v1/cars/${carId}/bookings`, {
+            method: "POST",
+            headers: {
+                "Content-type": "application/json",
+                authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify({
+                bookingDateFrom: booking_date_From,
+                bookingDateTo: booking_date_To,
+                user: userId,
+                car: carId,
+            }),
+        });
+
+        if (!response.ok) {
+            throw new Error("Failed to create booking");
+        }
+
+        return await response.json();
+    } catch (error) {
+        throw new Error("Failed to create booking: " + error.message);
+    }
+}
+
   //stripe webhook
 
 // This is your Stripe CLI webhook secret for testing your endpoint locally.
 let endpointSecret;
 
-// endpointSecret = "whsec_35689721ca32fba97c890f868f6f6be48df4c0bad086321e4d2097684b69f62e";
+endpointSecret = "whsec_35689721ca32fba97c890f868f6f6be48df4c0bad086321e4d2097684b69f62e";
 
 router.post('/webhook', express.raw({type: 'application/json'}), (request, response) => {
   const sig = request.headers['stripe-signature'];
@@ -121,7 +152,7 @@ router.post('/webhook', express.raw({type: 'application/json'}), (request, respo
     let event;
     
     try {
-        event = stripe.webhooks.constructEvent(request.body, sig, endpointSecret);
+        event = stripe.webhooks.constructEvent(request.rawBody, sig, endpointSecret);
         console.log("Webhook verified");
     } catch (err) {
         console.log(`Webhook Error: ${err.message}`);
@@ -140,14 +171,30 @@ router.post('/webhook', express.raw({type: 'application/json'}), (request, respo
 
   // Handle the event
 
-  if(eventType === "checkout.session.completed"){
+  if (eventType === "checkout.session.completed") {
     stripe.customers.retrieve(data.customer)
-    .then((customer) => {
-        createPaymentHistory(customer, data)
-    }).catch((err) => {
-        console.log(err.message);
-    })
-  }
+        .then(async (customer) => {
+            const cart = JSON.parse(customer.metadata.cart);
+            const bookingData = await createBooking(cart.bookingDateFrom, cart.bookingDateTo, cart.user, cart.car._id, cart.Token);
+            return { customer, bookingData };
+        })
+        .then(({ customer, bookingData }) => {
+            return stripe.invoices.sendInvoice(data.invoice)
+                .then((invoice) => {
+                    console.log(invoice);
+                    return { customer, bookingData, invoice };
+                });
+        })
+        .then(({ customer, bookingData, invoice }) => {
+            console.log(bookingData);
+            console.log(invoice.hosted_invoice_url);
+            createPaymentHistory(customer, data, bookingData, invoice.hosted_invoice_url);
+        })
+        .catch((err) => {
+            console.log(err.message);
+        });
+}
+
 
   // Return a 200 response to acknowledge receipt of the event
   response.send().end();
