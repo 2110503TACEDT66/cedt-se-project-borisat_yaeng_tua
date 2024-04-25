@@ -1,5 +1,6 @@
 const express = require("express")
 const Stripe = require("stripe");
+const { Payment } = require("../models/Payment");
 
 require("dotenv").config();
 
@@ -35,6 +36,9 @@ router.post('/create-checkout-session', async (req, res) => {
 
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ['card', 'promptpay'],
+      invoice_creation: {
+        enabled: true,
+      },
       line_items: [
         {
           price_data: {
@@ -65,6 +69,39 @@ router.post('/create-checkout-session', async (req, res) => {
     });
     res.send({url : session.url});
   });
+
+  //create payment-history
+
+  const createPaymentHistory = async(customer,data) =>{
+    const cart = JSON.parse(customer.metadata.cart);
+    console.log(cart);
+    const newPayment = new Payment({
+        userId : customer.metadata.userId,
+        customerId: data.customer,
+        car: {
+            _id : cart.car._id,
+            FeePerDay : cart.car.FeePerDay,
+            LincensePlate : cart.car.LincensePlate,
+            provider : cart.car.provider,
+            quantity : (data.amount_total / cart.car.FeePerDay)
+        },
+        total: data.amount_total,
+        information: data.customer_details,
+        payment_intent: data.payment_intent,
+        payment_status: data.payment_status
+
+    });
+
+    try{
+
+        const savedPayment = await newPayment.save()
+
+        console.log("Processed Payment: ", savedPayment);
+
+    }catch(err){
+        console.log(err);
+    }
+  }
 
   //stripe webhook
 
@@ -104,9 +141,9 @@ router.post('/webhook', express.raw({type: 'application/json'}), (request, respo
   // Handle the event
 
   if(eventType === "checkout.session.completed"){
-    stripe.customers.retrieve(data.customer).then((customer) => {
-        console.log(customer);
-        console.log("data : ", data);
+    stripe.customers.retrieve(data.customer)
+    .then((customer) => {
+        createPaymentHistory(customer, data)
     }).catch((err) => {
         console.log(err.message);
     })
