@@ -24,6 +24,7 @@ const bookings = require('./routes/bookings');
 const reviews = require('./routes/reviews');
 const provider = require('./routes/providers')
 const users = require('./routes/user')
+const payment = require('./routes/payment');
 
 const app=express();
 
@@ -86,7 +87,7 @@ app.use('/api/v1/bookings',bookings);
 app.use('/api/v1/reviews', reviews);
 app.use('/api/v1/providers',provider);
 app.use('/api/v1/user',users)
-
+app.use('/api/v1/payment', payment);
 
 
 //Handle unhandled promise rejections
