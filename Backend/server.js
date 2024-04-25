@@ -35,9 +35,9 @@ const swaggerOptions = {
     swaggerDefinition: {
         openapi: '3.0.0',
         info: {
-            title: 'Library API',
+            title: 'Gear Up Library API',
             version: '1.0.0',
-            description: 'A simple Express VacQ API',
+            description: 'A simple Express Gear Up API',
         },
         servers: [
             {

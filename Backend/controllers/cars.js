@@ -77,7 +77,7 @@ exports.getCars = async (req, res, next) => {
             data: car
         });
     } catch(err) {
-        res.status(400).json({success: false, message: err.message});
+        res.status(500).json({success: false, message: err.message});
     }
 };
 
@@ -89,7 +89,7 @@ exports.getCar = async (req, res, next) => {
         const car = await Car.findById(req.params.id);
         
         if (!car) {
-            return res.status(400).json({success: false});
+            return res.status(404).json({success: false,message: "The car was not found"});
         }
 
         res.status(200).json({
@@ -97,7 +97,7 @@ exports.getCar = async (req, res, next) => {
             data: car
         });
     } catch(err) {
-        res.status(400).json({success: false});
+        res.status(500).json({success: false, message: err.message});
     }
 };
 
@@ -108,8 +108,8 @@ exports.getProviderCars = async (req, res, next) => {
     try {
         const car = await Car.find({ provider:req.params.id});
 
-        if (!car) {
-            return res.status(400).json({success: false, message: err.message});
+        if (!car || car.length == 0) {
+            return res.status(404).json({success: false, message: "The car was not found"});
         }
 
         res.status(200).json({
@@ -117,7 +117,7 @@ exports.getProviderCars = async (req, res, next) => {
             data: car
         });
     } catch(err) {
-        res.status(400).json({success: false});
+        res.status(500).json({success: false, message: err.message});
     }
 };
 
@@ -125,11 +125,15 @@ exports.getProviderCars = async (req, res, next) => {
 //@route    POST /api/v1/cars
 //@access   Private
 exports.createCar = async (req, res, next) => {
-    const car = await Car.create({...req.body,provider: req.user.id});
-    res.status(201).json({
-        success: true,
-        data: car
-    });
+    try{
+        const car = await Car.create({...req.body,provider: req.user.id});
+        res.status(201).json({
+            success: true,
+            data: car
+        });
+    } catch(err) {
+        res.status(500).json({success: false, message: err.message});
+    }
 };
 
 //@desc     Update single car
@@ -143,7 +147,7 @@ exports.updateCar = async (req, res, next) => {
         })
 
         if (!car) {
-            return res.status(400).json({success: false});
+            return res.status(404).json({success: false});
         }
 
         if(req.user.role === 'user' || (car.provider.toString() !== req.user.id && req.user.role === 'provider')) {
@@ -157,7 +161,7 @@ exports.updateCar = async (req, res, next) => {
 
     } catch(err) {
         console.log(err);
-        res.status(400).json({success: false});
+        res.status(500).json({success: false});
     }
 };
 
@@ -169,7 +173,7 @@ exports.deleteCar = async (req, res, next) => {
         const car = await Car.findById(req.params.id);
 
         if (!car) {
-            return res.status(400).json({success: false});
+            return res.status(404).json({success: false});
         }
 
         if(req.user.role === 'user' || (car.provider.toString() !== req.user.id && req.user.role === 'provider')) {
@@ -182,7 +186,7 @@ exports.deleteCar = async (req, res, next) => {
         await car.deleteOne();
         res.status(200).json({success: true, data: {}});
     } catch(err) {
-        res.status(400).json({success: false});
+        res.status(500).json({success: false});
     }
 };
 

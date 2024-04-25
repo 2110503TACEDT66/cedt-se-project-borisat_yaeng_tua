@@ -5,13 +5,11 @@ const CarSchema = new mongoose.Schema({
         type: String,
         required: [true, 'Please specify a brand name'],
         trim: true,
-        maxlength: [50, 'Name can not be more than 50 characters']
     },
     Model: {
         type: String,
         required: [true, 'Please specify a car model'],
         trim: true,
-        maxlength: [50, 'Name can not be more than 50 characters']
     },
     Year: {
         type: String,
@@ -22,7 +20,7 @@ const CarSchema = new mongoose.Schema({
         required: [true, 'Please specify a color']
     },
     FeePerDay: {
-        type: String,
+        type: Number,
         required: [true, 'Please specify a fee per day']
     },
     LicensePlate: {
