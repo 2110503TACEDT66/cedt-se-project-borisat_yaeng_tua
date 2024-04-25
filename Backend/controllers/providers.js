@@ -77,23 +77,6 @@ exports.getProviders = async (req, res, next) => {
     }
 }
 
-//@desc   Get single company
-//@route  GET /api/v1/companies/:id
-//@access Public
-exports.getCompany = async (req, res, next) => {
-    try {
-        const company = await Company.findById(req.params.id);
-
-        if (!company) {
-            return res.status(400).json({succes: false});
-        }
-        res.status(200).json({
-            success: true,
-            data: company});
-    } catch (err) {
-        res.status(400).json({success: false});
-    }
-}
 //@desc Get peding providers
 //@route GET /api/v1/providers/pending
 //@access Private

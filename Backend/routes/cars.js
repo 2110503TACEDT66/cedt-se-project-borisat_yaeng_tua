@@ -100,7 +100,7 @@ const { uploads } = require('../controllers/upload');
  * @swagger
  * /cars/{id}:
  *   get:
- *       summary: Returns the car by id
+ *       summary: Returns the car by car id
  *       tags: [Cars]
  *       parameters:
  *         - in: path
@@ -174,7 +174,7 @@ const { uploads } = require('../controllers/upload');
  * @swagger
  * /cars/{id}:
  *   put:
- *     summary: Update the own car by the id
+ *     summary: Update the own car by car id
  *     tags: [Cars]
  *     parameters:
  *       - in: path
@@ -205,9 +205,9 @@ const { uploads } = require('../controllers/upload');
  */
 /**
  * @swagger
- * /cars/provider/{id}:
+ * /cars/{id}:
  *   delete:
- *     summary: Returns the list of all the cars by provider id
+ *     summary: Delete the own car by car id
  *     tags: [Cars]
  *     parameters:
  *       - in: path

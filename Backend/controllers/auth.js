@@ -39,10 +39,10 @@ exports.register = async (req, res, next) => {
         });
         // Create token
         // const token = user.getSignedJwtToken();
-        // res.status(200).json({ success: true , token});
-        sendTokenResponse(user, 200, res);
+        // res.status(201).json({ success: true , token});
+        sendTokenResponse(user, 201, res);
     } catch (err) {
-        res.status(400).json({ success: false });
+        res.status(500).json({ success: false, message: err.message });
         console.log(err.stack);
     }
 }
@@ -64,7 +64,7 @@ exports.login = async (req, res, next) => {
     const user = await User.findOne({ email }).select('+password');
 
     if (!user) {
-        return res.status(400).json({ success: false, msg: 'Invalid credentials'});
+        return res.status(401).json({ success: false, msg: 'Invalid credentials'});
     }
 
     // Check if password matches
@@ -79,7 +79,7 @@ exports.login = async (req, res, next) => {
     res.status(200).json({ success: true, _id: user._id, email: user.email, password: user.password, token });
     // sendTokenResponse(user, 200, res);
     } catch (err) {
-        res.status(401).json({ success: false, msg: 'Cannot login because of SQL injection'});
+        res.status(500).json({ success: false, msg: 'Cannot login because of SQL injection'});
     }
 }
 
@@ -94,7 +94,8 @@ exports.logout = async (req, res, next) => {
 
     res.status(200).json({ 
         success: true, 
-        data: {} 
+        data: {},
+        msg: 'Successfully logout user account'
     });
 }
 
