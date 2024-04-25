@@ -41,7 +41,8 @@ function CardDetailPage({ params }: { params: { cid: string } }) {
     const checkout = () => {
       axios.post(`${config.backendUrl}/api/v1/stripe/create-checkout-session`, {
         bookingData,
-        userId : bookingData.user
+        userId : bookingData.user,
+        Token : session?.user.token
       }).then((res) => {
         if(res.data.url){
           window.location.href = res.data.url
