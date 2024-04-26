@@ -2,6 +2,10 @@ const express = require("express")
 const Stripe = require("stripe");
 const Payment = require("../models/Payment");
 const fetch = require('node-fetch');
+const nodemailer = require('nodemailer');
+const Mailgen = require('mailgen');
+
+const Car = require('../models/Car');
 
 require("dotenv").config();
 
@@ -186,7 +190,109 @@ router.post('/webhook', express.raw({type: 'application/json'}), (request, respo
                 });
         })
         .then(({ customer, bookingData, invoice }) => {
-            createPaymentHistory(customer, data, bookingData, invoice.hosted_invoice_url);
+            createPaymentHistory(customer, data, bookingData, invoice.hosted_invoice_url)
+            .then(async (req, res) => {
+
+              const { userEmail } = "ratchapolkunthong@gmail.com";
+          
+              const car = await Car.findById(bookingData.data.car);
+          
+              if (!car) {
+                  return res.status(400).json({
+                      success: false,
+                      message: `No car with the id of ${bookingData.data.car}`
+                  })
+              }
+          
+              //config transporter
+              let config = {
+                  service: 'gmail',
+                  auth : {
+                      user: 'ratchapolkunthong13@gmail.com', //Put Admin email in here !!!
+                      pass: 'dsrqcnbewtwhhigf' //Put Admin password for application in here !!!
+                  }
+              }
+          
+              //create transporter
+              let transporter = nodemailer.createTransport(config);
+          
+              //create theme for email
+              let MailGenerator = new Mailgen({
+                  theme: 'default',
+                  product: {
+                      name: "Mailgen",
+                      link: "https://mailgen.js"
+                  }
+              });
+          
+              const date = new Date(bookingData.data.createdAt);
+              const generalDate = date.toLocaleString();
+          
+              const DateForm = bookingData.data.bookingDateFrom.toString();
+              const DateTo = bookingData.data.bookingDateTo.toString();
+              const quantity = parseInt(DateTo.substring(8, 10)) - parseInt(DateForm.substring(8, 10));
+              
+              let response = {
+                  body: {
+                      name: "Gearup's Rental",
+                      intro: `Dear ${data.customer_details.name} <br> Email : ${data.customer_details.email} <br> Address : ${data.customer_details.address.city}, ${data.customer_details.address.state}, ${data.customer_details.address.country} ${data.customer_details.address.postal_code} <br> Date : ${generalDate}`,
+                      table: {
+                          data: [
+                              {
+                                  Item: car.Brand + " " + car.Model,
+                                  Quantity: payment.car.quantity,
+                                  Price: "฿" + car.FeePerDay,
+                                  "": "Unit",
+                                  Total: "฿" + (quantity * car.FeePerDay)
+                              },
+                              {
+                                  Description: "Tax",
+                                  Quantity: "",
+                                  Price: "",
+                                  "": "",
+                                  Total: "0%"
+                              },
+                              {
+                                  Description: "Total",
+                                  Quantity: "",
+                                  Price: "",
+                                  "": "",
+                                  Total: "฿" + (quantity * car.FeePerDay) * (1)
+                              }
+                          ]
+                      },
+                      outro: "Thank you for choosing our services. We hope you had a pleasant experience with us and look forward to serving you again in the future. Please feel free to contact us for any inquiries.",
+                      action: {
+                          instructions: "For any further assistance or clarification, please don't hesitate to contact us.",
+                          button: {
+                              color: "#22BC66",
+                              text: "Contact Customer Support",
+                              link: "mailto:gearup@gmail.com"
+                          }
+                      }
+                  }
+              }
+              
+          
+              let mail = MailGenerator.generate(response);
+          
+              let message = {
+                  from: 'ratchapolkunthong13@gmail.com', // sender address
+                  to: userEmail, // list of receivers
+                  subject: "Testing 1", // Subject line
+                  html: mail // html body
+              };
+          
+              transporter.sendMail(message).then((info) => {
+                  return res.status(200).json({
+                      success: true,
+                      message: 'You should receive an email',
+                  });
+              }).catch(error => {
+                  console.log(error.message);
+                  return res.status(500).json({success: false});
+              });
+          })
         })
         .catch((err) => {
             console.log(err.message);
