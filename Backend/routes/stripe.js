@@ -50,7 +50,7 @@ router.post('/create-checkout-session', async (req, res) => {
           price_data: {
             currency: 'thb',
             product_data: {
-              images: [bookingData.car.data.Picture1.replace("amp;", "")],
+              images: [bookingData.car.data.PictureCover.replace("amp;", "")],
               name: bookingData.car.data.Brand,
               description : `LicensePlate: ${bookingData.car.data.LicensePlate}`,
               metadata :{
@@ -81,8 +81,9 @@ router.post('/create-checkout-session', async (req, res) => {
 
   const createPaymentHistory = async(customer,data,bookingData,invoice) =>{
     const cart = JSON.parse(customer.metadata.cart);
+    console.log(bookingData);
     const newPayment = new Payment({
-        bookingId : bookingData._id,
+        bookingId : bookingData.data._id,
         userId : customer.metadata.userId,
         customerId: data.customer,
         car: {
