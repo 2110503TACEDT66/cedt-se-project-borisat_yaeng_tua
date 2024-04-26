@@ -26,7 +26,7 @@ export default async function updateCar(
 
     if (!response.ok) {
         console.log(response)
-        throw new Error("Failed to update booking")
+        throw new Error("Failed to update car")
     }
 
     return await response.json()

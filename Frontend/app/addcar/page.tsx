@@ -18,7 +18,7 @@ export default function ProviderRegistrationPage() {
     Model: "",
     Year: "",
     Color: "",
-    FeePerDay: "",
+    FeePerDay: 0,
     LicensePlate: "",
     PictureCover: "",
     Picture1: "",
@@ -67,6 +67,28 @@ export default function ProviderRegistrationPage() {
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    
+    if (
+      formData.Brand.trim() === "" ||
+      formData.Model.trim() === "" ||
+      formData.Year.trim() === "" ||
+      formData.Color.trim() === "" ||
+      formData.FeePerDay.toString() === "" ||
+      formData.LicensePlate.trim() === ""
+    ) {
+      Swal.fire({
+        title: "Some fields are missing",
+        text: "Please fill out all fields",
+        icon: "error",
+      });
+    } else if (!isCoverClick) {
+      Swal.fire({
+        title: "Cover Picture is missing",
+        text: "Please upload Car Cover Picture",
+        icon: "error",
+      });
+    }
+
     if (!formSubmitted && isCoverClick) {
       setFormSubmitted(true);
       const token = session?.user?.token
@@ -76,7 +98,7 @@ export default function ProviderRegistrationPage() {
           formData.Model,
           formData.Year,
           formData.Color,
-          formData.FeePerDay,
+          formData.FeePerDay.toString(),
           formData.LicensePlate,
           formData.PictureCover,
           formData.Picture1,
@@ -86,19 +108,19 @@ export default function ProviderRegistrationPage() {
           token
         );
         Swal.fire({
-          title: "Add car",
-          text: "success",
+          title: "Good job!",
+          text: "Add Car Successful.",
           icon: "success",
         }).then(()=>{
           window.location.href = "/info";
         })
       } catch (err) {
         Swal.fire({
-          title: "Add car",
-          text: "fail",
+          title: "Failed!",
+          text: "Some fields are not valid.",
           icon: "error"
         });
-      }
+      } 
       // registerProvider(formData); 
     }
     
@@ -187,7 +209,7 @@ export default function ProviderRegistrationPage() {
               placeholder="Car brand"
               name="Brand"
               onChange={handleChange}
-              required
+              
             />
           </div>
         </div>
@@ -205,7 +227,7 @@ export default function ProviderRegistrationPage() {
               placeholder="Model"
               name="Model"
               onChange={handleChange}
-              required
+              
             />
           </div>
         </div>
@@ -223,7 +245,7 @@ export default function ProviderRegistrationPage() {
               placeholder="Year"
               name="Year"
               onChange={handleChange}
-              required
+              
             />
           </div>
         </div>
@@ -241,7 +263,7 @@ export default function ProviderRegistrationPage() {
               placeholder="Color"
               name="Color"
               onChange={handleChange}
-              required
+              
             />
           </div>
         </div>
@@ -255,11 +277,11 @@ export default function ProviderRegistrationPage() {
           <div className="md:w-2/3">
             <input
               className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
-              type="text"
+              type="number"
               placeholder="FeePerDay"
               name="FeePerDay"
               onChange={handleChange}
-              required
+              
             />
           </div>
         </div>
@@ -277,7 +299,7 @@ export default function ProviderRegistrationPage() {
               placeholder="LicensePlate"
               name="LicensePlate"
               onChange={handleChange}
-              required
+              
             />
           </div>
         </div>

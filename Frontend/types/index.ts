@@ -23,7 +23,7 @@ export interface CarProps {
   Model: string;
   Year: string;
   Color: string;
-  FeePerDay: string;
+  FeePerDay: number;
   LicensePlate: string;
   PictureCover: string;
   Picture1: string;
