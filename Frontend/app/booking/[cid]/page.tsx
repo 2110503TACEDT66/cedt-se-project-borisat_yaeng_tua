@@ -119,12 +119,15 @@ function CardDetailPage({ params }: { params: { cid: string } }) {
       <div className=" p-8 rounded-2xl shadow-lg bg-primary-blue-100 flex justify-center animate-fade-down">
         <div className="flex flex-col text-[20px]">
           <p className="font-bold">{carDetail.data.Brand} {carDetail.data.Model}</p>
+          <div className="mt-3">
           <Image
             src={PictureParser(carDetail.data.PictureCover)}
             alt="car"
             width={300}
             height={300}
+            className="rounded-xl"
           />
+          </div>
         </div>
         <div className="flex flex-row my-5">
           <div className="text-md mx-5 text-left"></div>
