@@ -9,8 +9,9 @@ import AddCar from "@/components/AddCar";
 import { useSession } from "next-auth/react";
 import { CarProps } from "@/types";
 import createCar from "@/libs/createCar";
+import { IoIosArrowBack } from "react-icons/io";
 
-export default function ProviderRegistrationPage() {
+export default function AddCarPage() {
     
   const [formData, setFormData] = useState<CarProps>({
     _id: "",
@@ -191,7 +192,12 @@ export default function ProviderRegistrationPage() {
 
   return (
     
-    <div className=" flex justify-center items-center flex-col mt-48 h-[100%] animate-fade-up bg-primary-blue-100 p-8 hover:shadow-md rounded-3xl text-medium">
+    <div className="relative flex justify-center items-center flex-col mt-48 h-full animate-fade-up bg-primary-blue-100 p-8 top-0 hover:shadow-md rounded-3xl text-medium">
+      <div className="absolute top-3 left-10 p-5 pl-10">
+          <Link href="/info" >
+            <IoIosArrowBack className="transform text-black cursor-pointer text-5xl transition hover:scale-125 hover:cursor-pointer" />
+          </Link>
+        </div>
         <div className=" flex justify-center pb-9">
         <h1 className="text-4xl font-extrabold ">Add Car</h1>
         </div>
@@ -398,7 +404,7 @@ export default function ProviderRegistrationPage() {
           <div className=" flex justify-center">
             <CustomButton
               title="Add Car"
-              containerStyles="bg-primary-blue rounded-full"
+              containerStyles="transition-transform duration-500 ease-in-out hover:scale-110 bg-primary-blue rounded-full"
               btnType="submit"
               handleClick={handleClick}
             />

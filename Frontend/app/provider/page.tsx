@@ -5,6 +5,8 @@ import registerProvider from "@/libs/registerProvider";
 import AddCar from "@/components/AddCar";
 import { useSession } from "next-auth/react";
 import Swal from "sweetalert2";
+import Link from "next/link";
+import { IoIosArrowBack } from "react-icons/io";
 
 interface FormData {
   name: string;
@@ -16,7 +18,7 @@ interface FormData {
   token: string
 }
 
-export default function ProviderRegistrationPage() {
+export default function ProviderRegistration() {
     
   const [formData, setFormData] = useState<FormData>({
     name: "",
@@ -131,7 +133,7 @@ export default function ProviderRegistrationPage() {
   };
 
   return (
-
+    
     <div className=" flex justify-center flex-col mt-48 h-[100%] animate-fade-up bg-primary-blue-100 p-8 hover:shadow-md rounded-3xl text-medium">
         <div className=" flex justify-center pb-9">
         <h1 className="text-4xl font-extrabold ">Provider Registration</h1>
@@ -252,7 +254,7 @@ export default function ProviderRegistrationPage() {
           <div className=" flex justify-center">
             <CustomButton
               title="Sign Up as Provider"
-              containerStyles="bg-primary-blue rounded-full"
+              containerStyles="transition-transform duration-500 ease-in-out hover:scale-110 bg-primary-blue rounded-full"
               btnType="submit"
               handleClick={handleClick}
             />

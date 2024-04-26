@@ -82,7 +82,7 @@ export function BookingCard({booking, token} : {booking:BookingItem, token: stri
                 </div>
                 <div className="car-card__btn-container">
                     <CustomButton title="View Booking" 
-                    containerStyles="w-full py-[16px] rounded-full bg-primary-blue" rightIcon="/right-arrow.svg" handleClick={()=>{setIsOpen(true)}}/>
+                    containerStyles="transition-transform duration-500 ease-in-out hover:scale-105 w-full py-[16px] rounded-full bg-primary-blue" rightIcon="/right-arrow.svg" handleClick={()=>{setIsOpen(true)}}/>
                 </div>
             </div>
 

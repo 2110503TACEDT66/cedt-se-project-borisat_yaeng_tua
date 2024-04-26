@@ -60,7 +60,7 @@ export default async function UserPage() {
             <div className=" flex justify-center">
               <CustomButton
                 title="Register as a provider"
-                containerStyles="w-[50%] bg-primary-blue text-white rounded-full mt-10 hover:bg-[#515294]"
+                containerStyles="transition-transform duration-500 ease-in-out hover:scale-105 w-[50%] bg-primary-blue text-white rounded-full mt-10 hover:bg-[#515294]"
               />
             </div>
           </Link>

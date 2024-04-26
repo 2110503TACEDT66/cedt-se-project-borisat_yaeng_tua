@@ -80,10 +80,10 @@ export default function ProviderCarCard({ car }: { car: CarProps }) {
                 </div>
                 <div className="flex flex-row gap-5">
                     <div className="top-2 left-2" onClick={handleEdit}>
-                        <PencilSquareIcon className="w-6 h-6 hover:text-primary-blue hover:cursor-pointer"/>
+                        <PencilSquareIcon className="transition-transform duration-500 ease-in-out hover:scale-110 w-6 h-6 hover:text-primary-blue hover:cursor-pointer"/>
                     </div>
                     <div className="top-2 left-2" onClick={handleDelete}>
-                        <TrashIcon className="w-6 h-6 hover:text-red-500 hover:cursor-pointer"/>
+                        <TrashIcon className="transition-transform duration-500 ease-in-out hover:scale-110 w-6 h-6 hover:text-red-500 hover:cursor-pointer"/>
                     </div>
                 </div>
             </div>

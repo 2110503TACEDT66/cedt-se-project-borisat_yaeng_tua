@@ -69,7 +69,7 @@ export default function CarManager() {
             {cars?.map((car: any) => (
               <ProviderCarCard car={car}/>
             ))}
-            <Link className="w-full mt-5 flex p-6 justify-center border-dashed border-2 border-emerald-500 hover:border-emerald-600 rounded-3xl group"
+            <Link className="transition-transform duration-500 ease-in-out hover:scale-105 w-full mt-5 flex p-6 justify-center border-dashed border-2 border-emerald-500 hover:border-emerald-600 rounded-3xl group"
             href={"/addcar"}>
                 <PlusCircleIcon className="w-6 h-6 text-emerald-500 group-hover:text-emerald-600"/> 
             </Link>

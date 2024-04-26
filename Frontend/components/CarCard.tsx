@@ -55,7 +55,7 @@ export function CarCard({ car }: { car: CarProps }) {
         <div className="car-card__btn-container">
           <CustomButton
             title="View More"
-            containerStyles="w-full py-[16px] rounded-full bg-primary-blue"
+            containerStyles="transition-transform duration-500 ease-in-out hover:scale-105 w-full py-[16px] rounded-full bg-primary-blue"
             rightIcon="/right-arrow.svg"
             handleClick={() => {
               setIsOpen(true);

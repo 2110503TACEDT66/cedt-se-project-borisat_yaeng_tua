@@ -17,7 +17,7 @@ export default function CustomButton({
     <button
       disabled={isDisabled}
       type={btnType || "button"}
-      className={`${containerStyles} custom-btn hover:bg-white text-white  hover:text-primary-blue ring-offset-1 ring-transparent ring-2 hover:ring-primary-blue `}
+      className={`${containerStyles}  custom-btn hover:bg-white text-white  hover:text-primary-blue ring-offset-1 ring-transparent ring-2 hover:ring-primary-blue `}
       onClick={handleClick}
     >
       <span className={`flex-1 text-[14px] 

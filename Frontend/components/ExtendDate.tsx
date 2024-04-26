@@ -111,7 +111,7 @@ export default function ExtendDate({ bookingID, token }: { bookingID: string, to
                         <Link href="/booking">
                             <button
                                 disabled={isSubmitting}
-                                className={`shadow bg-emerald-500 hover:bg-emerald-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded `}
+                                className={`transition-transform duration-500 ease-in-out hover:scale-110 shadow bg-emerald-500 hover:bg-emerald-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded `}
                                 type="submit"
                                 onClick={handleConfirm}
                             >

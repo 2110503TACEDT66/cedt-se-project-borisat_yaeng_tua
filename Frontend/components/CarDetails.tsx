@@ -238,7 +238,7 @@ interface CarDetailsProps {
 
                     <CustomButton
                       title="Booking"
-                      containerStyles="w-full py-[16px] rounded-full bg-primary-blue mt-5"
+                      containerStyles="transition-transform duration-500 ease-in-out hover:scale-105 w-full py-[16px] rounded-full bg-primary-blue mt-5"
                        handleClick={()=>{handleClickBtn(_id)}}
                     />
                     

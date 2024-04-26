@@ -92,15 +92,15 @@ export default function provider() {
                                     {providerRequest.contact}
                                 </td>
                                 <td className="flex justify-end items-center pr-6 py-4">
-                                    <Link href={`/admin/information/${providerRequest._id}`}>
+                                    <Link href={`/admin/information/${providerRequest._id}`} className="transition-transform duration-500 ease-in-out hover:scale-105">
                                         <button className="bg-primary-blue hover:bg-white text-white  hover:text-primary-blue font-bold py-2 px-4 border-primary-blue rounded-full ring-2 ring-transparent hover:ring-primary-blue mr-3">
                                             View More
                                         </button>
                                     </Link>
-                                    <button className="ml-3" onClick={() => handleApprove(providerRequest)}>
+                                    <button className="ml-3 transition-transform duration-500 ease-in-out hover:scale-110" onClick={() => handleApprove(providerRequest)}>
                                         <CheckCircleIcon className="h-6 w-6 text-emerald-500 hover:text-emerald-600" />
                                     </button>
-                                    <button className="ml-3" onClick={() => handleReject(providerRequest)}>
+                                    <button className="ml-3 transition-transform duration-500 ease-in-out hover:scale-110" onClick={() => handleReject(providerRequest)}>
                                         <XCircleIcon className="h-6 w-6 text-red-500 hover:text-red-600" />
                                     </button>
                                 </td>

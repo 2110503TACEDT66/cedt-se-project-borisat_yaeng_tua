@@ -147,7 +147,7 @@ function CardDetailPage({ params }: { params: { cid: string } }) {
             <CustomButton
               title="Check Out"
               textStyles=""
-              containerStyles="w-full py-[16px] rounded-full bg-primary-blue text-white "
+              containerStyles="transition-transform duration-500 ease-in-out hover:scale-105 w-full py-[16px] rounded-full bg-primary-blue text-white "
               handleClick={handleSubmit}
             />
           </div>
