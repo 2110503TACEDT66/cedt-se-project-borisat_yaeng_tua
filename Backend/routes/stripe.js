@@ -192,17 +192,8 @@ router.post('/webhook', express.raw({type: 'application/json'}), (request, respo
         .then(({ customer, bookingData, invoice }) => {
             createPaymentHistory(customer, data, bookingData, invoice.hosted_invoice_url)
             .then(async (req, res) => {
-
-              const { userEmail } = "ratchapolkunthong@gmail.com";
           
               const car = await Car.findById(bookingData.data.car);
-          
-              if (!car) {
-                  return res.status(400).json({
-                      success: false,
-                      message: `No car with the id of ${bookingData.data.car}`
-                  })
-              }
           
               //config transporter
               let config = {
@@ -240,7 +231,7 @@ router.post('/webhook', express.raw({type: 'application/json'}), (request, respo
                           data: [
                               {
                                   Item: car.Brand + " " + car.Model,
-                                  Quantity: payment.car.quantity,
+                                  Quantity: quantity,
                                   Price: "฿" + car.FeePerDay,
                                   "": "Unit",
                                   Total: "฿" + (quantity * car.FeePerDay)
@@ -278,20 +269,13 @@ router.post('/webhook', express.raw({type: 'application/json'}), (request, respo
           
               let message = {
                   from: 'ratchapolkunthong13@gmail.com', // sender address
-                  to: userEmail, // list of receivers
+                  to: "ratchapolkunthong@gmail.com", // list of receivers
                   subject: "Testing 1", // Subject line
                   html: mail // html body
               };
           
-              transporter.sendMail(message).then((info) => {
-                  return res.status(200).json({
-                      success: true,
-                      message: 'You should receive an email',
-                  });
-              }).catch(error => {
-                  console.log(error.message);
-                  return res.status(500).json({success: false});
-              });
+              transporter.sendMail(message)
+              console.log("sent");
           })
         })
         .catch((err) => {
