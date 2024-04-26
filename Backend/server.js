@@ -24,7 +24,10 @@ const reviews = require('./routes/reviews');
 const provider = require('./routes/providers');
 const users = require('./routes/user');
 const stripe = require('./routes/stripe');
+const payments = require('./routes/payment')
+const order  = require('./routes/order')
 const bodyParser = require('body-parser');
+
 
 const app=express();
 
@@ -95,6 +98,8 @@ app.use('/api/v1/bookings',bookings);
 app.use('/api/v1/reviews', reviews);
 app.use('/api/v1/providers',provider);
 app.use('/api/v1/user',users)
+app.use('/api/v1/payments', payments)
+app.use('/api/v1/order', order)
 app.use('/api/v1/stripe', stripe)
 
 
