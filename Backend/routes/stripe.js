@@ -1,6 +1,6 @@
 const express = require("express")
 const Stripe = require("stripe");
-const { Payment } = require("../models/Payment");
+const Payment = require("../models/Payment");
 const fetch = require('node-fetch');
 
 require("dotenv").config();
@@ -66,9 +66,10 @@ router.post('/create-checkout-session', async (req, res) => {
       shipping_address_collection: {
         allowed_countries: ['TH'],
       },
-      success_url: 'http://localhost:3000/checkout-success',
+      success_url: `http://localhost:5050/api/v1/order/success?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: 'http://localhost:3000/',
     });
+
     res.send({url : session.url});
   });
 
@@ -181,13 +182,10 @@ router.post('/webhook', express.raw({type: 'application/json'}), (request, respo
         .then(({ customer, bookingData }) => {
             return stripe.invoices.sendInvoice(data.invoice)
                 .then((invoice) => {
-                    console.log(invoice);
                     return { customer, bookingData, invoice };
                 });
         })
         .then(({ customer, bookingData, invoice }) => {
-            console.log(bookingData);
-            console.log(invoice.hosted_invoice_url);
             createPaymentHistory(customer, data, bookingData, invoice.hosted_invoice_url);
         })
         .catch((err) => {
@@ -200,6 +198,22 @@ router.post('/webhook', express.raw({type: 'application/json'}), (request, respo
   response.send().end();
 });
 
+
+router.post("/create-refund", async (req, res) => {
+    try {
+    
+      const payment_intent  = req.body.payment_intent
+  
+      const refund = await stripe.refunds.create({
+        payment_intent: payment_intent,
+    });
+
+      res.json({ refund });
+    } catch (error) {
+      console.error("Error creating refund:", error);
+      res.status(500).json({ error: "Error creating refund" });
+    }
+  });
 
 
   module.exports = router;
