@@ -80,6 +80,26 @@ exports.getPayments = async (req, res, next) => {
     }
 };
 
+//@desc     Get single payment by payment_intent
+//@route    GET /api/v1/payments/:payment_intent
+//@access   Public
+exports.getPayment = async (req, res, next) => {
+    try {
+        const payment = await Payment.findOne(req.params.payment_intent);
+        
+        if (!payment) {
+            return res.status(404).json({ success: false, message: "Payment not found" });
+        }
+
+        res.status(200).json({
+            success: true, 
+            data: payment
+        });
+    } catch(err) {
+        res.status(500).json({ success: false, message: err.message });
+    }
+};
+
 //@desc     Update single car
 //@route    PUT /api/v1/payments/:id
 //@access   Private
