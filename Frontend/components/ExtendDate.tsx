@@ -86,7 +86,7 @@ export default function ExtendDate({ bookingID, token }: { bookingID: string, to
                 <div className="m-6 flex justify-center">
                     <p className="flex m-6 text-[32px] font-extrabold">
                         <span className="self-start text-[14px] font-semibold">฿</span>
-                        {booking.car.FeePerDay}
+                        {parseInt(booking.car.FeePerDay).toLocaleString()}
                         <span className="self-end text-[14px] font-medium">/day</span>
                     </p>
                 </div>
@@ -104,7 +104,7 @@ export default function ExtendDate({ bookingID, token }: { bookingID: string, to
                     <div className="">
                         <p className="flex text-[32px] font-extrabold">
                             <span className="self-start text-[14px] font-semibold">฿</span>
-                            {`${(parseInt(booking.car.FeePerDay) * extensionDays * 1000).toLocaleString()}`}
+                            {`${(parseInt(booking.car.FeePerDay) * extensionDays).toLocaleString()}`}
                         </p>
                     </div>
                     <div className="">
