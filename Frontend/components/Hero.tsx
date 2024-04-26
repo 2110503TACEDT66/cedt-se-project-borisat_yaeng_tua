@@ -22,7 +22,7 @@ export default function Hero(props: {
             <h1 className="hero__title animate-fade-up">
               Hi, {props.username}
             </h1>
-            <h1 className="hero__title animate-fade-up">Select Your Car</h1>
+            <h1 className="pt-3 text-5xl font-bold animate-fade-up">Select Your Cars</h1>
           </div>
         </>
       ) : (
