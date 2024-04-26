@@ -56,7 +56,7 @@ export function BookingCard({booking, token} : {booking:BookingItem, token: stri
                     alt="car model"
                     fill
                     priority
-                    className="object-contain"
+                    className="object-contain rounded-xl"
                 />
             </div>
             <div className="relative flex w-full mt-2">
