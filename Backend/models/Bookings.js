@@ -22,6 +22,7 @@ const BookingSchema = new mongoose.Schema({
     provider:{
         type: mongoose.Schema.ObjectId,
         ref: 'User',
+        required: true
     },
     createdAt: {
         type: Date,

@@ -73,7 +73,7 @@ exports.getProviders = async (req, res, next) => {
             data: providers
         });
     } catch (err) {
-        res.status(400).json({success: false});
+        res.status(500).json({success: false, message: err.message});
     }
 }
 
@@ -125,14 +125,16 @@ exports.getApprovedProviders = async (req, res, next) => {
 //@route    POST /api/v1/providers/
 //@access   Private
 exports.addProvider = async (req, res, next) => {
-
-    req.body.user = req.user.id;
-
-    const provider = await Provider.create({...req.body});
-    res.status(201).json({
-        success: true,
-        data: provider
-    });
+    try{
+        req.body.user = req.user.id;
+        const provider = await Provider.create({...req.body});
+        res.status(201).json({
+            success: true,
+            data: provider
+        });
+    } catch(err) {
+        res.status(500).json({success: false, message: err.message});
+    }
 };
 
 //@desc   Update single providers
@@ -145,7 +147,7 @@ exports.updateProvider = async (req, res, next) => {
         
         console.log(provider);
         if (!provider) {
-            return res.status(400).json({success: false});
+            return res.status(404).json({success: false, message: "The provider was not found"});
         }
 
         if (req.user.role !== 'admin' && req.body.status !== undefined) {
@@ -173,7 +175,7 @@ exports.updateProvider = async (req, res, next) => {
             data: provider
         });
     } catch (err) {
-        res.status(400).json({success: false});
+        res.status(500).json({success: false, message: err.message});
     }
 }
 
@@ -185,7 +187,7 @@ exports.deleteProvider = async (req, res, next) => {
         const provider = await Provider.findById(req.params.id);
 
         if (!provider) {
-            return res.status(400).json({success: false});
+            return res.status(404).json({success: false, message: "The provider was not found"});
         }
 
         if(req.user.role === 'user' && (provider.user.toString() !== req.user.id)) {
@@ -202,7 +204,7 @@ exports.deleteProvider = async (req, res, next) => {
             data: {}
         });
     } catch (err) {
-        res.status(400).json({success: false});
+        res.status(500).json({success: false, message: err.message});
     }
 }
 

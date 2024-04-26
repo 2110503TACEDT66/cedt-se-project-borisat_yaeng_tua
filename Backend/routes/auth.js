@@ -31,6 +31,9 @@ const {register, login, getMe, logout} = require('../controllers/auth');
  *          password:
  *            type: string
  *            description: Password must be at least 6 characters long
+  *          status:
+ *            type: string
+ *            description: Default is user
  *          createdAt:
  *            type: date
  *            description: The auto-generated date and time of creation

@@ -182,7 +182,7 @@ const { uploads } = require('../controllers/upload');
  *         schema:
  *           type: string
  *         required: true
- *         description: The provider id
+ *         description: The car id
  *     requestBody:
  *        required: true
  *        content:
@@ -215,7 +215,7 @@ const { uploads } = require('../controllers/upload');
  *         schema:
  *           type: string
  *         required: true
- *         description: The provider id
+ *         description: The car id
  *     responses:
  *       200:
  *         description: The car was deleted
