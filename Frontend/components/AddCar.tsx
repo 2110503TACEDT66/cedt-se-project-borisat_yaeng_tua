@@ -10,11 +10,12 @@ export default function AddCar({ handleResult }: { handleResult: (result: any) =
     const [selectedFile, setSelectedFile] = useState(null);
     const [resultMessage, setResultMessage] = useState(null);
 
-    const handleFileChange = (e) => {
+    const handleFileChange = (e : any) => {
         setSelectedFile(e.target.files[0]);
     };
 
-    const handleUpload = async () => {
+    const handleUpload = async (e: any) => {
+        e.preventDefault();
         try {
             const formData = new FormData();
             formData.append("image", selectedFile)
@@ -25,6 +26,8 @@ export default function AddCar({ handleResult }: { handleResult: (result: any) =
                     authorization: `Bearer ${session?.user.token}`,
                 },
                 body: formData
+
+            
             });
 
             const result = await response.json();
@@ -53,8 +56,8 @@ export default function AddCar({ handleResult }: { handleResult: (result: any) =
                                     ? <div className="text-emerald-600 text-semibold text-xl rounded-lg w-fit">
                                         Success
                                     </div>
-                                    : <div className="text-red-600 text-semibold text-xlrounded-lg w-fit">
-                                        Error
+                                    : <div className="text-red-600 text-semibold text-xlrounded-lg w-fit text-[16px]">
+                                        Please upload JPG or PNG
                                     </div>
                             }
                         </div>
