@@ -28,7 +28,7 @@ export default function EditCarPage({ params }: { params: { cid: string } }) {
     Model: "",
     Year: "",
     Color: "",
-    FeePerDay: "",
+    FeePerDay: 0,
     LicensePlate: "",
     PictureCover: "",
     Picture1: "",
@@ -43,7 +43,7 @@ export default function EditCarPage({ params }: { params: { cid: string } }) {
     Model: "",
     Year: "",
     Color: "",
-    FeePerDay: "",
+    FeePerDay: 0,
     LicensePlate: "",
     PictureCover: "",
     Picture1: "",
@@ -60,18 +60,53 @@ export default function EditCarPage({ params }: { params: { cid: string } }) {
 
   const handleSubmit = (e: FormEvent<HTMLElement>) => {
     e.preventDefault();
-    if (!formSubmitted) {
-      setFormSubmitted(true);
-      updateCar(token, tempCarDetail._id, tempCarDetail.Brand, tempCarDetail.Model, tempCarDetail.Year, 
-        tempCarDetail.Color, tempCarDetail.FeePerDay, tempCarDetail.LicensePlate, 
-        tempCarDetail.PictureCover, tempCarDetail.Picture1, tempCarDetail.Picture2, tempCarDetail.Picture3, tempCarDetail.Picture4,);
+    let error = false;
+    if (
+      tempCarDetail.Brand.trim() === "" ||
+      tempCarDetail.Model.trim() === "" ||
+      tempCarDetail.Year.trim() === "" ||
+      tempCarDetail.Color.trim() === "" ||
+      tempCarDetail.FeePerDay.toString() === "" ||
+      tempCarDetail.LicensePlate.trim() === ""
+    ) {
+      Swal.fire({
+        title: "Some fields are missing",
+        text: "Please fill out all fields",
+        icon: "error",
+      });
+      error = true;
+    } 
+    if (typeof tempCarDetail.FeePerDay !== 'number') {
+      Swal.fire({
+        title: "FeePerDay must be a number",
+        text: "Please fill out with a number",
+        icon: "error",
+      });
+      error = true;
+    } 
+    if (tempCarDetail.PictureCover.trim() === "") {
+      Swal.fire({
+        title: "Cover Picture is missing",
+        text: "Please upload Car Cover Picture",
+        icon: "error",
+      });
+      error = true;
     }
-    Swal.fire({
-      title: "Good job!",
-      text: "Edit the car successfully",
-      icon: "success",
-    });
-    router.push("/info")
+    if (!error) {
+      Swal.fire({
+        title: "Good job!",
+        text: "Edit the car successfully",
+        icon: "success",
+      }).then( () => {
+        if (!formSubmitted) {
+          setFormSubmitted(true);
+          updateCar(token, tempCarDetail._id, tempCarDetail.Brand, tempCarDetail.Model, tempCarDetail.Year, 
+            tempCarDetail.Color, tempCarDetail.FeePerDay.toString(), tempCarDetail.LicensePlate, 
+            tempCarDetail.PictureCover, tempCarDetail.Picture1, tempCarDetail.Picture2, tempCarDetail.Picture3, tempCarDetail.Picture4,);
+        }
+        router.push("/info")
+      });
+    }
   };
 
   const handleClick = () => {
@@ -198,14 +233,14 @@ export default function EditCarPage({ params }: { params: { cid: string } }) {
             <div className="md:w-3/4">
               <input
                 id="name"
-                type="text"
+                type="number"
                 value={tempCarDetail.FeePerDay}
                 onChange={(e) => {
                   setChanged(true);
                   setTempCarDetail({
                     ...tempCarDetail,
-                    FeePerDay: e.target.value,
-                  });
+                    FeePerDay: parseFloat(e.target.value), // Convert string to number if needed
+                });
                 }}
                 className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
               />

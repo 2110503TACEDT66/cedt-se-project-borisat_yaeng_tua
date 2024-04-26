@@ -4,6 +4,7 @@ import CustomButton from "@/components/CustomButton";
 import registerProvider from "@/libs/registerProvider";
 import AddCar from "@/components/AddCar";
 import { useSession } from "next-auth/react";
+import Swal from "sweetalert2";
 
 interface FormData {
   name: string;
@@ -63,14 +64,31 @@ export default function ProviderRegistrationPage() {
   };
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    if (!formSubmitted  && isCertificateClick && isCitizenClick && isPictureClick) {
+    if (
+      formData.name.trim() === "" ||
+      formData.address.trim() === "" ||
+      formData.contact.trim() === ""
+    ) {
+      Swal.fire({
+        title: "Some fields are missing",
+        text: "Please fill out all fields",
+        icon: "error",
+      });
+    } else if (!isCertificateClick || !isCitizenClick || !isPictureClick) {
+      Swal.fire({
+        title: "Some documents are missing",
+        text: "Please upload all required documents",
+        icon: "error",
+      });
+    } else if (!formSubmitted) {
       console.log(formData);
       setFormSubmitted(true);
       registerProvider(formData);
     }
     
-  };
+    e.preventDefault();
+  };  
+  
 
   const handleClick = () => {
     if (!formSubmitted) {
@@ -133,7 +151,7 @@ export default function ProviderRegistrationPage() {
               placeholder="Your Name"
               name="name"
               onChange={handleChange}
-              required
+              
             />
           </div>
         </div>
@@ -149,7 +167,7 @@ export default function ProviderRegistrationPage() {
               placeholder="Your Address"
               name="address"
               onChange={handleChange}
-              required
+              
             />
           </div>
         </div>
@@ -169,7 +187,7 @@ export default function ProviderRegistrationPage() {
               placeholder="Your Contact Number"
               name="contact"
               onChange={handleChange}
-              required
+              
             />
           </div>
         </div>
