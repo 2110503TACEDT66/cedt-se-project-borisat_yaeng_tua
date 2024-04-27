@@ -7,6 +7,7 @@ import { Dialog, Transition } from "@headlessui/react";
 import CustomButton from "./CustomButton";
 import PictureParser from "./PictureParser";
 import deleteBooking from "@/libs/deleteBooking";
+import createRefund from "@/libs/createRefund";
 import Swal from 'sweetalert2'
 
 import Slider from "react-slick";
@@ -39,6 +40,7 @@ export function BookingDetails({
 
   const handleDeleteConfirmation = async () => {
     try {
+      await createRefund(_id);
       await deleteBooking(_id, token);
       closeModal();
       setShowConfirmation(false);
@@ -284,7 +286,7 @@ export function BookingDetails({
                         className="transition-transform duration-500 ease-in-out hover:scale-105 bg-transparent hover:bg-red-500 text-red-700 font-semibold hover:text-white py-2 px-4 border border-red-500 hover:border-transparent rounded"
                         onClick={() => setShowConfirmation(true)}
                       >
-                        Delete Booking
+                        Cancle Booking
                       </button>
                     </div>
                   </div>
@@ -300,10 +302,11 @@ export function BookingDetails({
                   <div className="flex items-center justify-center min-h-screen">
                     <div className="bg-white rounded-lg p-6 shadow-xl">
                       <Dialog.Title className="text-lg font-bold">
-                        Confirm Deletion
+                        Confirm cancel
                       </Dialog.Title>
                       <Dialog.Description className="mt-2">
-                        Are you sure you want to delete this booking?
+                      Are you sure you want to cancel this booking? <br />
+                      you will receive a refund from this booking
                       </Dialog.Description>
                       <div className="mt-4 flex justify-end">
                         <button
