@@ -26,7 +26,7 @@ export default function checkoutSuccess({
       if (session)
         var payment = await getPayment(params.pid, session.user.token);
       console.log(payment);
-      setPayment(payment.data.reciept);
+      setPayment(payment.data[0].reciept);
     };
     fetchPayment();
   }, []);

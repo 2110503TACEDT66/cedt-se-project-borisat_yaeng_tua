@@ -5,8 +5,16 @@ import getBooking from "@/libs/getBooking";
 import Link from "next/link";
 import DateAdder from "@/utils/DateAdder";
 import updateBooking from "@/libs/updateBooking";
+<<<<<<< Updated upstream
 import Swal from "sweetalert2";
 import Image from "next/image";
+||||||| Stash base
+import Swal from 'sweetalert2'
+=======
+import Swal from 'sweetalert2'
+import config from "@/config";
+import axios from "axios";
+>>>>>>> Stashed changes
 
 export default function ExtendDate({
   bookingID,
@@ -42,6 +50,7 @@ export default function ExtendDate({
     }
   };
 
+<<<<<<< Updated upstream
   const handleConfirm = async () => {
     if (booking && !isSubmitting) {
       setIsSubmitting(true);
@@ -66,6 +75,77 @@ export default function ExtendDate({
       }
     }
   };
+||||||| Stash base
+    const handleConfirm = async () => {
+        if (booking && !isSubmitting) {
+            setIsSubmitting(true); 
+            const date = DateAdder(booking.bookingDateTo, extensionDays)
+            try {
+                //console.log(DateAdder(booking.bookingDateFrom, extensionDays));
+                await updateBooking(booking._id, date, token);
+                Swal.fire({
+                    title: "Good job!",
+                    text: "Edit booking successful",
+                    icon: "success"
+                  });
+            } catch (error) {
+                console.error('Failed to update booking:', error);
+                Swal.fire({
+                    icon: "error",
+                    title: "Oops...",
+                    text: "Edit booking failed"
+                  });
+            } finally {
+                setIsSubmitting(false);
+            }
+        }
+    };
+=======
+    const handleConfirm = async () => {
+        if (booking && !isSubmitting) {
+            setIsSubmitting(true); 
+            const date = DateAdder(booking.bookingDateTo, extensionDays)
+            const bookingData = await getBooking(bookingID, token);
+            console.log(booking);
+            try {
+                //console.log(DateAdder(booking.bookingDateFrom, extensionDays));
+                const checkout = async () => {
+                      axios.post(`${config.backendUrl}/api/v1/stripe/create-checkout-session`, {
+                      bookingData,
+                      userId : bookingData.data.user,
+                      Token : token,
+                      isUpdate: true,
+                      dateTo : date
+                    }).then((res) => {
+                      if(res.data.url){
+                        window.location.href = res.data.url
+                      }
+                    }).catch((err) => {
+                      console.log(err.message);
+                    })
+                  }
+                  checkout()
+                  .then(() => updateBooking(booking._id, date, token))
+                  .then(() => {
+                    Swal.fire({
+                      title: "Good job!",
+                      text: "Edit booking successful",
+                      icon: "success"
+                    });
+                  })
+            } catch (error) {
+                console.error('Failed to update booking:', error);
+                Swal.fire({
+                    icon: "error",
+                    title: "Oops...",
+                    text: "Edit booking failed"
+                  });
+            } finally {
+                setIsSubmitting(false);
+            }
+        }
+    };
+>>>>>>> Stashed changes
 
   return (
     <div className="mt-48 h-full w-1/3">

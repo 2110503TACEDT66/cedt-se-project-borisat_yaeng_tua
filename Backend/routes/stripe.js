@@ -4,7 +4,6 @@ const Payment = require("../models/Payment");
 const fetch = require('node-fetch');
 const nodemailer = require('nodemailer');
 const Mailgen = require('mailgen');
-
 const Car = require('../models/Car');
 const Booking = require('../models/Bookings');
 
@@ -16,10 +15,15 @@ const router = express.Router()
 
 router.post('/create-checkout-session', async (req, res) => {
 
-
-    const bookingData = req.body.bookingData
-    console.log(bookingData);
-    const bookingInformation = {
+    const isUpdate = req.body.isUpdate
+    console.log(isUpdate);
+    let bookingData;
+    let bookingInformation;
+    let carData;
+    if(!isUpdate){
+      console.log('test1');
+      bookingData = req.body.bookingData
+      bookingInformation = {
         user : bookingData.user,
         car : {
             _id : bookingData.car.data._id,
@@ -30,50 +34,114 @@ router.post('/create-checkout-session', async (req, res) => {
         bookingDateFrom : bookingData.bookingDateFrom,
         bookingDateTo : bookingData.bookingDateTo,
         Token: req.body.Token
+      }
+    }else{
+      console.log('test');
+      console.log(req.body.bookingData);
+      bookingData = req.body.bookingData.data
+      carData = await Car.findById(bookingData.car)
+      console.log(carData);
+      bookingInformation = {
+        bookingId : bookingData._id,
+        user : bookingData.user,
+        car : {
+            _id : carData._id,
+            FeePerDay : carData.FeePerDay,
+            LicensePlate : carData.LicensePlate,
+            provider : carData.provider
+        },
+        bookingDateFrom : bookingData.bookingDateTo,
+        bookingDateTo : req.body.dateTo,
+        Token: req.body.Token
+      }
     }
+    
 
     const customer = await stripe.customers.create({
         metadata: {
             userId : req.body.userId,
-            cart : JSON.stringify(bookingInformation)
+            cart : JSON.stringify(bookingInformation),
+            isUpdate : isUpdate
         }
     })
+    console.log(bookingInformation);
+    const amountOfBooking = parseInt(bookingInformation.bookingDateTo.substring(8, 10)) - parseInt(bookingInformation.bookingDateFrom.substring(8, 10));
+    console.log(amountOfBooking);
 
-    const amountOfBooking = parseInt(bookingData.bookingDateTo.substring(8, 10)) - parseInt(bookingData.bookingDateFrom.substring(8, 10)) + 1;
+    let session;
 
-    const session = await stripe.checkout.sessions.create({
-      payment_method_types: ['card', 'promptpay'],
-      invoice_creation: {
-        enabled: true,
-      },
-      line_items: [
-        {
-          price_data: {
-            currency: 'thb',
-            product_data: {
-              images: [bookingData.car.data.PictureCover.replace("amp;", "")],
-              name: bookingData.car.data.Brand,
-              description : `LicensePlate: ${bookingData.car.data.LicensePlate}`,
-              metadata :{
-                id : bookingData.car.data._id
-              }
-            },
-            unit_amount: bookingData.car.data.FeePerDay * 100,
-          },
-          quantity: amountOfBooking,
+    if(!isUpdate){
+      console.log('test2');
+      console.log(bookingData);
+      session = await stripe.checkout.sessions.create({
+        payment_method_types: ['card', 'promptpay'],
+        invoice_creation: {
+          enabled: true,
         },
-      ],
-      phone_number_collection : {
-        enabled : true,
-      },
-      customer: customer.id,
-      mode: 'payment',
-      shipping_address_collection: {
-        allowed_countries: ['TH'],
-      },
-      success_url: `http://localhost:5050/api/v1/order/success?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: 'http://localhost:3000/',
-    });
+        line_items: [
+          {
+            price_data: {
+              currency: 'thb',
+              product_data: {
+                images: [bookingData.car.data.PictureCover.replace("amp;", "")],
+                name: bookingData.car.data.Brand,
+                description : `LicensePlate: ${bookingData.car.data.LicensePlate}`,
+                metadata :{
+                  id : bookingData.car.data._id
+                }
+              },
+              unit_amount: bookingData.car.data.FeePerDay * 100,
+            },
+            quantity: amountOfBooking,
+          },
+        ],
+        phone_number_collection : {
+          enabled : true,
+        },
+        customer: customer.id,
+        mode: 'payment',
+        shipping_address_collection: {
+          allowed_countries: ['TH'],
+        },
+        success_url: `http://localhost:5050/api/v1/order/success?session_id={CHECKOUT_SESSION_ID}`,
+        cancel_url: 'http://localhost:3000/',
+      });
+    }else{
+      session = await stripe.checkout.sessions.create({
+        payment_method_types: ['card', 'promptpay'],
+        invoice_creation: {
+          enabled: true,
+        },
+        line_items: [
+          {
+            price_data: {
+              currency: 'thb',
+              product_data: {
+                images: [carData.PictureCover.replace("amp;", "")],
+                name: carData.Brand,
+                description : `LicensePlate: ${carData.LicensePlate}`,
+                metadata :{
+                  id : carData._id
+                }
+              },
+              unit_amount: carData.FeePerDay * 100,
+            },
+            quantity: amountOfBooking - 1,
+          },
+        ],
+        phone_number_collection : {
+          enabled : true,
+        },
+        customer: customer.id,
+        mode: 'payment',
+        shipping_address_collection: {
+          allowed_countries: ['TH'],
+        },
+        success_url: `http://localhost:5050/api/v1/order/success?session_id={CHECKOUT_SESSION_ID}`,
+        cancel_url: 'http://localhost:3000/',
+      });
+    }
+    
 
     res.send({url : session.url});
   });
@@ -82,8 +150,14 @@ router.post('/create-checkout-session', async (req, res) => {
 
   const createPaymentHistory = async(customer,data,bookingData,invoice) =>{
     const cart = JSON.parse(customer.metadata.cart);
-    console.log(bookingData);
-    const newPayment = new Payment({
+    console.log(cart);
+    let newPayment;
+    console.log(customer.metadata.isUpdate);
+    let booking;
+    let carData;
+    if(!customer.metadata.isUpdate){
+      console.log('bookingData2');
+      newPayment = new Payment({
         bookingId : bookingData.data._id,
         userId : customer.metadata.userId,
         customerId: data.customer,
@@ -101,7 +175,42 @@ router.post('/create-checkout-session', async (req, res) => {
         payment_status: data.payment_status,
         reciept: invoice
 
-    });
+      });
+    }else{
+      console.log("please god please");
+      booking = await Booking.findById(cart.bookingId)
+      console.log(booking);
+      if(!booking){
+          console.log("error bookingData") 
+        return;
+      } 
+      carData = await Car.findById(booking.car)
+      console.log(carData);
+      if(!carData){
+        console.log("error carData") 
+      return;
+    } 
+      newPayment = new Payment({
+        bookingId : booking._id,
+        userId : customer.metadata.userId,
+        customerId: data.customer,
+        car: {
+            _id : carData._id,
+            FeePerDay : carData.FeePerDay,
+            LincensePlate : carData.LincensePlate,
+            provider : carData.provider,
+            quantity : ((data.amount_total/100) / carData.FeePerDay)
+        },
+        total: (data.amount_total/100),
+        information: data.customer_details,
+        payment_intent: data.payment_intent,
+        invoiceId: data.invoice,
+        payment_status: data.payment_status,
+        reciept: invoice
+
+      });
+    }
+    
 
     try{
 
@@ -182,110 +291,117 @@ router.post('/webhook', express.raw({type: 'application/json'}), (request, respo
     stripe.customers.retrieve(data.customer)
         .then(async (customer) => {
             const cart = JSON.parse(customer.metadata.cart);
-            const bookingData = await createBooking(cart.bookingDateFrom, cart.bookingDateTo, cart.user, cart.car._id, cart.Token);
+            console.log(cart);
+            let bookingData;
+            if(!customer.metadata.isUpdate){
+              bookingData = await createBooking(cart.bookingDateFrom, cart.bookingDateTo, cart.user, cart.car._id, cart.Token);
+              console.log('test');
+            }
             return { customer, bookingData };
         })
         .then(({ customer, bookingData }) => {
+          console.log(data);
             return stripe.invoices.sendInvoice(data.invoice)
                 .then((invoice) => {
                     return { customer, bookingData, invoice };
                 });
         })
         .then(({ customer, bookingData, invoice }) => {
+            console.log('test');
             createPaymentHistory(customer, data, bookingData, invoice.hosted_invoice_url)
             .then(async (req, res) => {
-          
-              const car = await Car.findById(bookingData.data.car);
-          
-              //config transporter
-              let config = {
-                  service: 'gmail',
-                  auth : {
-                      user: 'ratchapolkunthong13@gmail.com', //Put Admin email in here !!!
-                      pass: 'dsrqcnbewtwhhigf' //Put Admin password for application in here !!!
-                  }
+              if(!customer.metadata.isUpdate){
+                  const car = await Car.findById(bookingData.data.car);
+            
+                //config transporter
+                let config = {
+                    service: 'gmail',
+                    auth : {
+                        user: 'ratchapolkunthong13@gmail.com', //Put Admin email in here !!!
+                        pass: 'dsrqcnbewtwhhigf' //Put Admin password for application in here !!!
+                    }
+                }
+            
+                //create transporter
+                let transporter = nodemailer.createTransport(config);
+            
+                //create theme for email
+                let MailGenerator = new Mailgen({
+                    theme: 'default',
+                    product: {
+                        name: "Mailgen",
+                        link: "https://mailgen.js"
+                    }
+                });
+            
+                const date = new Date(bookingData.data.createdAt);
+                const generalDate = date.toLocaleString();
+            
+                const DateForm = bookingData.data.bookingDateFrom.toString();
+                const DateTo = bookingData.data.bookingDateTo.toString();
+                const quantity = parseInt(DateTo.substring(8, 10)) - parseInt(DateForm.substring(8, 10));
+                
+                let response = {
+                    body: {
+                        name: "Gearup's Rental",
+                        intro: `Dear ${data.customer_details.name} <br> Email : ${data.customer_details.email} <br> Address : ${data.customer_details.address.city}, ${data.customer_details.address.state}, ${data.customer_details.address.country} ${data.customer_details.address.postal_code} <br> Date : ${generalDate}`,
+                        table: {
+                            data: [
+                                {
+                                    Item: car.Brand + " " + car.Model,
+                                    Quantity: quantity,
+                                    Price: "฿" + car.FeePerDay,
+                                    "": "Unit",
+                                    Total: "฿" + (quantity * car.FeePerDay)
+                                },
+                                {
+                                    Description: "Tax",
+                                    Quantity: "",
+                                    Price: "",
+                                    "": "",
+                                    Total: "0%"
+                                },
+                                {
+                                    Description: "Total",
+                                    Quantity: "",
+                                    Price: "",
+                                    "": "",
+                                    Total: "฿" + (quantity * car.FeePerDay) * (1)
+                                }
+                            ]
+                        },
+                        outro: "Thank you for choosing our services. We hope you had a pleasant experience with us and look forward to serving you again in the future. Please feel free to contact us for any inquiries.",
+                        action: {
+                            instructions: "For any further assistance or clarification, please don't hesitate to contact us.",
+                            button: {
+                                color: "#22BC66",
+                                text: "Contact Customer Support",
+                                link: "mailto:gearup@gmail.com"
+                            }
+                        }
+                    }
+                }
+                
+            
+                let mail = MailGenerator.generate(response);
+            
+                let message = {
+                    from: 'ratchapolkunthong13@gmail.com', // sender address
+                    to: "ratchapolkunthong@gmail.com", // list of receivers
+                    subject: "Testing 1", // Subject line
+                    html: mail // html body
+                };
+            
+                transporter.sendMail(message)
+                console.log("sent");
               }
-          
-              //create transporter
-              let transporter = nodemailer.createTransport(config);
-          
-              //create theme for email
-              let MailGenerator = new Mailgen({
-                  theme: 'default',
-                  product: {
-                      name: "Mailgen",
-                      link: "https://mailgen.js"
-                  }
-              });
-          
-              const date = new Date(bookingData.data.createdAt);
-              const generalDate = date.toLocaleString();
-          
-              const DateForm = bookingData.data.bookingDateFrom.toString();
-              const DateTo = bookingData.data.bookingDateTo.toString();
-              const quantity = parseInt(DateTo.substring(8, 10)) - parseInt(DateForm.substring(8, 10));
               
-              let response = {
-                  body: {
-                      name: "Gearup's Rental",
-                      intro: `Dear ${data.customer_details.name} <br> Email : ${data.customer_details.email} <br> Address : ${data.customer_details.address.city}, ${data.customer_details.address.state}, ${data.customer_details.address.country} ${data.customer_details.address.postal_code} <br> Date : ${generalDate}`,
-                      table: {
-                          data: [
-                              {
-                                  Item: car.Brand + " " + car.Model,
-                                  Quantity: quantity,
-                                  Price: "฿" + car.FeePerDay,
-                                  "": "Unit",
-                                  Total: "฿" + (quantity * car.FeePerDay)
-                              },
-                              {
-                                  Description: "Tax",
-                                  Quantity: "",
-                                  Price: "",
-                                  "": "",
-                                  Total: "0%"
-                              },
-                              {
-                                  Description: "Total",
-                                  Quantity: "",
-                                  Price: "",
-                                  "": "",
-                                  Total: "฿" + (quantity * car.FeePerDay) * (1)
-                              }
-                          ]
-                      },
-                      outro: "Thank you for choosing our services. We hope you had a pleasant experience with us and look forward to serving you again in the future. Please feel free to contact us for any inquiries.",
-                      action: {
-                          instructions: "For any further assistance or clarification, please don't hesitate to contact us.",
-                          button: {
-                              color: "#22BC66",
-                              text: "Contact Customer Support",
-                              link: "mailto:gearup@gmail.com"
-                          }
-                      }
-                  }
-              }
-              
-          
-              let mail = MailGenerator.generate(response);
-          
-              let message = {
-                  from: 'ratchapolkunthong13@gmail.com', // sender address
-                  to: "ratchapolkunthong@gmail.com", // list of receivers
-                  subject: "Testing 1", // Subject line
-                  html: mail // html body
-              };
-          
-              transporter.sendMail(message)
-              console.log("sent");
           })
         })
         .catch((err) => {
             console.log(err.message);
         });
-}
-
-
+};
   // Return a 200 response to acknowledge receipt of the event
   response.send().end();
 });
