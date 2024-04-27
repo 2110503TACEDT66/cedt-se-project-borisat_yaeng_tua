@@ -47,7 +47,7 @@ export default function checkoutSuccess({
           </h2>
           <p className="text-lg">
             Your purchase ID is:{" "}
-            <span className="text-blue-600 font-bold">{params.pid}</span>
+            <span className="text-primary-blue font-bold">{params.pid}</span>
           </p>
         </div>
         <div className="flex flex-row pt-10 w-full ">
