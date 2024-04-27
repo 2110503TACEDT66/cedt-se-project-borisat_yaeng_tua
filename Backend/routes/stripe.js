@@ -6,6 +6,7 @@ const nodemailer = require('nodemailer');
 const Mailgen = require('mailgen');
 
 const Car = require('../models/Car');
+const Booking = require('../models/Bookings');
 
 require("dotenv").config();
 
@@ -292,12 +293,20 @@ router.post('/webhook', express.raw({type: 'application/json'}), (request, respo
 
 router.post("/create-refund", async (req, res) => {
     try {
-    
-      const payment_intent  = req.body.payment_intent
-  
+
+      const bookingId = await Booking.findById(req.body.bookingId)
+      const payment = await Payment.findOne({ bookingId: bookingId._id });
+
       const refund = await stripe.refunds.create({
-        payment_intent: payment_intent,
-    });
+        payment_intent: payment.payment_intent,
+      });
+
+      const updateData = await Payment.findByIdAndUpdate(payment._id,  { payment_status: 'refunded' }, {
+        new: true,
+        runValidators: true
+      });
+
+      console.log(updateData);
 
       res.json({ refund });
     } catch (error) {
