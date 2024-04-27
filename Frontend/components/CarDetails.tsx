@@ -14,6 +14,8 @@ import PictureParser from "./PictureParser";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import { useSession } from "next-auth/react";
+import Swal from "sweetalert2"
 
 interface CarDetailsProps {
     isOpen: boolean;
@@ -23,8 +25,12 @@ interface CarDetailsProps {
   export function CarDetails({ isOpen, closeModal, car }: CarDetailsProps) {
     const { Picture1, Picture2, Picture3, Picture4, _id } = car;
     const router = useRouter()
-
-
+    const session = useSession();
+    var isSession = true
+    if(session.data == null){
+      isSession = false
+    }
+      
 
     function NextArrow(props: any) {
         const { className, style, onClick } = props;
@@ -84,11 +90,15 @@ interface CarDetailsProps {
     const handleClickBtn = (massageID: string) => {
         router.push(`/booking/${massageID}`)
     }
-  function removeAmpFromPicture(url: string): string {
-    if (!url) {
-      return url;
-    } else return url.replace("amp;", "");
+    
+    const handleClickBtnNoSession = () => {
+      Swal.fire({
+        icon: "error",
+        title: "Hold on!",
+        text: "You must be signed in to book a car.",
+      });
   }
+  
   var count = 0;
   return (
     <>
@@ -235,12 +245,17 @@ interface CarDetailsProps {
                       })}
                     </div>
 
-
-                    <CustomButton
+                    { isSession ? (<CustomButton
                       title="Booking"
                       containerStyles="transition-transform duration-500 ease-in-out hover:scale-105 w-full py-[16px] rounded-full bg-primary-blue mt-5"
                        handleClick={()=>{handleClickBtn(_id)}}
-                    />
+                    />):
+                    (<CustomButton
+                      title="Booking"
+                      containerStyles="transition-transform duration-500 ease-in-out hover:scale-105 w-full py-[16px] rounded-full bg-primary-blue mt-5"
+                       handleClick={()=>{handleClickBtnNoSession()}}
+                    />)}
+                    
                     
                   </div>
                 </Dialog.Panel>

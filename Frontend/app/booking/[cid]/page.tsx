@@ -9,7 +9,7 @@ import LocationDateReserve from "@/components/LocationDateReserve";
 import PictureParser from "@/components/PictureParser";
 import Image from "next/image";
 import CustomButton from "@/components/CustomButton";
-import Swal from 'sweetalert2'
+import Swal from "sweetalert2";
 import Link from "next/link";
 import config from "@/config";
 import axios from "axios";
@@ -25,35 +25,35 @@ function CardDetailPage({ params }: { params: { cid: string } }) {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    const bookingData = ({
-              user: session?.user._id,
-              car: carDetail,
-              bookingDateFrom: selectedDateFrom
-                ? selectedDateFrom.format("YYYY/MM/DD")
-                : "",
-              bookingDateTo: selectedDateTo
-                ? selectedDateTo.format("YYYY/MM/DD")
-                : "",
-            })
-    
+    const bookingData = {
+      user: session?.user._id,
+      car: carDetail,
+      bookingDateFrom: selectedDateFrom
+        ? selectedDateFrom.format("YYYY/MM/DD")
+        : "",
+      bookingDateTo: selectedDateTo ? selectedDateTo.format("YYYY/MM/DD") : "",
+    };
+
     console.log(bookingData);
 
     const checkout = () => {
-      axios.post(`${config.backendUrl}/api/v1/stripe/create-checkout-session`, {
-        bookingData,
-        userId : bookingData.user,
-        Token : session?.user.token
-      }).then((res) => {
-        if(res.data.url){
-          window.location.href = res.data.url
-        }
-      }).catch((err) => {
-        console.log(err.message);
-      })
-    }
+      axios
+        .post(`${config.backendUrl}/api/v1/stripe/create-checkout-session`, {
+          bookingData,
+          userId: bookingData.user,
+          Token: session?.user.token,
+        })
+        .then((res) => {
+          if (res.data.url) {
+            window.location.href = res.data.url;
+          }
+        })
+        .catch((err) => {
+          console.log(err.message);
+        });
+    };
 
-    checkout()
-
+    checkout();
 
     // try {
     //   const response = await fetch(
@@ -89,7 +89,7 @@ function CardDetailPage({ params }: { params: { cid: string } }) {
     //     text: "Booking successful",
     //     icon: "success"
     //   });
-      
+
     // } catch (error) {
     //   console.log(error);
     // }
@@ -104,57 +104,59 @@ function CardDetailPage({ params }: { params: { cid: string } }) {
     fetchData();
   }, [params.cid]);
 
-  var isLoading = false
+  var isLoading = false;
 
   if (!carDetail) {
-
     isLoading = true; // or loading indicator
   }
- 
+
   return (
     <>
-    {!isLoading ? (
-    <main className="flex flex-col justify-center items-center h-screen">
-      <h1 className="hero__title animate-fade-up mb-10">Your Booking</h1>
-      <div className=" p-8 rounded-2xl shadow-lg bg-primary-blue-100 flex justify-center animate-fade-down">
-        <div className="flex flex-col text-[20px]">
-          <p className="font-bold">{carDetail.data.Brand} {carDetail.data.Model}</p>
-          <div className="mt-3">
-          <Image
-            src={PictureParser(carDetail.data.PictureCover)}
-            alt="car"
-            width={300}
-            height={300}
-            className="rounded-xl"
-          />
-          </div>
-        </div>
-        <div className="flex flex-row my-5">
-          <div className="text-md mx-5 text-left"></div>
-          <div className="flex flex-col">
-            <div className="pb-5 ">
-              <LocationDateReserve
-                onDateChange={(value: Dayjs) => {
-                  setSelectedDateFrom(value);
-                }}
-              />
-              <LocationDateReserve
-                onDateChange={(value: Dayjs) => {
-                  setSelectedDateTo(value);
-                }}
-              />
+      {!isLoading ? (
+        <main className="flex flex-col justify-center items-center h-screen">
+          <h1 className="hero__title animate-fade-up mb-10">Your Booking</h1>
+          <div className=" p-8 rounded-2xl shadow-lg bg-primary-blue-100 flex justify-center animate-fade-down">
+            <div className="flex flex-col text-[20px]">
+              <p className="font-bold">
+                {carDetail.data.Brand} {carDetail.data.Model}
+              </p>
+              <div className="mt-3">
+                <Image
+                  src={PictureParser(carDetail.data.PictureCover)}
+                  alt="car"
+                  width={300}
+                  height={300}
+                  className="rounded-xl"
+                />
+              </div>
             </div>
-            <CustomButton
-              title="Check Out"
-              textStyles=""
-              containerStyles="transition-transform duration-500 ease-in-out hover:scale-105 w-full py-[16px] rounded-full bg-primary-blue text-white "
-              handleClick={handleSubmit}
-            />
+            <div className="flex flex-row my-5">
+              <div className="text-md mx-5 text-left"></div>
+              <div className="flex flex-col">
+                <div className="pb-5 ">
+                  <LocationDateReserve
+                    onDateChange={(value: Dayjs) => {
+                      setSelectedDateFrom(value);
+                    }}
+                  />
+                  <LocationDateReserve
+                    onDateChange={(value: Dayjs) => {
+                      setSelectedDateTo(value);
+                    }}
+                  />
+                </div>
+                <CustomButton
+                  title="Check Out"
+                  textStyles=""
+                  containerStyles="transition-transform duration-500 ease-in-out hover:scale-105 w-full py-[16px] rounded-full bg-primary-blue text-white "
+                  handleClick={handleSubmit}
+                  rightIcon="/right-arrow.svg"
+                />
+              </div>
+            </div>
           </div>
-        </div>
-      </div>
-    </main>
-    ) : (
+        </main>
+      ) : (
         <div className="mt-16 flex justify-center items-center flex-row">
           <div
             className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-current border-e-transparent text-primary-blue"
@@ -163,7 +165,7 @@ function CardDetailPage({ params }: { params: { cid: string } }) {
             <span className="hidden">Loading...</span>
           </div>
         </div>
-    )}
+      )}
     </>
   );
 }
