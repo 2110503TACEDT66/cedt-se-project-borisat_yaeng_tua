@@ -21,7 +21,7 @@ export default function Footer() {
                 <p>@2024 GearUp. All Rights Reserved</p>
                     <div className="footer__copyrights-link">
                         <Link href="/privacyPolicy" className="text-gray-500">Privacy Policy</Link>
-                        <Link href="/" className="text-gray-500">Terms of Use</Link>
+                        <Link href="/termOfUse" className="text-gray-500">Terms of Use</Link>
                     </div>
                 </div>
         </footer>
