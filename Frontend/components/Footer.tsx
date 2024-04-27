@@ -15,7 +15,7 @@ const Footer = () => {
           </p>
         </div>
         <div className="flex flex-col md:flex-row items-center mt-6 md:mt-0">
-          <div className="flex flex-col md:flex-row gap-6">
+          <div className="flex flex-col md:flex-row gap-6 pt-10 mt-5">
             <Link href="/privacyPolicy" className="font-semibold text-primary-blue transition-transform duration-500 ease-in-out hover:scale-110">Privacy Policy</Link>
             <Link href="/termOfUse" className="font-semibold text-primary-blue transition-transform duration-500 ease-in-out hover:scale-110">Terms of Use</Link>
           </div>
