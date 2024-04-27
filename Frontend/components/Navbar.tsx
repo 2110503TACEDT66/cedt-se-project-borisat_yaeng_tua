@@ -31,21 +31,21 @@ export default async function Navbar() {
                     {
                         isAdmin ? 
                         <IconButton href="/admin" className="animate-fade-down animate-delay-500" style={{ color: "#6667AB" }}>
-                            <AdminPanelSettingsIcon sx={{ fontSize: 30 }} className="transition-transform duration-500 ease-in-out hover:scale-110"/>
+                            <AdminPanelSettingsIcon sx={{ fontSize: 30 }} className="transition-transform duration-300 ease-in-out hover:scale-110"/>
                         </IconButton>
                         : null
                     }
                     {
                         session ?
                         <IconButton href="/booking" className="animate-fade-down animate-delay-500" style={{ color: "#6667AB" }}>
-                            <DirectionsCarIcon sx={{ fontSize: 30 }} className="transition-transform duration-500 ease-in-out hover:scale-110"/>
+                            <DirectionsCarIcon sx={{ fontSize: 30 }} className="transition-transform duration-300 ease-in-out hover:scale-110"/>
                         </IconButton>
                         : null
                     }
                     {
                         session ?
                         <IconButton href="/info" className="animate-fade-down animate-delay-500" style={{ color: "#6667AB" }}>
-                            <AccountCircleIcon sx={{ fontSize: 30 }} className="transition-transform duration-500 ease-in-out hover:scale-110"/>
+                            <AccountCircleIcon sx={{ fontSize: 30 }} className="transition-transform duration-300 ease-in-out hover:scale-110"/>
                         </IconButton>
                         : null
                     }

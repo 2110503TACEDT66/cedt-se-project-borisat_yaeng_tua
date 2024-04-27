@@ -149,7 +149,7 @@ export function BookingDetails({
                   <button
                     type="button"
                     onClick={closeModal}
-                    className="absolute top-2 right-2 z-10 w-fit p-2 bg-primary-blue-100 rounded-full"
+                    className="transition-transform duration-500 ease-in-out hover:scale-110 absolute top-2 right-2 z-10 w-fit p-2 bg-primary-blue-100 rounded-full"
                   >
                     <Image
                       src="/close.svg"
