@@ -104,7 +104,7 @@ export default function Payment() {
                                 <td>
                                     {isModalOpen && (
                                         <div className="z-10 fixed inset-0 flex justify-end bg-black bg-opacity-50">
-                                            <div className="w-1/3 flex flex-col bg-white rounded-xl p-8 m-3">
+                                            <div className="w-1/3 flex flex-col bg-white rounded-xl p-8 m-3 animate-fade-left animate-duration-500 animate-ease-in-out">
                                                 <div className="flex flex-row justify-between items-center">
                                                     <div className="font-bold text-xl">
                                                         Payment Details
