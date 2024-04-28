@@ -411,20 +411,33 @@ router.post("/create-refund", async (req, res) => {
     try {
 
       const bookingId = await Booking.findById(req.body.bookingId)
-      const payment = await Payment.findOne({ bookingId: bookingId._id });
+      const payments = await Payment.find({ bookingId: bookingId._id });
+      console.log(payments);
+      console.log(payments.length);
 
-      const refund = await stripe.refunds.create({
-        payment_intent: payment.payment_intent,
-      });
+      let i = 0;
+      let paymentData = []
+      for (const payment of payments) {
+        paymentData[i] = payment;
+        ++i;
+      }
+      for(let i=0; i < payments.length; ++i){
+        // Make a refund
+        const refund = await stripe.refunds.create({
+            payment_intent: paymentData[i].payment_intent,
+        });
+    
+        // Update the payment status to 'refunded'
+        const updateData = await Payment.findByIdAndUpdate(paymentData[i]._id, { payment_status: 'refunded' }, {
+            new: true,
+            runValidators: true
+        });
+        
+        console.log('Refund processed and payment updated:', updateData);
+      }
+        
 
-      const updateData = await Payment.findByIdAndUpdate(payment._id,  { payment_status: 'refunded' }, {
-        new: true,
-        runValidators: true
-      });
-
-      console.log(updateData);
-
-      res.json({ refund });
+      res.json({ success: true });
     } catch (error) {
       console.error("Error creating refund:", error);
       res.status(500).json({ error: "Error creating refund" });

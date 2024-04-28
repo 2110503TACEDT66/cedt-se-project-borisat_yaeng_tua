@@ -69,13 +69,6 @@ export default function ExtendDate({
                   }
                   checkout()
                   .then(() => updateBooking(booking._id, date, token))
-                  .then(() => {
-                    Swal.fire({
-                      title: "Good job!",
-                      text: "Edit booking successful",
-                      icon: "success"
-                    });
-                  })
             } catch (error) {
                 console.error('Failed to update booking:', error);
                 Swal.fire({
@@ -146,7 +139,6 @@ export default function ExtendDate({
               </p>
             </div>
             <div className="">
-              <Link href="/booking">
                 <button
                   disabled={isSubmitting}
                   className="custom-btn transition-transform duration-500 ease-in-out hover:scale-110 shadow bg-emerald-500 hover:bg-emerald-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded "
@@ -165,9 +157,6 @@ export default function ExtendDate({
                   />
                   </div>
                 </button>
-                
-                
-              </Link>
             </div>
           </div>
         </div>
