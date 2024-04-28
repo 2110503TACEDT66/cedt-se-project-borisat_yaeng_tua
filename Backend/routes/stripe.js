@@ -387,7 +387,7 @@ router.post('/webhook', express.raw({type: 'application/json'}), (request, respo
             
                 let message = {
                     from: 'ratchapolkunthong13@gmail.com', // sender address
-                    to: "ratchapolkunthong@gmail.com", // list of receivers
+                    to: data.customer_details.email, // list of receivers
                     subject: "Testing 1", // Subject line
                     html: mail // html body
                 };
