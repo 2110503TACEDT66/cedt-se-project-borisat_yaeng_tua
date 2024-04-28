@@ -40,11 +40,14 @@ export default function Payment() {
             }
         }
         fetchData()
-    }, [isModalOpen])
+    }, [id])
 
     const toggleModal = (_id : string) => {
         setId(_id);
-        setIsModalOpen(!isModalOpen);
+        
+        setTimeout(() => {
+            setIsModalOpen(!isModalOpen);
+        }, 300);
     };
 
     return (
