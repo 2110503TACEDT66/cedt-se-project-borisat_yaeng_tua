@@ -17,7 +17,7 @@ export default function Payment() {
             try {
                 const response = await getPaymentByUser(userID, token)
                 console.log("Response:", response);
-                setPaymentHistory(response)
+                setPaymentHistory(response.data)
             } catch (err) {
                 console.log("Failed to fetch the data");
             }
@@ -50,6 +50,39 @@ export default function Payment() {
                     </tr>
                 </thead>
                 <tbody>
+                    {
+                        paymentHistory.map((paymentHistory : any) => (
+                            <tr className="odd:bg-white even:bg-gray-50 border-b">
+                                <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
+                                    {paymentHistory.createdAt}
+                                </th>
+                                <td className="px-6 py-4 max-w-lg truncate">
+                                    {paymentHistory.payment_intent}
+                                </td>
+                                <td className="px-6 py-4">
+                                    {paymentHistory.total}
+                                </td>
+                                <td className="px-6 py-4">
+                                    {paymentHistory.payment_status === 'paid' ? (
+                                        <button className="bg-emerald-500 text-white font-bold py-2 px-4 rounded-full ring-2 ring-transparent cursor-default">
+                                            Paid
+                                        </button>
+                                    ) : (
+                                        <button className="bg-yellow-400 text-white font-bold py-2 px-4 rounded-full ring-2 ring-transparent cursor-default">
+                                            Refunded
+                                        </button>
+                                    )}
+                                </td>
+                                <td className="flex justify-end items-center pr-6 py-4">
+                                    <Link href={``} className="transition-transform duration-500 ease-in-out hover:scale-105">
+                                        <button className="bg-primary-blue hover:bg-white text-white  hover:text-primary-blue font-bold py-2 px-4 border-primary-blue rounded-full ring-2 ring-transparent hover:ring-primary-blue mr-3">
+                                            Detail
+                                        </button>
+                                    </Link>
+                                </td>
+                            </tr>
+                        ))
+                    }
                     <tr className="odd:bg-white even:bg-gray-50 border-b">
                         <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
                             28 Apr 24

@@ -7,32 +7,32 @@ exports.getPayments = async (req, res, next) => {
     try {
         let query;
 
-        //Copy req.query
-        const reqQuery = {...req.query};
+        // Copy req.query
+        const reqQuery = { ...req.query };
 
-        //Fields to exclude
+        // Fields to exclude
         const removeFields = ['select', 'sort', 'page', 'limit'];
 
-        //Loop over remove fields and delete them from reqQuery
-        removeFields.forEach(param=>delete reqQuery[param]);
+        // Loop over remove fields and delete them from reqQuery
+        removeFields.forEach((param) => delete reqQuery[param]);
         // console.log(reqQuery);
-        
-        //Create query string
+
+        // Create query string
         let queryStr = JSON.stringify(req.query);
 
-        //Create operator ($gt, $gte, etc)
-        queryStr = queryStr.replace(/\b(gt|gte|lt|lte|in) \b/g, match=>`$${match}`);
+        // Create operator ($gt, $gte, etc)
+        queryStr = queryStr.replace(/\b(gt|gte|lt|lte|in) \b/g, (match) => `$${match}`);
 
-        //finding resource
+        // Finding resource
         query = Payment.find(JSON.parse(queryStr));
 
-        //Select Fields
+        // Select Fields
         if (req.query.select) {
             const fields = req.query.select.split(',').join(' ');
             query = query.select(fields);
         }
 
-        //Sort
+        // Sort
         if (req.query.sort) {
             const sortBy = req.query.sort.split(',').join('');
             query = query.sort(sortBy);
@@ -40,45 +40,19 @@ exports.getPayments = async (req, res, next) => {
             query = query.sort('name');
         }
 
-        //Pagination
-        const page = parseInt(req.query.page, 10) || 1;
-        const limit = parseInt(req.query.limit, 10) || 25;
-        const startIndex = (page - 1) * limit;
-        const endIndex = page * limit;
-        const total = await Payment.countDocuments(JSON.parse(queryStr));
-
-        query = query.skip(startIndex).limit(limit);
-        
-        //Executing query
+        // Executing query
         const payment = await query;
 
-        //Pagination result
-        const pagination = {};
-
-        if (endIndex < total) {
-            pagination.next = {
-                page: page + 1,
-                limit
-            }
-        }
-
-        if (startIndex > 0) {
-            pagination.prev = {
-                page: page - 1,
-                limit
-            }
-        }
-
         res.status(200).json({
-            success: true, 
+            success: true,
             count: payment.length,
-            pagination,
             data: payment
         });
-    } catch(err) {
-        res.status(400).json({success: false, message: err.message});
+    } catch (err) {
+        res.status(400).json({ success: false, message: err.message });
     }
 };
+
 
 //@desc     Update single car
 //@route    PUT /api/v1/payments/:id
