@@ -1,5 +1,6 @@
 "use client"
 import getPaymentByUser from "@/libs/getPaymentsByUser";
+import formatDate from "@/utils/formatDate";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
@@ -58,7 +59,7 @@ export default function Payment() {
                         paymentHistory.map((paymentHistory : any) => (
                             <tr key={paymentHistory._id} className="odd:bg-white even:bg-gray-50 border-b">
                                 <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
-                                    {paymentHistory.createdAt}
+                                    {formatDate(paymentHistory.createdAt)}
                                 </th>
                                 <td className="px-6 py-4 max-w-lg truncate">
                                     {paymentHistory.payment_intent}
@@ -103,7 +104,7 @@ export default function Payment() {
                                                         {paymentHistory.information.name}
                                                     </div>
                                                     <div>
-                                                        7 Jul 24
+                                                        {formatDate(paymentHistory.createdAt)}
                                                     </div>
                                                 </div>
                                                 <div className="mt-7 p-6 flex flex-row w-full border-solid border border-gray-200 rounded-xl">
