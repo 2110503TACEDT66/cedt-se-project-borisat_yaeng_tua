@@ -9,8 +9,12 @@ import { useEffect, useState } from "react";
 export default function Payment() {
     const [paymentHistory, setPaymentHistory] = useState<any[]>([])
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isOpen, setIsOpen] = useState(false);
     const [carData, setCarData] = useState<any>()
-    const [id, setId] = useState<string>('test')
+    const [id, setId] = useState<string>("")
+    const [status, setStatus] = useState<string>("")
+    const [total, setTotal] = useState<number>(0)
+    const [receipt, setReceipt] = useState<string>("")
 
     const { data: session } = useSession();
     if (!session) return null
@@ -29,6 +33,7 @@ export default function Payment() {
         }
         fetchData()
     }, [])
+
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -40,10 +45,16 @@ export default function Payment() {
             }
         }
         fetchData()
-    }, [id])
+    }, [isOpen])
 
-    const toggleModal = (_id : string) => {
-        setId(_id);
+    const toggleModal = (_id : string, paymentStatus : string, total : number, receipt : string) => {
+        if (_id) { 
+            setId(_id); 
+            setStatus(paymentStatus)
+            setTotal(total)
+            setReceipt(receipt)
+            setIsOpen(!isOpen)
+        }
         
         setTimeout(() => {
             setIsModalOpen(!isModalOpen);
@@ -98,11 +109,9 @@ export default function Payment() {
                                     )}
                                 </td>
                                 <td className="flex justify-end items-center pr-6 py-4">
-                                    <Link href={``} className="transition-transform duration-500 ease-in-out hover:scale-105">
-                                        <button onClick={() => toggleModal(paymentHistory.car._id)} className="bg-primary-blue hover:bg-white text-white  hover:text-primary-blue font-bold py-2 px-4 border-primary-blue rounded-full ring-2 ring-transparent hover:ring-primary-blue mr-3">
-                                            Detail
-                                        </button>
-                                    </Link>
+                                    <button onClick={() => toggleModal(paymentHistory.car._id, paymentHistory.payment_status, paymentHistory.total, paymentHistory.reciept)} className="bg-primary-blue hover:bg-white text-white  hover:text-primary-blue font-bold py-2 px-4 border-primary-blue rounded-full ring-2 ring-transparent hover:ring-primary-blue mr-3 transition-transform duration-500 ease-in-out hover:scale-105">
+                                        Detail
+                                    </button>
                                 </td>
                                 <td>
                                     {isModalOpen && (
@@ -112,13 +121,13 @@ export default function Payment() {
                                                     <div className="font-bold text-xl">
                                                         Payment Details
                                                     </div>
-                                                    <button onClick={() => toggleModal('')} type="button" className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center">
+                                                    <button onClick={() => toggleModal("", "", 0)} type="button" className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center">
                                                         <svg className="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
                                                             <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
                                                         </svg>
                                                     </button>
                                                 </div>
-                                                <div className="mt-7 p-8 flex flex-row justify-between bg-gray-100 rounded-xl">
+                                                <div className={`mt-7 p-8 text-white flex flex-row justify-between ${status === 'paid' ? "bg-emerald-500" : null} ${status === 'refunded' ? "bg-orange-400" : null} rounded-xl`}>
                                                     <div>
                                                         {paymentHistory.information.name}
                                                     </div>
@@ -130,16 +139,20 @@ export default function Payment() {
                                                     <table className=" w-full table-auto border-separate border-spacing-2">
                                                         <tbody>
                                                         <tr>
-                                                            <td>Email</td>
-                                                            <td className="text-right">ehainot</td>
+                                                            <td>Car</td>
+                                                            <td className="text-right">{carData.Brand} {carData.Model}</td>
                                                         </tr>
                                                         <tr>
-                                                            <td>Phone</td>
-                                                            <td className="text-right">telme whu</td>
+                                                            <td>Year</td>
+                                                            <td className="text-right">{carData.Year}</td>
                                                         </tr>
                                                         <tr>
-                                                            <td>Member Since</td>
-                                                            <td className="text-right">mt</td>
+                                                            <td>LicensePlate</td>
+                                                            <td className="text-right">{carData.LicensePlate}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Quantity</td>
+                                                            <td className="text-right">{paymentHistory.car.quantity}</td>
                                                         </tr>
                                                         </tbody>
                                                     </table>
@@ -149,10 +162,17 @@ export default function Payment() {
                                                         <tbody>
                                                         <tr>
                                                             <td>Total</td>
-                                                            <td className="text-right font-bold">65000</td>
+                                                            <td className="text-right font-bold">{total}</td>
                                                         </tr>
                                                         </tbody>
                                                     </table>
+                                                </div>
+                                                <div className="mt-7 flex justify-center">
+                                                    <Link href={receipt} className="transition-transform duration-500 ease-in-out hover:scale-105" target="_blank">
+                                                        <button className="bg-primary-blue hover:bg-white text-white  hover:text-primary-blue font-bold py-3 px-6 border-primary-blue rounded-full ring-2 ring-transparent hover:ring-primary-blue mr-3">
+                                                            Get Receipt
+                                                        </button>
+                                                    </Link>
                                                 </div>
                                             </div>
                                         </div>
