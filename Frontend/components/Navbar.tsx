@@ -7,16 +7,21 @@ import { IconButton } from "@mui/material";
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import DirectionsCarIcon from '@mui/icons-material/DirectionsCar';
 import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
+import PaymentIcon from '@mui/icons-material/Payment';
 import getUser from "@/libs/getUser";
 
 export default async function Navbar() {
     const session = await getServerSession(authOptions);
     let isAdmin = false;
+    let isUser = false;
 
     if (session) {
         var userProfile = await getUser(session.user.token);
         if (userProfile.data.role === 'admin') {
             isAdmin = true;
+        }
+        if (userProfile.data.role === 'user') {
+            isUser = true;
         }
     }
     
@@ -32,6 +37,13 @@ export default async function Navbar() {
                         isAdmin ? 
                         <IconButton href="/admin" className="animate-fade-down animate-delay-500" style={{ color: "#6667AB" }}>
                             <AdminPanelSettingsIcon sx={{ fontSize: 30 }} className="transition-transform duration-300 ease-in-out hover:scale-110"/>
+                        </IconButton>
+                        : null
+                    } 
+                    {
+                        isUser ?
+                        <IconButton href="/payment" className="animate-fade-down animate-delay-500" style={{ color: "#6667AB" }}>
+                            <PaymentIcon sx={{ fontSize: 30 }} className="transition-transform duration-300 ease-in-out hover:scale-110" />
                         </IconButton>
                         : null
                     }
