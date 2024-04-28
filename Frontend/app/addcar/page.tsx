@@ -10,6 +10,7 @@ import { useSession } from "next-auth/react";
 import { CarProps } from "@/types";
 import createCar from "@/libs/createCar";
 import { IoIosArrowBack } from "react-icons/io";
+import { getCarByLicense } from "@/libs/getCarByLicense";
 
 export default function AddCarPage() {
     
@@ -86,6 +87,17 @@ export default function AddCarPage() {
       Swal.fire({
         title: "Cover Picture is missing",
         text: "Please upload Car Cover Picture",
+        icon: "error",
+      });
+    }
+
+    const carData = await getCarByLicense(formData.LicensePlate);
+    console.log(carData);
+
+    if(carData.count !== 0){
+      return Swal.fire({
+        title: "This license plate has already been used",
+        text: "Please provide another license plate",
         icon: "error",
       });
     }
