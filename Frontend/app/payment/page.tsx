@@ -1,4 +1,5 @@
 "use client"
+import getCar from "@/libs/getCar";
 import getPaymentByUser from "@/libs/getPaymentsByUser";
 import formatDate from "@/utils/formatDate";
 import { useSession } from "next-auth/react";
@@ -8,6 +9,8 @@ import { useEffect, useState } from "react";
 export default function Payment() {
     const [paymentHistory, setPaymentHistory] = useState<any[]>([])
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [carData, setCarData] = useState<any>()
+    const [id, setId] = useState<string>('test')
 
     const { data: session } = useSession();
     if (!session) return null
@@ -26,8 +29,21 @@ export default function Payment() {
         }
         fetchData()
     }, [])
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await getCar(id);
+                console.log("ResponseCar:", response.data);
+                setCarData(response.data)
+            } catch (err) {
+                console.log("Failed to fetch the data");
+            }
+        }
+        fetchData()
+    }, [isModalOpen])
 
-    const toggleModal = () => {
+    const toggleModal = (_id : string) => {
+        setId(_id);
         setIsModalOpen(!isModalOpen);
     };
 
@@ -80,7 +96,7 @@ export default function Payment() {
                                 </td>
                                 <td className="flex justify-end items-center pr-6 py-4">
                                     <Link href={``} className="transition-transform duration-500 ease-in-out hover:scale-105">
-                                        <button onClick={toggleModal} className="bg-primary-blue hover:bg-white text-white  hover:text-primary-blue font-bold py-2 px-4 border-primary-blue rounded-full ring-2 ring-transparent hover:ring-primary-blue mr-3">
+                                        <button onClick={() => toggleModal(paymentHistory.car._id)} className="bg-primary-blue hover:bg-white text-white  hover:text-primary-blue font-bold py-2 px-4 border-primary-blue rounded-full ring-2 ring-transparent hover:ring-primary-blue mr-3">
                                             Detail
                                         </button>
                                     </Link>
