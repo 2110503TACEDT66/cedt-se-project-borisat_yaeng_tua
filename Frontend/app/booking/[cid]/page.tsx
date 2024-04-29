@@ -3,7 +3,7 @@
 import getCar from "@/libs/getCar";
 import * as React from "react";
 import { useState, useEffect } from "react";
-import { Dayjs } from "dayjs";
+import dayjs, { Dayjs } from "dayjs";
 import { useSession } from "next-auth/react";
 import LocationDateReserve from "@/components/LocationDateReserve";
 import PictureParser from "@/components/PictureParser";
@@ -34,6 +34,29 @@ function CardDetailPage({ params }: { params: { cid: string } }) {
       bookingDateTo: selectedDateTo ? selectedDateTo.format("YYYY/MM/DD") : "",
     };
 
+    const today = dayjs()
+    if (!selectedDateFrom || !selectedDateTo) {
+      Swal.fire({
+        title: "Date Selection Error",
+        text: "Please select both start and end dates.",
+        icon: "error",
+      });
+      return;
+    } else if (selectedDateFrom.isSame(selectedDateTo, 'day') || selectedDateTo.isBefore(selectedDateFrom, 'day')) {
+      Swal.fire({
+        title: "Invalid Date Range",
+        text: "The start date cannot be after or same as the end date.",
+        icon: "error",
+      });
+      return;
+    } else if (selectedDateFrom.isBefore(today, 'day') || selectedDateTo.isBefore(today, 'day')) {
+      Swal.fire({
+        title: "Invalid Booking Date",
+        text: "The booking date cannot be in the past.",
+        icon: "error",
+      });
+      return;
+    }
     console.log(bookingData);
 
     const checkout = () => {
