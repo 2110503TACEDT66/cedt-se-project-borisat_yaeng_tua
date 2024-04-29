@@ -35,7 +35,7 @@ const CarSchema = new mongoose.Schema({
     },
     PictureCover: {
         type: String,
-        required: false
+        required: [true, 'Please specify a cover picture']
       },
     Picture1: {
         type: String,

@@ -132,7 +132,7 @@ exports.createCar = async (req, res, next) => {
             data: car
         });
     } catch(err) {
-        res.status(500).json({success: false, message: err.message});
+        res.status(400).json({success: false, message: err.message});
     }
 };
 
