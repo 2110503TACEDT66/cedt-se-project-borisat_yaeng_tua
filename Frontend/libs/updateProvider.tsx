@@ -11,7 +11,7 @@ export default async function updateProvider(providerID: string, action: string,
             status: action
         })
     })
-
+    console.log(await response.json)
     if (!response.ok) {
         throw new Error(`Failed to ${action}`)
     }

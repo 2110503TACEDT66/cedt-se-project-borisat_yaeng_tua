@@ -145,7 +145,7 @@ export default function ProviderRegistration() {
               Name
             </label>
           </div>
-          <div className="md:w-2/3">
+          <div className="md:w-2/3" id="name">
             <input
               className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500
               hover:bg-white "
@@ -163,7 +163,7 @@ export default function ProviderRegistration() {
               Address
             </label>
           </div>
-          <div className="md:w-2/3">
+          <div className="md:w-2/3" id="address">
             <textarea
               className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500 hover:bg-white"
               placeholder="Your Address"
@@ -181,7 +181,7 @@ export default function ProviderRegistration() {
               Contact
             </label>
           </div>
-          <div className="md:w-2/3">
+          <div className="md:w-2/3" id="contact">
             <input
               className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500
               hover:bg-white"
@@ -200,7 +200,7 @@ export default function ProviderRegistration() {
               Picture
             </label>
           </div>
-          <div className="md:w-2/3 ">
+          <div className="md:w-2/3" id="picture">
             {/* <input
               className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
               type="file"
@@ -219,7 +219,7 @@ export default function ProviderRegistration() {
               Citizen Card
             </label>
           </div>
-          <div className="md:w-2/3">
+          <div className="md:w-2/3" id="citizen">
             {/* <input
               className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
               type="file"
@@ -237,7 +237,7 @@ export default function ProviderRegistration() {
               Citizen Certificate
             </label>
           </div>
-          <div className="md:w-2/3">
+          <div className="md:w-2/3" id="certi">
             {/* <input
               className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
               type="file"
@@ -251,7 +251,7 @@ export default function ProviderRegistration() {
 
         <div className="md:flex md:items-center">
           <div className="md:w-1/4 lg:w-1/4"></div>
-          <div className=" flex justify-center">
+          <div className=" flex justify-center" id="submit">
             <CustomButton
               title="Sign Up as Provider"
               containerStyles="transition-transform duration-500 ease-in-out hover:scale-110 bg-primary-blue rounded-full"

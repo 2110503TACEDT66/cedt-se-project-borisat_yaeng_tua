@@ -1,7 +1,7 @@
 'use client'
 
 import { useState,useEffect } from "react"
-import { useSession } from "next-auth/react"
+import { getProviders, useSession } from "next-auth/react"
 import { getPendingProviders } from "@/libs/getPendingProviders"
 import Image from "next/image"
 import Link from "next/link"
@@ -38,6 +38,8 @@ export default function provider() {
         try{
             const approved = await updateProvider(provider._id, "approved", token);
             const updated = await updateUser(provider.user, token)
+            // const providers = await getProviders()
+            // console.log(providers)
         }catch(err){
             console.log("ERROR can't approve");
         }
@@ -60,7 +62,7 @@ export default function provider() {
 
     return (
         <div className="w-11/12 mt-24 relative overflow-x-auto shadow-md rounded-lg">
-            <table className="w-full text-sm text-left rtl:text-right text-gray-500"> 
+            <table id="request" className="w-full text-sm text-left rtl:text-right text-gray-500"> 
                 <caption className="p-6 text-lg text-white font-bold text-left rtl:text-right bg-[#4a4b80]">
                     Pending Request
                 </caption>
@@ -98,10 +100,10 @@ export default function provider() {
                                         </button>
                                     </Link>
                                     <button className="ml-3 transition-transform duration-500 ease-in-out hover:scale-110" onClick={() => handleApprove(providerRequest)}>
-                                        <CheckCircleIcon className="h-6 w-6 text-emerald-500 hover:text-emerald-600" />
+                                        <CheckCircleIcon id="approved"className="h-6 w-6 text-emerald-500 hover:text-emerald-600" />
                                     </button>
                                     <button className="ml-3 transition-transform duration-500 ease-in-out hover:scale-110" onClick={() => handleReject(providerRequest)}>
-                                        <XCircleIcon className="h-6 w-6 text-red-500 hover:text-red-600" />
+                                        <XCircleIcon id="rejected"className="h-6 w-6 text-red-500 hover:text-red-600" />
                                     </button>
                                 </td>
                             </tr>

@@ -75,7 +75,7 @@ export default function AddCarPage() {
       formData.Model.trim() === "" ||
       formData.Year.trim() === "" ||
       formData.Color.trim() === "" ||
-      formData.FeePerDay.toString() === "" ||
+      formData.FeePerDay === 0 ||
       formData.LicensePlate.trim() === ""
     ) {
       Swal.fire({
@@ -83,12 +83,14 @@ export default function AddCarPage() {
         text: "Please fill out all fields",
         icon: "error",
       });
+      return
     } else if (!isCoverClick) {
       Swal.fire({
         title: "Cover Picture is missing",
         text: "Please upload Car Cover Picture",
         icon: "error",
       });
+      return
     }
 
     const carData = await getCarByLicense(formData.LicensePlate);
@@ -220,7 +222,7 @@ export default function AddCarPage() {
               Brand
             </label>
           </div>
-          <div className="md:w-2/3">
+          <div className="md:w-2/3" id="brand">
             <input
               className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
               type="text"
@@ -238,7 +240,7 @@ export default function AddCarPage() {
               Model
             </label>
           </div>
-          <div className="md:w-2/3">
+          <div className="md:w-2/3" id="model">
             <input
               className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
               type="text"
@@ -256,7 +258,7 @@ export default function AddCarPage() {
               Year
             </label>
           </div>
-          <div className="md:w-2/3">
+          <div className="md:w-2/3" id="year">
             <input
               className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
               type="text"
@@ -274,7 +276,7 @@ export default function AddCarPage() {
               Color
             </label>
           </div>
-          <div className="md:w-2/3">
+          <div className="md:w-2/3" id="color">
             <input
               className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
               type="text"
@@ -292,7 +294,7 @@ export default function AddCarPage() {
               FeePerDay
             </label>
           </div>
-          <div className="md:w-2/3">
+          <div className="md:w-2/3" id="feeperday">
             <input
               className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
               type="number"
@@ -310,7 +312,7 @@ export default function AddCarPage() {
               LicensePlate
             </label>
           </div>
-          <div className="md:w-2/3">
+          <div className="md:w-2/3" id="licenseplate">
             <input
               className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
               type="text"
@@ -328,7 +330,7 @@ export default function AddCarPage() {
               PictureCover
             </label>
           </div>
-          <div className="md:w-2/3">
+          <div className="md:w-2/3" id="picturecover">
             {/* <input
               className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
               type="file"
@@ -347,7 +349,7 @@ export default function AddCarPage() {
               Picture 1
             </label>
           </div>
-          <div className="md:w-2/3">
+          <div className="md:w-2/3" id="picture1">
             {/* <input
               className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
               type="file"
@@ -365,7 +367,7 @@ export default function AddCarPage() {
             Picture 2
             </label>
           </div>
-          <div className="md:w-2/3">
+          <div className="md:w-2/3" id="picture2">
             {/* <input
               className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
               type="file"
@@ -383,7 +385,7 @@ export default function AddCarPage() {
             Picture 3
             </label>
           </div>
-          <div className="md:w-2/3">
+          <div className="md:w-2/3" id="picture3">
             {/* <input
               className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
               type="file"
@@ -400,7 +402,7 @@ export default function AddCarPage() {
             Picture 4
             </label>
           </div>
-          <div className="md:w-2/3">
+          <div className="md:w-2/3" id="picture4">
             {/* <input
               className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
               type="file"
@@ -413,7 +415,7 @@ export default function AddCarPage() {
         </div>
 
         <div className="flex justify-center">
-          <div className=" flex justify-center">
+          <div className=" flex justify-center" id="submit">
             <CustomButton
               title="Add Car"
               containerStyles="transition-transform duration-500 ease-in-out hover:scale-110 bg-primary-blue rounded-full"

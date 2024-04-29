@@ -71,19 +71,19 @@ export default function ProviderCarCard({ car }: { car: CarProps }) {
 
     return (
         isClick?null:
-        <div className=" animate-fade-up w-full mt-5 flex flex-col p-6 justify-center items-start text-black-100 bg-white hover:shadow-lg rounded-3xl group">
+        <div id="carbox" className=" animate-fade-up w-full mt-5 flex flex-col p-6 justify-center items-start text-black-100 bg-white hover:shadow-lg rounded-3xl group">
             <div className="w-full flex flex-row justify-between">
                 <div className="w-full flex justify-between items-start gap-2">
-                    <h2 className="text-[22px] leading-[26px] font-bold capitalize">
+                    <h2 className="text-[22px] leading-[26px] font-bold capitalize" id="car">
                     {Brand} {Model}
                     </h2>
                 </div>
                 <div className="flex flex-row gap-5">
                     <div className="top-2 left-2" onClick={handleEdit}>
-                        <PencilSquareIcon className="transition-transform duration-500 ease-in-out hover:scale-110 w-6 h-6 hover:text-primary-blue hover:cursor-pointer"/>
+                        <PencilSquareIcon id="edit" className="transition-transform duration-500 ease-in-out hover:scale-110 w-6 h-6 hover:text-primary-blue hover:cursor-pointer"/>
                     </div>
                     <div className="top-2 left-2" onClick={handleDelete}>
-                        <TrashIcon className="transition-transform duration-500 ease-in-out hover:scale-110 w-6 h-6 hover:text-red-500 hover:cursor-pointer"/>
+                        <TrashIcon id="remove" className="transition-transform duration-500 ease-in-out hover:scale-110 w-6 h-6 hover:text-red-500 hover:cursor-pointer"/>
                     </div>
                 </div>
             </div>

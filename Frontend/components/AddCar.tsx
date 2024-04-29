@@ -101,13 +101,13 @@ export default function AddCar({ handleResult }: { handleResult: (result: any) =
                     <button type="submit" className="bg-cyan-600 hover:bg-cyan-800 text-white p-2 rounded-xl mt-3 font-serif">Add New Company</button>
                 </form>
             } */}
-            <input type="file" accept="image/*" onChange={handleFileChange} className="text-blackblock w-full text-sm text-slate-500
+            <input id="choosefile" type="file" accept="image/*" onChange={handleFileChange} className="text-blackblock w-full text-sm text-slate-500
                 file:mr-4 file:py-2 file:px-4
                 file:rounded-full file:border-0
                 file:text-sm file:font-semibold
                 file:bg-violet-50 file:text-black
                 hover:file:bg-violet-100" />
-            <button onClick={handleUpload} disabled={!selectedFile} className="text-white disabled:bg-gray-500 bg-emerald-500 hover:bg-emerald-600 p-2 m-2 rounded-2xl">Upload Image</button>
+            <button id="upload" onClick={handleUpload} disabled={!selectedFile} className="text-white disabled:bg-gray-500 bg-emerald-500 hover:bg-emerald-600 p-2 m-2 rounded-2xl">Upload Image</button>
 
         </div>
     )

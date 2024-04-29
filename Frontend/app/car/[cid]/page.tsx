@@ -66,8 +66,7 @@ export default function EditCarPage({ params }: { params: { cid: string } }) {
       tempCarDetail.Model.trim() === "" ||
       tempCarDetail.Year.trim() === "" ||
       tempCarDetail.Color.trim() === "" ||
-      tempCarDetail.FeePerDay.toString() === "" ||
-      tempCarDetail.LicensePlate.trim() === ""
+      isNaN(tempCarDetail.FeePerDay)
     ) {
       Swal.fire({
         title: "Some fields are missing",
@@ -169,7 +168,7 @@ export default function EditCarPage({ params }: { params: { cid: string } }) {
             </div>
             <div className="md:w-3/4">
               <input
-                id="name"
+                id="model"
                 type="text"
                 value={tempCarDetail.Model}
                 onChange={(e) => {
@@ -190,7 +189,7 @@ export default function EditCarPage({ params }: { params: { cid: string } }) {
             </div>
             <div className="md:w-3/4">
               <input
-                id="name"
+                id="year"
                 type="text"
                 value={tempCarDetail.Year}
                 onChange={(e) => {
@@ -211,7 +210,7 @@ export default function EditCarPage({ params }: { params: { cid: string } }) {
             </div>
             <div className="md:w-3/4">
               <input
-                id="name"
+                id="color"
                 type="text"
                 value={tempCarDetail.Color}
                 onChange={(e) => {
@@ -232,7 +231,7 @@ export default function EditCarPage({ params }: { params: { cid: string } }) {
             </div>
             <div className="md:w-3/4">
               <input
-                id="name"
+                id="feeperday"
                 type="number"
                 value={tempCarDetail.FeePerDay}
                 onChange={(e) => {
@@ -253,7 +252,7 @@ export default function EditCarPage({ params }: { params: { cid: string } }) {
             </div>
             <div className="md:w-3/4">
               <input
-                id="name"
+                id="cover"
                 type="text"
                 value={tempCarDetail.PictureCover}
                 onChange={(e) => {
@@ -274,7 +273,7 @@ export default function EditCarPage({ params }: { params: { cid: string } }) {
             </div>
             <div className="md:w-3/4">
               <input
-                id="name"
+                id="pic1"
                 type="text"
                 value={tempCarDetail.Picture1}
                 onChange={(e) => {
@@ -294,7 +293,7 @@ export default function EditCarPage({ params }: { params: { cid: string } }) {
             </div>
             <div className="md:w-3/4">
               <input
-                id="name"
+                id="pic2"
                 type="text"
                 value={tempCarDetail.Picture2}
                 onChange={(e) => {
@@ -314,7 +313,7 @@ export default function EditCarPage({ params }: { params: { cid: string } }) {
             </div>
             <div className="md:w-3/4">
               <input
-                id="name"
+                id="pic3"
                 type="text"
                 value={tempCarDetail.Picture3}
                 onChange={(e) => {
@@ -334,7 +333,7 @@ export default function EditCarPage({ params }: { params: { cid: string } }) {
             </div>
             <div className="md:w-3/4">
               <input
-                id="name"
+                id="pic4"
                 type="text"
                 value={tempCarDetail.Picture4}
                 onChange={(e) => {
@@ -362,6 +361,7 @@ export default function EditCarPage({ params }: { params: { cid: string } }) {
                 Cancel
               </button>
               <button
+                id="submit"
                 form="car"
                 type="submit"
                 className="bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded"
