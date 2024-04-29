@@ -88,7 +88,7 @@ export default function EditCarPage({ params }: { params: { cid: string } }) {
         title: "Cover Picture is missing",
         text: "Please upload Car Cover Picture",
         icon: "error",
-      });
+      }); 
       error = true;
     }
     if (!error) {
