@@ -28,7 +28,7 @@ describe('deleteCar function', () => {
         // Expectations
         expect(res.status).toHaveBeenCalledWith(200);
         expect(res.json).toHaveBeenCalledWith({ success: true, message: 'Car deleted successfully' });
-    });
+  });
 
     it('should not delete a car when it has been booked by the user', async () => {
       const req = {
