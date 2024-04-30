@@ -6,6 +6,11 @@ const {protect,authorize} = require('../middleware/auth');
 /**
  *  @swagger
  *  components:
+ *    securitySchemes:
+ *      bearerAuth:
+ *        type: http
+ *        scheme: bearer
+ *        bearerFormat: JWT
  *    schemas:
  *      Booking:
  *        type: object
@@ -69,6 +74,8 @@ const {protect,authorize} = require('../middleware/auth');
  *   get:
  *     summary: Returns the list of all the bookings
  *     tags: [Booking]
+ *     security:
+ *       - bearerAuth: []
  *     responses:
  *       200:
  *         description: User:The list of his bookings,
@@ -91,6 +98,8 @@ const {protect,authorize} = require('../middleware/auth');
  *   get:
  *       summary: Returns the booking by booking id
  *       tags: [Booking]
+ *     security:
+ *       - bearerAuth: []
  *       parameters:
  *         - in: path
  *           name: id
@@ -118,6 +127,8 @@ const {protect,authorize} = require('../middleware/auth');
  *   post:
  *     summary: Create a booking
  *     tags: [Booking]
+ *     security:
+ *       - bearerAuth: []
  *     requestBody:
  *       required: true
  *       content:
@@ -144,6 +155,8 @@ const {protect,authorize} = require('../middleware/auth');
  *   put:
  *     summary: Update the booking by booking id
  *     tags: [Booking]
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -177,6 +190,8 @@ const {protect,authorize} = require('../middleware/auth');
  *   delete:
  *     summary: Delete the booking by booking id
  *     tags: [Booking]
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id

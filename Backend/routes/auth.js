@@ -4,16 +4,17 @@ const {register, login, getMe, logout} = require('../controllers/auth');
 /**
  *  @swagger
  *  components:
+ *    securitySchemes:
+ *      bearerAuth:
+ *        type: http
+ *        scheme: bearer
+ *        bearerFormat: JWT
  *    schemas:
  *      User:
  *        type: object
  *        required:
- *          - _id
- *          - name
- *          - tel
  *          - email
  *          - password
- *          - createAt
  *        properties:
  *          _id:
  *            type: string
@@ -38,13 +39,16 @@ const {register, login, getMe, logout} = require('../controllers/auth');
  *            type: date
  *            description: The auto-generated date and time of creation
  *        example: 
- *          _id: 661d800402e461dc8545fb37
- *          name: "testCustomer"
- *          tel: "0987654321"
- *          email: "testCustomer@gmail.com"
- *          role: "user"
- *          password: "$2a$10$Dwu88NO48AJ4.1WpereT6uVjlX6aIx8rraTehg6ZVVKX3PQsRd23W"
- *          createdAt: 2024-04-15T19:29:08.333+00:00
+ *          {
+ *            "_id": "661da1d802e461dc8545fc81",
+ *            "name": "testAdmin",
+ *            "tel": "01234567",
+ *            "email": "testAdmin@gmail.com",
+ *            "role": "admin",
+ *            "password": "$2a$10$mUf55VjaqoMxx1F2UZgvF.tD2ocjOKvoPCP2Qh/LLRvOGdSsIQ9eG",
+ *            "createdAt": "2024-04-13T12:33:28.654Z",
+ *            "__v": 0
+ *          }
  */ 
 /**
  * @swagger
@@ -106,6 +110,8 @@ const {register, login, getMe, logout} = require('../controllers/auth');
  *   get:
  *     summary: Logout user account
  *     tags: [Authentication]
+ *     security:
+ *       - bearerAuth: []
  *     responses:
  *       200:
  *         description: Successfully logout account
@@ -116,6 +122,8 @@ const {register, login, getMe, logout} = require('../controllers/auth');
  *   get:
  *     summary: Get current logged in user account
  *     tags: [Authentication]
+ *     security:
+ *       - bearerAuth: []
  *     responses:
  *       200:
  *         description: Successfully get current logged in user account

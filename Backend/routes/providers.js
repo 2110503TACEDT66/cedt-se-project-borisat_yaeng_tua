@@ -6,6 +6,11 @@ const {protect,authorize} = require('../middleware/auth');
 /**
  *  @swagger
  *  components:
+ *    securitySchemes:
+ *      bearerAuth:
+ *        type: http
+ *        scheme: bearer
+ *        bearerFormat: JWT
  *    schemas:
  *      Provider:
  *        type: object
@@ -89,6 +94,8 @@ const {protect,authorize} = require('../middleware/auth');
  *   get:
  *     summary: Returns the list of all the provider requests
  *     tags: [Provider]
+ *     security:
+ *       - bearerAuth: []
  *     responses:
  *       200:
  *         description: The list of the provider requests
@@ -107,6 +114,8 @@ const {protect,authorize} = require('../middleware/auth');
  *   get:
  *     summary: Returns the list of all the provider requests that approved
  *     tags: [Provider]
+ *     security:
+ *       - bearerAuth: []
  *     responses:
  *       200:
  *         description: The list of the provider requests that approved
@@ -125,12 +134,14 @@ const {protect,authorize} = require('../middleware/auth');
  *   post:
  *     summary: Create a provider request
  *     tags: [Provider]
+ *     security:
+ *       - bearerAuth: []
  *     requestBody:
-*        required: true
-*        content:
-*          application/json:
-*            schema:
-*              $ref: '#/components/schemas/Provider'
+ *        required: true
+ *        content:
+ *          application/json:
+ *            schema:
+ *              $ref: '#/components/schemas/Provider'
  *     responses:
  *       201:
  *         description: The provier request is successfully created
@@ -147,6 +158,8 @@ const {protect,authorize} = require('../middleware/auth');
  *   put:
  *     summary: Update a provider's infomation
  *     tags: [Provider]
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -180,6 +193,8 @@ const {protect,authorize} = require('../middleware/auth');
  *   delete:
  *     summary: Delete the provider's infomation
  *     tags: [Provider]
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id

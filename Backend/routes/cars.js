@@ -6,6 +6,11 @@ const { uploads } = require('../controllers/upload');
 /**
  *  @swagger
  *  components:
+ *    securitySchemes:
+ *      bearerAuth:
+ *        type: http
+ *        scheme: bearer
+ *        bearerFormat: JWT
  *    schemas:
  *      Car:
  *        type: object
@@ -152,12 +157,14 @@ const { uploads } = require('../controllers/upload');
  *   post:
  *     summary: Add a new car
  *     tags: [Cars]
+ *     security:
+ *       - bearerAuth: []
  *     requestBody:
-*        required: true
-*        content:
-*          application/json:
-*            schema:
-*              $ref: '#/components/schemas/Car'
+ *        required: true
+ *        content:
+ *          application/json:
+ *            schema:
+ *              $ref: '#/components/schemas/Car'
  *     responses:
  *       201:
  *         description: The car was successfully added
@@ -176,6 +183,8 @@ const { uploads } = require('../controllers/upload');
  *   put:
  *     summary: Update the own car by car id
  *     tags: [Cars]
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -209,6 +218,8 @@ const { uploads } = require('../controllers/upload');
  *   delete:
  *     summary: Delete the own car by car id
  *     tags: [Cars]
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id

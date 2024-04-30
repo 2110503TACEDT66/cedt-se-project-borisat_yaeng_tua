@@ -6,6 +6,11 @@ const { protect } = require('../middleware/auth');
 /**
  *  @swagger
  *  components:
+ *    securitySchemes:
+ *      bearerAuth:
+ *        type: http
+ *        scheme: bearer
+ *        bearerFormat: JWT
  *    schemas:
  *      Payment:
  *        type: object
@@ -148,6 +153,8 @@ const { protect } = require('../middleware/auth');
  *   get:
  *     summary: Returns the list of all the payment
  *     tags: [Payment]
+ *     security:
+ *       - bearerAuth: []
  *     responses:
  *       200:
  *         description: The list of the payment
@@ -166,6 +173,8 @@ const { protect } = require('../middleware/auth');
  *   put:
  *     summary: Update a payment
  *     tags: [Payment]
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
