@@ -1,4 +1,4 @@
-const { deleteCar } = require('./cars');
+const { deleteCar } = require('./jestcars');
 const Booking = require('../models/Bookings');
 
 // Mock dependencies
@@ -73,6 +73,35 @@ describe('deleteCar function', () => {
       console.log('res.status was called with:', res.status.mock.calls[0][0]);
       console.log('res.json was called with:', res.json.mock.calls[0][0]);
     });
+    
+    it('should not delete a car that does not exist', async () => {
+      const req = {
+          params: { },
+          user: { id: '662f74ab8f787a82d38e9a0b', role: 'provider' } // User making the request
+      };
+      const res = {
+          status: jest.fn().mockReturnThis(), // Mock the status method
+          json: jest.fn() // Mock the json method
+      };
+  
+      // Mock Car.findById to resolve with a mock car
+      const mockCar = null; // No car found
+      require('../models/Car').findById.mockResolvedValue(mockCar);
+  
+      // Call deleteCar function
+      await deleteCar(req, res);
+  
+      // Expectations
+      expect(res.status).toHaveBeenCalledWith(404); // Status 404 expected
+      expect(res.json).toHaveBeenCalledWith({
+          success: false,
+          message: `Car not found`
+      });
+  
+      // Add some debugging information
+      console.log('res.status was called with:', res.status.mock.calls[0][0]);
+      console.log('res.json was called with:', res.json.mock.calls[0][0]);
+  });
   
   
 });

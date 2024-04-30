@@ -1,6 +1,7 @@
 const express = require('express');
 const multer = require("multer");
-const { getCars, getCar, createCar, updateCar, deleteCar, getCarRentals, getProviderCars } = require('../controllers/cars');
+const { getCars, getCar, updateCar, getCarRentals, getProviderCars } = require('../controllers/cars');
+const { createCar, deleteCar } = require('../controllers/jestcars')
 const { uploads } = require('../controllers/upload');
 
 /**
