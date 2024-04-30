@@ -103,5 +103,4 @@ describe('deleteCar function', () => {
       console.log('res.json was called with:', res.json.mock.calls[0][0]);
   });
   
-  
 });
