@@ -1,5 +1,6 @@
 const Car = require("../models/Car");
 const CarRental = require("../models/carRental");
+const Booking = require('../models/Bookings');
 
 //@desc     Get all cars
 //@route    GET /api/v1/cars
@@ -126,13 +127,13 @@ exports.getProviderCars = async (req, res, next) => {
 //@access   Private
 exports.createCar = async (req, res, next) => {
     try{
-        const car = await Car.create({...req.body,provider: req.user.id});
+        const car = await Car.create({...req.body, provider: req.user.id});
         res.status(201).json({
             success: true,
             data: car
-        });
+        })
     } catch(err) {
-        res.status(400).json({success: false, message: err.message});
+        res.status(400).json({ success: false, message: err.message });
     }
 };
 
@@ -173,7 +174,7 @@ exports.deleteCar = async (req, res, next) => {
         const car = await Car.findById(req.params.id);
 
         if (!car) {
-            return res.status(404).json({success: false});
+            return res.status(404).json({ success: false, message: 'Car not found' });
         }
 
         if(req.user.role === 'user' || (car.provider.toString() !== req.user.id && req.user.role === 'provider')) {
@@ -183,10 +184,20 @@ exports.deleteCar = async (req, res, next) => {
             });
         }
 
+        const bookedCar = await Booking.find({ car: req.params.id })
+        console.log(bookedCar);
+        if(bookedCar !== null) {
+            return res.status(401).json({
+                success:false,
+                message:`This car is still booking`
+                });
+        }
+
         await car.deleteOne();
-        res.status(200).json({success: true, data: {}});
-    } catch(err) {
-        res.status(500).json({success: false});
+        res.status(200).json({ success: true, message: 'Car deleted successfully' });
+    } catch (err) {
+        console.error("Error deleting car:", err); //
+        res.status(400).json({ success: false, message: err.message });
     }
 };
 

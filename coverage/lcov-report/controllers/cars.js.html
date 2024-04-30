@@ -23,16 +23,16 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">26.5% </span>
+                <span class="strong">24.67% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>22/83</span>
+                <span class='fraction'>19/77</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">13.15% </span>
+                <span class="strong">11.11% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>5/38</span>
+                <span class='fraction'>4/36</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">27.16% </span>
+                <span class="strong">25.33% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>22/81</span>
+                <span class='fraction'>19/75</span>
             </div>
         
             
@@ -274,12 +274,7 @@
 <a name='L209'></a><a href='#L209'>209</a>
 <a name='L210'></a><a href='#L210'>210</a>
 <a name='L211'></a><a href='#L211'>211</a>
-<a name='L212'></a><a href='#L212'>212</a>
-<a name='L213'></a><a href='#L213'>213</a>
-<a name='L214'></a><a href='#L214'>214</a>
-<a name='L215'></a><a href='#L215'>215</a>
-<a name='L216'></a><a href='#L216'>216</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
+<a name='L212'></a><a href='#L212'>212</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -464,19 +459,16 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -495,7 +487,6 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">const Car = require("../models/Car");
 const CarRental = require("../models/carRental");
-const Booking = require('../models/Bookings');
 &nbsp;
 //@desc     Get all cars
 //@route    GET /api/v1/cars
@@ -679,19 +670,16 @@ exports.deleteCar = async (req, res, next) =&gt; {
             });
         }
 &nbsp;
-        const bookedCar = await Booking.find({ car: req.params.id })
-        console.log(bookedCar);
-        <span class="missing-if-branch" title="else path not taken" >E</span>if(bookedCar !== null) {
-            return res.status(401).json({
-                success:false,
-                message:`This car is still booking`
-                });
-        }
+        // if(car.booking.length() !== 0) {
+        //     return res.status(401).json({
+        //         success:false,
+        //       message:`User ${req.user.id} is not authorized to delete this car`
+        //     });
+        // }
 &nbsp;
-<span class="cstat-no" title="statement not covered" >        await car.deleteOne();</span>
-<span class="cstat-no" title="statement not covered" >        res.status(200).json({ success: true, message: 'Car deleted successfully' });</span>
+        await car.deleteOne();
+        res.status(200).json({ success: true, message: 'Car deleted successfully' });
     } catch (err) {
-<span class="cstat-no" title="statement not covered" >        console.error("Error deleting car:", err); </span>//
 <span class="cstat-no" title="statement not covered" >        res.status(400).json({ success: false, message: err.message });</span>
     }
 };
@@ -715,7 +703,7 @@ exports.getCarRentals= <span class="fstat-no" title="function not covered" >(r</
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2024-04-30T07:43:28.310Z
+                at 2024-04-30T06:55:29.185Z
             </div>
         <script src="../prettify.js"></script>
         <script>

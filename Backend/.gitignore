@@ -2,3 +2,4 @@
 node_modules/*
 controllers/cred.json
 .DS_Store
+coverage/*
