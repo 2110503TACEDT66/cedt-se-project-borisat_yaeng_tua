@@ -186,7 +186,8 @@ exports.deleteCar = async (req, res, next) => {
 
         const bookedCar = await Booking.find({ car: req.params.id })
         console.log(bookedCar);
-        if(bookedCar !== null) {
+        console.log(bookedCar.length)
+        if(bookedCar.length !== 0) {
             return res.status(401).json({
                 success:false,
                 message:`This car is still booking`
@@ -196,7 +197,7 @@ exports.deleteCar = async (req, res, next) => {
         await car.deleteOne();
         res.status(200).json({ success: true, message: 'Car deleted successfully' });
     } catch (err) {
-        console.error("Error deleting car:", err); //
+        console.error("Error deleting car:", err);
         res.status(400).json({ success: false, message: err.message });
     }
 };
