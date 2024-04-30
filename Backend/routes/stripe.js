@@ -306,8 +306,18 @@ router.post('/webhook', express.raw({type: 'application/json'}), (request, respo
                     return { customer, bookingData, invoice };
                 });
         })
-        .then(({ customer, bookingData, invoice }) => {
+        .then(async ({ customer, bookingData, invoice }) => {
             console.log('test');
+            const cartData = await JSON.parse(customer.metadata.cart)
+            console.log(cartData);
+            if(customer.metadata.isUpdate){
+              let updateBooking = await Booking.findByIdAndUpdate(
+                cartData.bookingId, 
+                { bookingDateTo: cartData.bookingDateTo }
+              );
+              console.log(updateBooking);
+              
+            }
             createPaymentHistory(customer, data, bookingData, invoice.hosted_invoice_url)
             .then(async (req, res) => {
               if(!customer.metadata.isUpdate){

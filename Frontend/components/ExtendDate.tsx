@@ -68,7 +68,6 @@ export default function ExtendDate({
                     })
                   }
                   checkout()
-                  .then(() => updateBooking(booking._id, date, token))
             } catch (error) {
                 console.error('Failed to update booking:', error);
                 Swal.fire({
