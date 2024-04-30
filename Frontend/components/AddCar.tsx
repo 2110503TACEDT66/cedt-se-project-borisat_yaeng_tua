@@ -3,12 +3,17 @@
 import React, { useState } from "react";
 import { useSession } from "next-auth/react";
 
+interface ResultMessage {
+    type: string;
+    message: any;
+}
+
 export default function AddCar({ handleResult }: { handleResult: (result: any) => void }) {
 
     const { data: session } = useSession();
 
     const [selectedFile, setSelectedFile] = useState(null);
-    const [resultMessage, setResultMessage] = useState(null);
+    const [resultMessage, setResultMessage] = useState<ResultMessage | null>(null); // Define the state type
 
     const handleFileChange = (e : any) => {
         setSelectedFile(e.target.files[0]);
@@ -18,7 +23,10 @@ export default function AddCar({ handleResult }: { handleResult: (result: any) =
         e.preventDefault();
         try {
             const formData = new FormData();
-            formData.append("image", selectedFile)
+            if (selectedFile !== null) {
+                formData.append("image", selectedFile);
+            }
+            
 
             const response = await fetch("http://localhost:5050/api/v1/cars/upload", {
                 method: "POST",
