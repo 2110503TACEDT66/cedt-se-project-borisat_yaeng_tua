@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1714472269242" clover="3.2.0">
-  <project timestamp="1714472269242" name="All files">
-    <metrics statements="29" coveredstatements="26" conditionals="4" coveredconditionals="4" methods="3" coveredmethods="2" elements="36" coveredelements="32" complexity="0" loc="29" ncloc="29" packages="2" files="3" classes="3"/>
+<coverage generated="1714472420232" clover="3.2.0">
+  <project timestamp="1714472420232" name="All files">
+    <metrics statements="25" coveredstatements="25" conditionals="4" coveredconditionals="4" methods="2" coveredmethods="2" elements="31" coveredelements="31" complexity="0" loc="25" ncloc="25" packages="2" files="3" classes="3"/>
     <package name="controllers">
       <metrics statements="18" coveredstatements="18" conditionals="4" coveredconditionals="4" methods="2" coveredmethods="2"/>
       <file name="jestcars.js" path="C:\Users\Lenovo\Documents\GitHub\cedt-se-project-borisat_yaeng_tua\Backend\controllers\jestcars.js">
@@ -27,7 +27,7 @@
       </file>
     </package>
     <package name="models">
-      <metrics statements="11" coveredstatements="8" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="0"/>
+      <metrics statements="7" coveredstatements="7" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
       <file name="Bookings.js" path="C:\Users\Lenovo\Documents\GitHub\cedt-se-project-borisat_yaeng_tua\Backend\models\Bookings.js">
         <metrics statements="3" coveredstatements="3" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
         <line num="1" count="2" type="stmt"/>
@@ -35,13 +35,9 @@
         <line num="33" count="2" type="stmt"/>
       </file>
       <file name="Car.js" path="C:\Users\Lenovo\Documents\GitHub\cedt-se-project-borisat_yaeng_tua\Backend\models\Car.js">
-        <metrics statements="8" coveredstatements="5" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="0"/>
+        <metrics statements="4" coveredstatements="4" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
         <line num="1" count="1" type="stmt"/>
         <line num="3" count="1" type="stmt"/>
-        <line num="62" count="1" type="stmt"/>
-        <line num="63" count="0" type="stmt"/>
-        <line num="64" count="0" type="stmt"/>
-        <line num="65" count="0" type="stmt"/>
         <line num="69" count="1" type="stmt"/>
         <line num="76" count="1" type="stmt"/>
       </file>

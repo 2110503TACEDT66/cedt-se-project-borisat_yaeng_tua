@@ -59,11 +59,11 @@ const CarSchema = new mongoose.Schema({
 });
 
 //Cascade delete bookings when a car is deleted
-CarSchema.pre('deleteOne', { document: true, query: false }, async function(next) {
-    console.log(`Bookings being removed from car ${this._id}`);
-    await this.model('Booking').deleteMany({car: this._id});
-    next();
-});
+// CarSchema.pre('deleteOne', { document: true, query: false }, async function(next) {
+//     console.log(`Bookings being removed from car ${this._id}`);
+//     await this.model('Booking').deleteMany({car: this._id});
+//     next();
+// });
 
 //Reverse populate with virtuals
 CarSchema.virtual('bookings', {
