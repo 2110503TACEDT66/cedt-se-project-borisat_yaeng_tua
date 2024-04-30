@@ -18,7 +18,8 @@ exports.getBookings = async(req,res,next)=>{
             path: 'provider',
             select: 'name tel email'
         });
-        } else {
+        }
+        else {
             query = Booking.find({ user: req.user.id }).populate({
                 path: 'car',
                 select: 'Brand Model Year Color FeePerDay LicensePlate'
@@ -27,7 +28,8 @@ exports.getBookings = async(req,res,next)=>{
                 select: 'name tel email'
             });
         }
-    } else if (req.user.role === 'provider') { // If you are a provider, you can see only booking that booked your car
+    }
+    else if (req.user.role === 'provider') { // If you are a provider, you can see only booking that booked your car
         if (req.params.carId) {
             console.log(req.params.carId);
             query = Booking.find({ car: req.params.carId, provider: req.user.id }).populate({
@@ -46,7 +48,8 @@ exports.getBookings = async(req,res,next)=>{
                 select: 'name tel email'
             });
         }    
-    } else { // If you are an admin, you can see all
+    }
+    else { // If you are an admin, you can see all
         if (req.params.carId) {
             console.log(req.params.carId);
             query = Booking.find({car:req.params.carId}).populate({
@@ -59,7 +62,8 @@ exports.getBookings = async(req,res,next)=>{
                 path: 'provider',
                 select: 'name tel email'
             });
-        } else {
+        }
+        else {
             query = Booking.find().populate({
                 path: 'user',
                 select: 'name tel email'
@@ -97,9 +101,11 @@ exports.getBooking = async(req,res,next)=>{
             path: 'provider',
             select: 'name tel email'
         });
+
         if(!booking){
             return res.status(404).json({success:false, message : `No booking with the id of ${req.params.id}`})
         }
+
         res.status(200).json({
             success:true, 
             data:booking
