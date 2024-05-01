@@ -3,7 +3,7 @@ import config from "../config"
 
 export async function getCarByLicense(LicensePlate : string) :Promise<GetCars>{
     // const { manufacturer, year, model, color, limit} = filters
-    const response = await fetch(`${config.backendUrl}/api/v1/cars/?LicensePlate=${LicensePlate}`)
+    const response = await fetch(`${process.env.BACKEND_URL}/api/v1/cars/?LicensePlate=${LicensePlate}`)
     if(!response.ok){
         throw new Error("Failed to fetch cars")
     }

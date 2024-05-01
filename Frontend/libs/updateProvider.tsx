@@ -1,7 +1,7 @@
 import config from "../config"
 
 export default async function updateProvider(providerID: string, action: string, token: string) {
-    const response = await fetch(`http://localhost:5050/api/v1/providers/${providerID}`, {
+    const response = await fetch(`${process.env.BACKEND_URL}/api/v1/providers/${providerID}`, {
         method: "PUT",
         headers: {
             "Content-type": "application/json",

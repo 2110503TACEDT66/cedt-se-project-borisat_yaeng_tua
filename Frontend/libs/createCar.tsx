@@ -14,7 +14,7 @@ export default async function createCar(
   Picture4: string,
   token: string
   ) {
-    const response = await fetch(`${config.backendUrl}/api/v1/cars`, {
+    const response = await fetch(`${process.env.BACKEND_URL}/api/v1/cars`, {
         method: "POST",
         headers: {
             "Content-type": "application/json",

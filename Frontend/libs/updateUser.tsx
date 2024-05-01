@@ -1,7 +1,7 @@
 import config from "../config"
 
 export default async function updateUser(userID: string, token: string) {
-    const response = await fetch(`http://localhost:5050/api/v1/user/${userID}`, {
+    const response = await fetch(`${process.env.BACKEND_URL}/api/v1/user/${userID}`, {
         method: "PUT",
         headers: {
             "Content-type": "application/json",

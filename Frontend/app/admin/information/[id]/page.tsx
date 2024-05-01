@@ -5,6 +5,7 @@ import { ProviderData } from "@/types"
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 import PictureParser from "@/components/PictureParser";
+import config from "@/config";
 
 export default function page({params} : {params: {id: string}}) {
 
@@ -17,7 +18,7 @@ export default function page({params} : {params: {id: string}}) {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await fetch(`http://localhost:5050/api/v1/providers?_id=${params.id}`, {
+                const response = await fetch(`${process.env.BACKEND_URL}/api/v1/providers?_id=${params.id}`, {
                     method: "GET",
                     headers: {
                         authorization: `Bearer ${token}`,

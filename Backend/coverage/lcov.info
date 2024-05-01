@@ -1,5 +1,5 @@
 TN:
-SF:controllers\jestcars.js
+SF:controllers/jestcars.js
 FN:7,(anonymous_0)
 FN:22,(anonymous_1)
 FNF:2
@@ -34,7 +34,7 @@ BRF:4
 BRH:4
 end_of_record
 TN:
-SF:models\Bookings.js
+SF:models/Bookings.js
 FNF:0
 FNH:0
 DA:1,2
@@ -46,7 +46,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:models\Car.js
+SF:models/Car.js
 FNF:0
 FNH:0
 DA:1,1

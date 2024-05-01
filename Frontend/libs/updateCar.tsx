@@ -3,7 +3,7 @@ import config from "../config"
 export default async function updateCar(
     token: string, id: string, brand: string, model: string, year: string, color: string, feePerDay: string, 
     licensePlate: string, pictureCover: string, picture1: string, picture2: string, picture3: string, picture4: string) {
-    const response = await fetch(`${config.backendUrl}/api/v1/cars/${id}`, {
+    const response = await fetch(`${process.env.BACKEND_URL}/api/v1/cars/${id}`, {
         method: "PUT",
           headers: {
             "Content-Type": "application/json",

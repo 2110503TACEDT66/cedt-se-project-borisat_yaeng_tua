@@ -53,7 +53,7 @@ export default function ExtendDate({
             try {
                 //console.log(DateAdder(booking.bookingDateFrom, extensionDays));
                 const checkout = async () => {
-                      axios.post(`${config.backendUrl}/api/v1/stripe/create-checkout-session`, {
+                      axios.post(`${process.env.BACKEND_URL}/api/v1/stripe/create-checkout-session`, {
                       bookingData,
                       userId : bookingData.data.user,
                       Token : token,

@@ -1,7 +1,7 @@
 import config from "../config"
 
 export default async function createRefund(_id : string) {
-    const response = await fetch(`${config.backendUrl}/api/v1/stripe/create-refund`, {
+    const response = await fetch(`${process.env.BACKEND_URL}/api/v1/stripe/create-refund`, {
         method: "POST",
         headers: {
             "Content-type": "application/json",

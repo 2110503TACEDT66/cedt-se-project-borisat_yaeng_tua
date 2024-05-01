@@ -1,7 +1,7 @@
 import config from "../config"
 
 export default async function getBookingByCar(token: string,carId:string) {
-    const response = await fetch(`${config.backendUrl}/api/v1/cars/${carId}/bookings`, {
+    const response = await fetch(`${process.env.BACKEND_URL}/api/v1/cars/${carId}/bookings`, {
         method: "GET",
         headers: {
             authorization: `Bearer ${token}`

@@ -61,7 +61,7 @@ function CardDetailPage({ params }: { params: { cid: string } }) {
 
     const checkout = () => {
       axios
-        .post(`${config.backendUrl}/api/v1/stripe/create-checkout-session`, {
+        .post(`${process.env.BACKEND_URL}/api/v1/stripe/create-checkout-session`, {
           bookingData,
           userId: bookingData.user,
           Token: session?.user.token,
@@ -80,7 +80,7 @@ function CardDetailPage({ params }: { params: { cid: string } }) {
 
     // try {
     //   const response = await fetch(
-    //     `${config.backendUrl}/api/v1/cars/${params.cid}/bookings`,
+    //     `${process.env.BACKEND_URL}/api/v1/cars/${params.cid}/bookings`,
     //     {
     //       method: "POST",
     //       headers: {

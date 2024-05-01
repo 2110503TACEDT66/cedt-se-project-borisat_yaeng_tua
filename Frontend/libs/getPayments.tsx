@@ -1,7 +1,7 @@
 import config from "../config"
 
 export default async function getPaymentByUser(token: string) {
-    const response = await fetch(`${config.backendUrl}/api/v1/payments/`, {
+    const response = await fetch(`${process.env.BACKEND_URL}/api/v1/payments/`, {
         method: "GET",
         headers: {
             authorization: `Bearer ${token}`

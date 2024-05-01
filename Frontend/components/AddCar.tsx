@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import { useSession } from "next-auth/react";
+import config from "@/config";
 
 interface ResultMessage {
     type: string;
@@ -28,7 +29,7 @@ export default function AddCar({ handleResult }: { handleResult: (result: any) =
             }
             
 
-            const response = await fetch("http://localhost:5050/api/v1/cars/upload", {
+            const response = await fetch(`${process.env.BACKEND_URL}/api/v1/cars/upload`, {
                 method: "POST",
                 headers: {
                     authorization: `Bearer ${session?.user.token}`,

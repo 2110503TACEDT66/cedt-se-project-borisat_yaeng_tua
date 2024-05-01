@@ -5,7 +5,7 @@ import { authOptions } from "./authOptions"
 
 export async function getPendingProviders(token : string){
     
-    const response = await fetch(`${config.backendUrl}/api/v1/providers/pending`, {
+    const response = await fetch(`${process.env.BACKEND_URL}/api/v1/providers/pending`, {
         method: "GET",
         headers: {
             authorization: `Bearer ${token}`

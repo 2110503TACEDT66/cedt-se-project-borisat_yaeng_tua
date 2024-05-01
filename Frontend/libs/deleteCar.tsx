@@ -3,7 +3,7 @@ import config from "../config";
 
 export default async function deleteCar(carID: string, token: string) {
     try {
-        const response = await fetch(`${config.backendUrl}/api/v1/cars/${carID}`, {
+        const response = await fetch(`${process.env.BACKEND_URL}/api/v1/cars/${carID}`, {
             method: "DELETE",
             headers: {
                 authorization: `Bearer ${token}`,
